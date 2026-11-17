@@ -74,7 +74,7 @@ const NO = {
   'Sign the list': 'Skriv deg på', 'Nothing you type is sent or kept.': 'Ingenting du skriver blir sendt eller lagret.',
   'A sealed promise': 'Et forseglet løfte', 'For the press': 'For pressen', 'Short bio': 'Kort biografi', 'Download the press kit': 'Last ned pressepakken',
   'Sigil (SVG)': 'Sigill (SVG)', 'Wax seal (PNG)': 'Voksegl (PNG)', 'Album covers': 'Albumomslag', 'Download': 'Last ned',
-  'Make a lyric card': 'Lag et tekstkort', 'Count': 'Tell', 'Clear': 'Tøm', 'Ask the board': 'Spør brettet', 'Medium off': 'Medium av', 'Medium on': 'Medium på', 'Tap for the medium': 'Trykk for mediet', 'Sound off': 'Lyd av', 'Sound on': 'Lyd på', 'Tap for sound': 'Trykk for lyd', 'Sound off': 'Lyd av', 'Sound on': 'Lyd på', 'Tap for sound': 'Trykk for lyd'
+  'Close the drawer': 'Lukk skuffen', 'Write the number': 'Skriv tallet', 'Open the letter': 'Åpne brevet', 'The wax holds. The letter stays sealed.': 'Voksen holder. Brevet forblir forseglet.', 'So be it.': 'Så skje det.', 'The wax refuses you. Try again.': 'Voksen avviser deg. Prøv igjen.', 'The rite chooses…': 'Ritualet velger…', 'Open every drawer': 'Åpne alle skuffene', 'Seal them again': 'Forsegl dem igjen', 'Released': 'Utgitt', 'Number': 'Tall', 'Count': 'Tell', 'Clear': 'Tøm', 'Look into the mirror': 'Se i speilet', 'The Mirror': 'Speilet', 'Look again': 'Se igjen', 'Return to the song': 'Tilbake til sangen', 'Return to the album': 'Tilbake til albumet', 'Mirror greeting': 'Speilhilsen', 'Medium off': 'Medium av', 'Medium on': 'Medium på', 'Tap for the medium': 'Trykk for mediet', 'Sound off': 'Lyd av', 'Sound on': 'Lyd på', 'Tap for sound': 'Trykk for lyd', 'Sound off': 'Lyd av', 'Sound on': 'Lyd på', 'Tap for sound': 'Trykk for lyd'
 };
 const PH = { 'An album, a song, a line, a card\u2026': 'Et album, en sang, en linje, et kort\u2026', 'An album or a song title\u2026': 'Et album eller en sangtittel\u2026' };
 const lang = () => { try { return localStorage.getItem('pb-lang') === 'no' ? 'no' : 'en'; } catch (e) { return 'en'; } };
@@ -182,7 +182,7 @@ function numbers(root) {
       if (!clean) { err.textContent = 'The room only counts the letters A to Z.'; err.hidden = false; }
       else { const tot = [...clean].reduce((a, c) => a + D.table[c], 0); const steps = []; const ex = reduce(tot, steps); html += card('Expression', ex, `${clean.length} letters, valued and added: ${tot}${tot !== ex ? ' &rarr; ' + ex : ''}.`); }
     }
-    if (html) { rite('numbers'); const got = [...html.matchAll(/class="nc-n">(\d+)/g)].map((m) => m[1]).join(''); try { document.dispatchEvent(new CustomEvent('pb:board', { detail: got })); } catch (e) {} }
+    if (html) rite('numbers');
     out.innerHTML = html; out.classList.remove('is-drawn'); void out.offsetWidth; out.classList.add('is-drawn');
     out.firstElementChild?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
   });
@@ -220,11 +220,12 @@ function albumSearch(root) {
       const sHits = songs.filter((s) => s.album === al && nrm(s.title).includes(q));
       const on = aHit || sHits.length > 0; r.hidden = !on; if (on) shown++;
       $('.al-s-songs', r)?.remove();
-      if (aHit) hits.push({ kind: 'Album', title: al, url: $('.al-link', r).getAttribute('href') });
+      const link = $('.al-link', r); if (aHit && link) hits.push({ kind: 'Album', title: al, url: link.getAttribute('href') });
       if (sHits.length) {
         const p = document.createElement('p'); p.className = 'al-s-songs';
         p.innerHTML = 'Songs: ' + sHits.map((s) => `<a href="${new URL(s.url, ROOT).href}">${esc(s.title)}</a>`).join(' &middot; ');
-        $('.al-body', r).after(p);
+        const fr = $('.dr-front', r); if (fr && !r.classList.contains('is-open')) fr.click();
+        $('.al-body', r)?.after(p);
         sHits.forEach((s) => hits.push({ kind: 'Song · ' + al, title: s.title, url: s.url }));
       }
     });
@@ -298,87 +299,60 @@ function riteLine(fresh) {
 
 // ---------- lyric card: pick a line, get a parchment PNG with the M.A. seal (made in the browser) ----------
 const img = (src) => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = new URL(src, ROOT).href; });
-function wrapText(ctx, text, maxW) { const words = text.split(/\s+/); const lines = []; let cur = ''; for (const w of words) { const t = cur ? cur + ' ' + w : w; if (ctx.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t; } if (cur) lines.push(cur); return lines; }
-async function drawCard(canvas, line, song, album) {
-  const W = 1080, H = 1350; canvas.width = W; canvas.height = H; const c = canvas.getContext('2d');
-  await Promise.all(['60px Fell', '400 64px Fondamento', '30px "Fell SC"'].map((f) => document.fonts.load(f).catch(() => {})));
-  const [paper, seal] = await Promise.all([img('images/letter/paper-real.jpg'), img('images/letter/seal-logo.png')]);
-  let sd = [...(song + line)].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) >>> 0, 7);
-  const rnd = () => { sd = (sd * 1664525 + 1013904223) >>> 0; return sd / 4294967296; };
-  const nz = (t, k) => Math.sin(t * 1.7 + k) * .5 + Math.sin(t * 4.3 + k * 2.1) * .3 + Math.sin(t * 11.9 + k * .7) * .2;
-  c.fillStyle = '#0b0606'; c.fillRect(0, 0, W, H);
-  // torn, burnt deckle edge
-  const m = 56; const pts = [];
-  const side = (n, f) => { for (let i = 0; i < n; i++) pts.push(f(i / n)); };
-  const tear = (t, k) => 14 * nz(t * 9, k) + 7 * (rnd() - .5) + (rnd() < .05 ? 16 * rnd() : 0);
-  side(90, (t) => [m + t * (W - 2 * m), m + tear(t, 1)]); side(110, (t) => [W - m - tear(t, 2), m + t * (H - 2 * m)]);
-  side(90, (t) => [W - m - t * (W - 2 * m), H - m - tear(t, 3)]); side(110, (t) => [m + tear(t, 4), H - m - t * (H - 2 * m)]);
-  const path = new Path2D(); pts.forEach(([x, y], i) => (i ? path.lineTo(x, y) : path.moveTo(x, y))); path.closePath();
-  c.save(); c.shadowColor = 'rgba(0,0,0,.8)'; c.shadowBlur = 30; c.shadowOffsetY = 12; c.fillStyle = '#c9b07a'; c.fill(path); c.restore();
-  c.save(); c.clip(path);
-  c.fillStyle = c.createPattern(paper, 'repeat'); c.fillRect(0, 0, W, H);
-  // laid lines and chain lines of handmade paper
-  c.globalAlpha = .05; c.fillStyle = '#3a2208'; for (let y = 0; y < H; y += 4) c.fillRect(0, y, W, 1);
-  c.globalAlpha = .07; for (let x = 40; x < W; x += 94) c.fillRect(x + nz(x, 5) * 3, 0, 2, H); c.globalAlpha = 1;
-  // age, smudges, foxing
-  const g = c.createRadialGradient(W / 2, H / 2, H * .22, W / 2, H / 2, H * .72); g.addColorStop(0, 'rgba(255,246,222,.16)'); g.addColorStop(.75, 'rgba(110,60,15,.16)'); g.addColorStop(1, 'rgba(70,30,5,.55)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
-  for (let k = 0; k < 7; k++) { const x = rnd() * W, y = rnd() * H, rr = 30 + rnd() * 120; const s = c.createRadialGradient(x, y, 0, x, y, rr); s.addColorStop(0, `rgba(80,45,15,${.05 + rnd() * .07})`); s.addColorStop(1, 'rgba(80,45,15,0)'); c.fillStyle = s; c.beginPath(); c.ellipse(x, y, rr, rr * (.5 + rnd() * .5), rnd() * 3, 0, 7); c.fill(); }
-  for (let k = 0; k < 40; k++) { c.fillStyle = `rgba(120,70,25,${.08 + rnd() * .15})`; c.beginPath(); c.arc(rnd() * W, rnd() * H, 1 + rnd() * 3.5, 0, 7); c.fill(); }
-  // folds
-  [[0, H / 3, W, H / 3], [0, (2 * H) / 3, W, (2 * H) / 3], [W / 2, 0, W / 2, H]].forEach(([x1, y1, x2, y2]) => { c.strokeStyle = 'rgba(90,50,14,.16)'; c.lineWidth = 3; c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke(); c.strokeStyle = 'rgba(255,247,226,.3)'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x1 + 2, y1 + 2); c.lineTo(x2 + 2, y2 + 2); c.stroke(); });
-  // burnt edge: scorch inward from the tear
-  c.save(); c.lineJoin = 'round'; [[46, 'rgba(70,30,6,.35)', 18], [18, 'rgba(40,14,2,.6)', 8], [5, 'rgba(15,4,0,.85)', 2]].forEach(([lw, col, bl]) => { c.strokeStyle = col; c.lineWidth = lw; c.shadowColor = col; c.shadowBlur = bl; c.stroke(path); }); c.restore();
-  for (let k = 0; k < 26; k++) { const [x, y] = pts[Math.floor(rnd() * pts.length)]; const rr = 25 + rnd() * 70; const s = c.createRadialGradient(x, y, 0, x, y, rr); s.addColorStop(0, 'rgba(25,8,0,.75)'); s.addColorStop(.45, 'rgba(90,40,8,.35)'); s.addColorStop(1, 'rgba(90,40,8,0)'); c.fillStyle = s; c.beginPath(); c.arc(x, y, rr, 0, 7); c.fill(); }
-  c.restore();
-  // hand-inked lettering: quill serif, per-letter jitter, uneven baseline, pooled ink
-  const ink = (text, x0, y0, font, size, col, maxW) => {
-    c.font = `${font.replace('@', size + 'px')}`; const wTot = Math.min(c.measureText(text).width, maxW || 1e9); let x = x0 - wTot / 2; const slope = (rnd() - .5) * .012;
-    const sc = maxW && c.measureText(text).width > maxW ? maxW / c.measureText(text).width : 1;
-    for (const ch of text) {
-      const fs = size * sc * (1 + (rnd() - .5) * .05); c.font = font.replace('@', fs.toFixed(1) + 'px');
-      const cw = c.measureText(ch).width; const y = y0 + (x - x0) * slope + (rnd() - .5) * 3.4; const rot = (rnd() - .5) * .07;
-      c.save(); c.translate(x + cw / 2, y); c.rotate(rot);
-      c.globalAlpha = .28; c.fillStyle = col; c.shadowColor = col; c.shadowBlur = 2.2; c.fillText(ch, -cw / 2 + .6, .8);   // bleed
-      c.globalAlpha = .82 + rnd() * .18; c.shadowBlur = 0; c.fillText(ch, -cw / 2, 0);
-      if (rnd() < .18) { c.globalAlpha = .35; c.fillText(ch, -cw / 2 + .4, .3); }                                              // pooled ink
-      c.restore(); x += cw;
-    }
-    c.globalAlpha = 1;
-  };
-  c.textAlign = 'left'; c.textBaseline = 'alphabetic';
-  ink('PORCELAIN BALLERINA', W / 2, 180, '@ "Fell SC", Georgia, serif', 30, '#5a1208');
-  let size = 66; c.font = `${size}px Fell, Georgia, serif`; let lines = wrapText(c, '\u201c' + line + '\u201d', W - 280);
-  while (lines.length > 6 && size > 42) { size -= 4; c.font = `${size}px Fell, Georgia, serif`; lines = wrapText(c, '\u201c' + line + '\u201d', W - 280); }
-  const lh = size * 1.42; let y = H / 2 - ((lines.length - 1) * lh) / 2 - 60;
-  lines.forEach((l) => { ink(l, W / 2 + (rnd() - .5) * 8, y, '@ Fell, Georgia, serif', size, '#1c0d06'); y += lh; });
-  c.strokeStyle = 'rgba(110,15,10,.85)'; c.lineWidth = 2.2; c.beginPath(); c.moveTo(W / 2 - 120, y + 6); c.bezierCurveTo(W / 2 - 40, y + 2, W / 2 + 40, y + 12, W / 2 + 120, y + 5); c.stroke();
-  ink(song, W / 2, y + 86, '400 @ Fondamento, Georgia, serif', 60, '#4a0a06', W - 220);
-  ink(album.toUpperCase(), W / 2, y + 136, '@ "Fell SC", Georgia, serif', 28, '#3b1d0c', W - 220);
-  // the wax seal, stamped with the mark
-  const sw = 270, sh = sw * seal.height / seal.width; c.save(); c.translate(W / 2 + 160, H - 150 - sh / 2); c.rotate(-.12 + rnd() * .08);
-  c.shadowColor = 'rgba(30,4,0,.6)'; c.shadowBlur = 16; c.shadowOffsetY = 6; c.drawImage(seal, -sw / 2, -sh / 2, sw, sh); c.restore();
-  c.save(); c.globalAlpha = .9; ink('\u2014 M.A.', W / 2 - 150, H - 150, '400 @ Fondamento, Georgia, serif', 46, '#3a0a05'); c.restore();
-}
-function lyricCard(root) {
-  const body = $('.ly-body', root); if (!body || $('.lc-open', root)) return;
-  const lines = [...new Set($$('.ly-t:not(.ly-tocome)', body).map((p) => p.textContent.trim()).filter((t) => t.length > 3 && t.length < 160))];
-  if (!lines.length) return;
+// ---------- the Mirror: the lyric card is gone (nothing to download); songs and albums lead to the scrying mirror instead ----------
+function mirrorLink(root) {
+  const body = $('.ly-body', root); if (!body || $('.mirror-door', root)) return;
   const song = ($('.ly-title', root)?.textContent || document.title.split(' — ')[0]).trim(); const album = ($('.ly-alb', root)?.textContent || '').trim();
-  const wrap = document.createElement('div'); wrap.className = 'lc-tools';
-  wrap.innerHTML = `<button type="button" class="btn lc-open" data-i18n>Make a lyric card</button>
-    <div class="lc-panel" role="dialog" aria-label="Make a lyric card" hidden>
-      <label class="lc-label" for="lc-pick">Choose a line</label>
-      <select id="lc-pick" class="lc-pick">${lines.map((l, i) => `<option value="${i}">${esc(l)}</option>`).join('')}</select>
-      <div class="lc-view"><canvas class="lc-canvas" aria-hidden="true"></canvas><img class="lc-img" alt=""></div>
-      <p class="lc-act"><a class="btn btn-solid lc-dl" download>Download the card</a> <button type="button" class="btn lc-close">Close</button></p>
-    </div>`;
-  const anchor = $('.song-codex .wrap', root); if (!anchor) return; anchor.prepend(wrap);
-  const panel = $('.lc-panel', wrap), pick = $('.lc-pick', wrap), cv = $('.lc-canvas', wrap), im = $('.lc-img', wrap), dl = $('.lc-dl', wrap);
-  const slug = song.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const render = async () => { const l = lines[+pick.value]; await drawCard(cv, l, song, album); const url = cv.toDataURL('image/png'); im.src = url; im.alt = `Lyric card: ${l}`; dl.href = url; dl.download = `porcelain-ballerina-${slug}.png`; };
-  $('.lc-open', wrap).addEventListener('click', async () => { panel.hidden = false; await render(); pick.focus(); });
-  pick.addEventListener('change', render);
-  $('.lc-close', wrap).addEventListener('click', () => { panel.hidden = true; $('.lc-open', wrap).focus(); });
+  const anchor = $('.song-codex .wrap', root); if (!anchor) return;
+  const a = document.createElement('p'); a.className = 'mirror-door';
+  const u = new URL('mirror.html', ROOT); u.searchParams.set('album', album); u.searchParams.set('song', song);
+  a.innerHTML = `<a class="btn btn-solid" href="${u.href}"><span class="md-glass" aria-hidden="true"></span><span data-i18n>Look into the mirror</span></a>`;
+  anchor.prepend(a);
+}
+
+// ---------- no image downloads: covers, etchings and seals cannot be dragged out or right-click saved ----------
+const PROTECT = 'img[src*="images/hall/"], img[src*="images/albums/"], img[src*="images/etchings/"], img[src*="images/room/"], img[src*="images/gallery/"], img[src*="images/share/"], img[src*="seal-logo"], .lightbox img, .sp-ghost, .mirror-stage img';
+function protect(root) { $$(PROTECT, root).forEach((im) => { im.draggable = false; im.setAttribute('draggable', 'false'); }); }
+['contextmenu', 'dragstart'].forEach((ev) => document.addEventListener(ev, (e) => { if (e.target instanceof Element && e.target.matches(PROTECT)) e.preventDefault(); }, true));
+
+// ---------- the Mirror ----------
+const MIRROR_OPEN = ['You were not meant to find this place.', 'Sit. The candles are lit for you.', 'Ink that will not dry.'];
+function mirror(root) {
+  const st = $('[data-mirror]', root); if (!st || st.dataset.bound) return; st.dataset.bound = '1';
+  const q = new URLSearchParams(location.search); const fromSong = (q.get('song') || '').trim(), fromAlbum = (q.get('album') || '').trim();
+  const g = $('.mr-greeting', st); let lines = [];
+  const pick = () => {
+    const bySong = lines.filter((o) => o.song === fromSong && (!fromAlbum || o.album === fromAlbum));
+    const byAlbum = lines.filter((o) => o.album === fromAlbum);
+    const pool = bySong.length ? bySong : byAlbum.length ? byAlbum : lines; return pool[Math.floor(Math.random() * pool.length)];
+  };
+  const show = (again) => {
+    const o = pick(); if (!o) return;
+    $('.mr-open', g).textContent = MIRROR_OPEN[Math.floor(Math.random() * MIRROR_OPEN.length)];
+    $('.mr-line', g).textContent = '\u201c' + o.en + '\u201d';
+    const src = $('.mr-src', g); src.innerHTML = ''; const a = document.createElement('a'); a.href = new URL(o.url, ROOT).href; a.textContent = `${o.song} \u00b7 ${o.album}`; src.appendChild(a);
+    st.classList.remove('is-clear', 'is-spoken'); void st.offsetWidth;
+    st.classList.add('is-gazing');
+    const t1 = RM() ? 0 : (again ? 1400 : 2600), t2 = RM() ? 0 : (again ? 2600 : 4400);
+    timers.push(setTimeout(() => st.classList.add('is-clear'), t1));
+    timers.push(setTimeout(() => st.classList.add('is-spoken'), t2));
+  };
+  const back = $('.mr-return', st);
+  if (back && (fromSong || fromAlbum)) {
+    const hit = (o) => o.song === fromSong;
+    back.hidden = false; back.dataset.label = fromSong ? 'Return to the song' : 'Return to the album';
+  }
+  loadOracle().then((L) => {
+    lines = L || []; show(false);
+    if (back && !back.hidden) {
+      const o = lines.find((x) => x.song === fromSong && (!fromAlbum || x.album === fromAlbum)) || lines.find((x) => x.album === fromAlbum);
+      if (o && fromSong) { back.href = new URL(o.url, ROOT).href; back.textContent = 'Return to the song'; }
+      else if (fromAlbum) { const al = $$('[data-album-url]', st).find((e) => e.dataset.albumTitle === fromAlbum); if (al) { back.href = new URL(al.dataset.albumUrl, ROOT).href; back.textContent = 'Return to the album'; } else back.hidden = true; }
+      else back.hidden = true;
+      applyLang();
+    }
+  }).catch(() => { st.classList.add('is-clear'); });
+  $('[data-mirror-again]', st)?.addEventListener('click', () => show(true));
 }
 
 // ---------- installable app: the service worker always follows the newest build ----------
@@ -394,48 +368,6 @@ function parlour() {
   fx.innerHTML = '<i class="fx-smoke fx-s1"></i><i class="fx-smoke fx-s2"></i><i class="fx-ecto fx-e1"></i><i class="fx-ecto fx-e2"></i><i class="fx-candle fx-c1"></i><i class="fx-candle fx-c2"></i><i class="fx-plate"></i>';
   document.body.appendChild(fx);
 }
-function board(root) {
-  $$('[data-board]', root).forEach((b) => {
-    if (b.dataset.bound) return; b.dataset.bound = '1';
-    const pl = $('.sb-planchette', b); const chs = $$('[data-ch]', b);
-    let cur = null, tgt = null, raf = 0, busy = false;
-    const lens = () => ({ x: pl.offsetWidth / 2, y: pl.offsetHeight * 0.43 });
-    const home = () => { const r = b.getBoundingClientRect(); return { x: r.width * 0.5, y: r.height * 0.86 }; };
-    const put = (p) => { const l = lens(); pl.style.transform = `translate(${(p.x - l.x).toFixed(1)}px, ${(p.y - l.y).toFixed(1)}px) rotate(${((p.x / b.clientWidth) - 0.5) * 16}deg)`; };
-    const lit = (p) => { let best = null, bd = 1e9; const r = b.getBoundingClientRect(); chs.forEach((c) => { const q = c.getBoundingClientRect(); const d = Math.hypot(q.left + q.width / 2 - r.left - p.x, q.top + q.height / 2 - r.top - p.y); if (d < bd) { bd = d; best = c; } }); chs.forEach((c) => c.classList.toggle('is-lit', c === best && bd < Math.max(26, b.clientWidth * 0.04))); };
-    const step = () => { raf = 0; if (!tgt) return; if (!cur) cur = { ...tgt }; const k = RM() ? 1 : 0.14; cur.x += (tgt.x - cur.x) * k; cur.y += (tgt.y - cur.y) * k; put(cur); lit(cur); if (Math.hypot(tgt.x - cur.x, tgt.y - cur.y) > 0.5) raf = requestAnimationFrame(step); };
-    const go = (p) => { tgt = p; if (!raf) raf = requestAnimationFrame(step); };
-    const at = (el) => { const r = b.getBoundingClientRect(), q = el.getBoundingClientRect(); return { x: q.left + q.width / 2 - r.left, y: q.top + q.height / 2 - r.top }; };
-    cur = home(); put(cur);
-    b.addEventListener('pointermove', (e) => { if (busy || e.pointerType === 'touch') return; const r = b.getBoundingClientRect(); go({ x: e.clientX - r.left, y: e.clientY - r.top }); b.classList.add('is-touched'); });
-    b.addEventListener('pointerleave', () => { if (!busy) go(home()); });
-    b.addEventListener('click', (e) => { const c = e.target.closest('[data-ch]'); if (c && !busy) go(at(c)); });
-    b.spell = async (word, keep) => {
-      const seq = []; let s = String(word).toUpperCase();
-      while (s) { const t = ['YES', 'NO', 'BYE'].find((w) => s.startsWith(w) && $(`[data-ch="${w}"]`, b)); const k = t || s[0]; s = s.slice(k.length); const el = $(`[data-ch="${CSS.escape(k)}"]`, b); if (el) seq.push(el); }
-      busy = true; b.classList.add('is-spelling');
-      for (const el of seq) { go(at(el)); await new Promise((r) => setTimeout(r, RM() ? 450 : 1050)); el.classList.add('is-spoken'); setTimeout(() => el.classList.remove('is-spoken'), 1400); }
-      if (keep) return; await new Promise((r) => setTimeout(r, 900)); busy = false; b.classList.remove('is-spelling'); go(home());
-    };
-    addEventListener('resize', () => { cur = null; go(home()); }, { passive: true });
-    b.rest = async () => { await new Promise((r) => setTimeout(r, 900)); busy = false; b.classList.remove('is-spelling'); go(home()); };
-  });
-  // the album séance: walk the numbers of the songs, one row at a time
-  $$('[data-ask-board]', root).forEach((btn) => {
-    if (btn.dataset.bound) return; btn.dataset.bound = '1';
-    const sec = btn.closest('.album-seance'); const b = $('[data-board]', sec); const rows = $$('.as-row', sec);
-    btn.addEventListener('click', async () => {
-      if (!b || !b.spell || btn.disabled) return; btn.disabled = true; b.scrollIntoView({ behavior: RM() ? 'auto' : 'smooth', block: 'center' });
-      await new Promise((r) => setTimeout(r, RM() ? 50 : 600));
-      await b.spell('YES', true);
-      for (const r of rows) { rows.forEach((x) => x.classList.toggle('is-called', x === r)); await b.spell(r.dataset.n, true); r.classList.add('is-done'); }
-      await b.spell('BYE', true); rows.forEach((x) => x.classList.remove('is-called')); await b.rest(); btn.disabled = false;
-    });
-  });
-}
-document.addEventListener('pb:board', (e) => { const b = $('[data-board]'); if (b && b.spell) { b.scrollIntoView({ behavior: RM() ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => b.spell(e.detail), 500); } });
-document.addEventListener('pb:rite', (e) => { if (e.detail !== 'tarot') return; const b = $('[data-board="tarot"]'); if (b && b.spell) b.spell('BYE'); });
-document.addEventListener('click', (e) => { const st = e.target.closest('.tr-stage'); if (!st || st.dataset.yes) return; st.dataset.yes = '1'; const b = $('[data-board="tarot"]'); if (b && b.spell) b.spell('YES'); });
 function channel(root) {
   $$('h1 .bt, .lib-h .bt', root).forEach((bt) => {
     if (bt.dataset.channel) return; bt.dataset.channel = '1';
@@ -466,8 +398,8 @@ function whisperShow() {
     if (!WH.el) { WH.el = document.createElement('div'); WH.el.className = 'whisper-dark'; WH.el.setAttribute('aria-hidden', 'true'); document.body.appendChild(WH.el); }
     WH.el.innerHTML = `<p class="wd-line">\u201c${o.en.replace(/[<>&]/g, '')}\u201d</p><p class="wd-src">${o.song.replace(/[<>&]/g, '')} &middot; ${o.album.replace(/[<>&]/g, '')}</p>`;
     // find a quiet place: never on top of anything readable or clickable
-    const TEXT = 'p, li, h1, h2, h3, h4, blockquote, figcaption, label, input, textarea, select, button, a, img, video, canvas, .ly-t, .ly-o, .ms-l, .spirit-board, .tr-stage, .ms-letter, .jr-ledger, .rl-doc, .oracle-sheet, .coven-sheet, .vr-doc, .num-card, .sign-plate, .musicbox, .ly-body';
-    const busy = $$(TEXT, document.getElementById('swap') || document).filter((e) => !e.closest('.whisper-dark, .seance-fx, .hero-stage') && (e.matches('.spirit-board, .tr-stage, .ms-letter') || !e.closest('[aria-hidden="true"]')) && getComputedStyle(e).visibility !== 'hidden' && +getComputedStyle(e).opacity > 0.05).map((e) => e.getBoundingClientRect()).filter((r) => r.width && r.height && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth);
+    const TEXT = 'p, li, h1, h2, h3, h4, blockquote, figcaption, label, input, textarea, select, button, a, img, video, canvas, .ly-t, .ly-o, .ms-l, .tr-stage, .ms-letter, .jr-ledger, .rl-doc, .oracle-sheet, .coven-sheet, .vr-doc, .num-card, .sign-plate, .musicbox, .ly-body';
+    const busy = $$(TEXT, document.getElementById('swap') || document).filter((e) => !e.closest('.whisper-dark, .seance-fx, .hero-stage') && (e.matches('.tr-stage, .ms-letter') || !e.closest('[aria-hidden="true"]')) && getComputedStyle(e).visibility !== 'hidden' && +getComputedStyle(e).opacity > 0.05).map((e) => e.getBoundingClientRect()).filter((r) => r.width && r.height && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth);
     const clear = (x, y, w, h) => !busy.some((r) => r.left < x + w && r.right > x && r.top < y + h && r.bottom > y);
     const ww = Math.min(260, innerWidth * 0.8), hh = 130, spots = [];
     for (let y = innerHeight * 0.3; y < innerHeight * 0.75; y += 40) { spots.push([innerWidth - ww - innerWidth * 0.02, y]); spots.push([innerWidth * 0.02 + 56, y]); }
@@ -486,6 +418,6 @@ function whisperArm() { clearTimeout(WH.t); WH.t = setTimeout(whisperShow, WH.id
 whisperArm();
 // the medium's sound (opt-in, off by default)
 import(new URL('medium.js?v=' + (document.querySelector('link[href*="style.css"]')?.getAttribute('href').split('?v=')[1] || ''), import.meta.url).href).catch(() => {});
-function mount() { timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); lyricCard(r); riteLine(false); coven(r); inkLyrics(r); parlour(); board(r); channel(r); spiritPhoto(r); applyLang(); }
+function mount() { timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); mirrorLink(r); protect(r); mirror(r); riteLine(false); coven(r); inkLyrics(r); parlour(); channel(r); spiritPhoto(r); applyLang(); }
 document.addEventListener('pb:page', mount);
 mount();

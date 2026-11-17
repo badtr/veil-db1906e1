@@ -5,7 +5,7 @@ export function init() {
   if (!figures.length || !box) return null;
   const img = box.querySelector('img'), cap = box.querySelector('.lightbox-cap');
   const closeBtn = box.querySelector('.lightbox-close'), prevBtn = box.querySelector('.lightbox-prev'), nextBtn = box.querySelector('.lightbox-next');
-  const items = figures.map((a) => ({ href: a.getAttribute('href'), caption: (a.closest('figure').querySelector('figcaption') || {}).textContent || '' }));
+  const items = figures.map((a) => ({ href: a.dataset.full || a.getAttribute('href'), caption: (a.closest('figure').querySelector('figcaption') || {}).textContent || '' }));
   let index = 0, lastFocus = null;
   const show = (i) => { document.querySelector('.hint-gallery')?.classList.add('is-gone'); index = (i + items.length) % items.length; const it = items[index]; img.src = it.href; img.alt = it.caption; cap.textContent = it.caption; if (!box.classList.contains('is-open')) lastFocus = document.activeElement; box.classList.add('is-open'); box.setAttribute('aria-hidden', 'false'); document.body.classList.add('lb-lock'); closeBtn.focus(); };
   const hide = () => { box.classList.remove('is-open'); box.setAttribute('aria-hidden', 'true'); document.body.classList.remove('lb-lock'); img.removeAttribute('src'); lastFocus && lastFocus.focus(); };

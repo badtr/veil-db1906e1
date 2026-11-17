@@ -7,7 +7,7 @@ import { sigilMarkup } from './sigil.js';
 export const WELCOME_KEY = 'pb-initiated';
 export const seenWelcome = () => { try { return localStorage.getItem(WELCOME_KEY) === '1'; } catch (e) { return true; } };
 const markSeen = () => { try { localStorage.setItem(WELCOME_KEY, '1'); } catch (e) {} };
-const CODE = '666';
+import { SEAL_CODE as CODE } from './seal-code.js';
 
 export function playWelcome({ sound }) {
   return new Promise((resolve) => {
@@ -36,7 +36,7 @@ export function playWelcome({ sound }) {
         <p class="wel-kicker">Sigillum &middot; the sealed word</p>
         <p class="wel-riddle">This place is sealed with the number of the beast.<br><em>Three sixes, side by side, open what was sealed.</em></p>
         <p class="wel-margin" aria-hidden="true">Rev. XIII &middot; 18</p>
-        <label class="wel-label" for="wel-d0">Write the number</label>
+        <label class="wel-label" for="wel-d0" data-i18n>Write the number</label>
         <div class="wel-digits">
           <input id="wel-d0" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="First digit">
           <input inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Second digit">
@@ -63,7 +63,7 @@ export function playWelcome({ sound }) {
       if (done || reduceMotion) return;
       creep.push(setTimeout(() => {
         if (done) return;
-        if (phase === 'whisper' || phase === 'wick' || phase === 'lit' || phase === 'lock') {
+        if (phase === 'whisper' || phase === 'wick' || phase === 'lit') { // never while the number is asked: the letter stays calm
           if (Math.random() < 0.55) sound.whisper(0.16 + Math.random() * 0.12);
           if (Math.random() < 0.45) {
             const left = Math.random() < 0.5; ghost.style.setProperty('--gx', left ? (4 + Math.random() * 14) + '%' : (70 + Math.random() * 16) + '%');
@@ -78,7 +78,8 @@ export function playWelcome({ sound }) {
     haunt();
     // the bleed in the ink shifts now and then
     const turb = el.querySelector('#welBleed feTurbulence'); let tseed = 3;
-    creep.push(setInterval(() => { if (!reduceMotion) turb.setAttribute('seed', String((tseed = (tseed % 40) + 1))); }, 140));
+    // the bleed stays still: shifting it made the words flicker (calm, steady text is easier to read)
+    if (turb) turb.setAttribute('seed', String(tseed));
 
     async function say(text, { hold = 2600, cls = '' } = {}) {
       if (done) return;

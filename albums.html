@@ -20,12 +20,12 @@
   <meta name="twitter:description" content="Albums by Porcelain Ballerina, live on Suno.">
   <meta name="twitter:image" content="https://badtr.github.io/veil-preview-7q3k/images/share/site.jpg">
   <meta name="theme-color" content="#060405">
-  <link rel="icon" href="favicon.jpg?v=1794926500" type="image/jpeg">
+  <link rel="icon" href="favicon.jpg?v=1794931165" type="image/jpeg">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png?v=1794926500">
-  <link rel="preload" href="fonts/UnifrakturMaguntia.woff2?v=1794926500" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/EBGaramond-var.woff2?v=1794926500" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=1794926500">
+  <link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png?v=1794931165">
+  <link rel="preload" href="fonts/UnifrakturMaguntia.woff2?v=1794931165" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/EBGaramond-var.woff2?v=1794931165" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=1794931165">
 </head>
 <body data-page="albums">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -57,12 +57,12 @@
 
     <header class="page-head albums-head">
       <div class="wrap">
-        <p class="kicker">Index Altarium &middot; the albums</p>
+        <p class="kicker">Index Altarium &middot; the sealed vault</p>
         <h1 class="title-fraktur ink blood-title">Albums</h1>
-        <p class="lead">16 records, newest first. Search below, or scroll down and open one to see its songs.</p>
+        <p class="lead">16 records, each in its own drawer, from the first seal to the last. Break a seal to open a drawer, or search below.</p>
       </div>
     </header>
-    <section class="album-list" aria-label="All albums">
+    <section class="album-list vault" aria-label="All albums, in the order they were released">
       <div class="wrap">
         <div class="al-search" role="search" data-album-search>
           <label class="al-s-label" for="al-s-input">Search the albums and their songs</label>
@@ -71,121 +71,318 @@
           <ul class="al-s-sugg" id="al-s-sugg" role="listbox" hidden></ul>
           <p class="al-s-status" id="al-s-status" role="status" aria-live="polite"></p>
         </div>
-        <ol class="al-list">
-        <li class="al-row" data-album="The Angel Over the Chair">
-          <a class="al-link" href="albums/the-angel-over-the-chair.html">
-            <span class="al-num" aria-hidden="true">I</span>
-            <span class="al-cover plate-frame"><img src="images/hall/the-angel-over-the-chair.jpg?v=1794926500" width="512" height="512" loading="eager" alt="Album cover for The Angel Over the Chair"></span>
-            <span class="al-body"><span class="al-title">The Angel Over the Chair</span><span class="al-meta">8 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <div class="vault-tools"><button class="vt-btn" type="button" data-vault="open" data-i18n>Open every drawer</button><button class="vt-btn" type="button" data-vault="shut" data-i18n>Seal them again</button></div>
+        <div class="vault-body">
+          <span class="vault-ink" aria-hidden="true"><i class="vi-line"></i><i class="vi-nib"></i></span>
+          <ol class="al-list">
+        <li class="al-row drawer" data-album="He Goes to the Priest">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-10-28">28 Oct 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-he-goes-to-the-priest">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-001</span><span class="dr-name">He Goes to the Priest</span><span class="dr-date">28 Oct 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-he-goes-to-the-priest"><div class="dr-in">
+              <a class="al-link" href="albums/he-goes-to-the-priest.html">
+                <span class="al-num" aria-hidden="true">I</span>
+                <span class="al-cover plate-frame"><img src="images/hall/he-goes-to-the-priest.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for He Goes to the Priest"></span>
+                <span class="al-body"><span class="al-title">He Goes to the Priest</span><span class="al-meta">9 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-001, released 28 Oct 2026, number 7"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-001</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 28 Oct 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 7</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="What the Fire Kept">
-          <a class="al-link" href="albums/what-the-fire-kept.html">
-            <span class="al-num" aria-hidden="true">II</span>
-            <span class="al-cover plate-frame"><img src="images/hall/what-the-fire-kept.jpg?v=1794926500" width="512" height="512" loading="eager" alt="Album cover for What the Fire Kept"></span>
-            <span class="al-body"><span class="al-title">What the Fire Kept</span><span class="al-meta">10 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="Soft God Is the Lie">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-10-29">29 Oct 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-soft-god-is-the-lie">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-002</span><span class="dr-name">Soft God Is the Lie</span><span class="dr-date">29 Oct 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-soft-god-is-the-lie"><div class="dr-in">
+              <a class="al-link" href="albums/soft-god-is-the-lie.html">
+                <span class="al-num" aria-hidden="true">II</span>
+                <span class="al-cover plate-frame"><img src="images/hall/soft-god-is-the-lie.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for Soft God Is the Lie"></span>
+                <span class="al-body"><span class="al-title">Soft God Is the Lie</span><span class="al-meta">7 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-002, released 29 Oct 2026, number 11"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-002</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 29 Oct 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 11</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="Deus Fabricatus">
-          <a class="al-link" href="albums/deus-fabricatus.html">
-            <span class="al-num" aria-hidden="true">III</span>
-            <span class="al-cover plate-frame"><img src="images/hall/deus-fabricatus.jpg?v=1794926500" width="512" height="512" loading="eager" alt="Album cover for Deus Fabricatus"></span>
-            <span class="al-body"><span class="al-title">Deus Fabricatus</span><span class="al-meta">12 songs · Live ritual</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="The Face-Down">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-02">2 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-the-face-down">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-003</span><span class="dr-name">The Face-Down</span><span class="dr-date">2 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-the-face-down"><div class="dr-in">
+              <a class="al-link" href="albums/the-face-down.html">
+                <span class="al-num" aria-hidden="true">III</span>
+                <span class="al-cover plate-frame"><img src="images/hall/the-face-down.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for The Face-Down"></span>
+                <span class="al-body"><span class="al-title">The Face-Down</span><span class="al-meta">5 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-003, released 2 Nov 2026, number 5"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-003</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 2 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 5</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="Decima Signata">
-          <a class="al-link" href="albums/decima-signata.html">
-            <span class="al-num" aria-hidden="true">IV</span>
-            <span class="al-cover plate-frame"><img src="images/hall/decima-signata.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for Decima Signata"></span>
-            <span class="al-body"><span class="al-title">Decima Signata</span><span class="al-meta">10 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="From the Chair — Demo">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-03">3 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-from-the-chair-demo">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-004</span><span class="dr-name">From the Chair — Demo</span><span class="dr-date">3 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-from-the-chair-demo"><div class="dr-in">
+              <a class="al-link" href="albums/from-the-chair-demo.html">
+                <span class="al-num" aria-hidden="true">IV</span>
+                <span class="al-cover plate-frame"><img src="images/hall/from-the-chair-demo.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for From the Chair — Demo"></span>
+                <span class="al-body"><span class="al-title">From the Chair — Demo</span><span class="al-meta">5 songs · Demo</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-004, released 3 Nov 2026, number 8"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-004</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 3 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 8</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="Mochipa">
-          <a class="al-link" href="albums/mochipa.html">
-            <span class="al-num" aria-hidden="true">V</span>
-            <span class="al-cover plate-frame"><img src="images/hall/mochipa.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for Mochipa"></span>
-            <span class="al-body"><span class="al-title">Mochipa</span><span class="al-meta">10 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="Chair Cuts">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-03">3 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-chair-cuts">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-005</span><span class="dr-name">Chair Cuts</span><span class="dr-date">3 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-chair-cuts"><div class="dr-in">
+              <a class="al-link" href="albums/chair-cuts.html">
+                <span class="al-num" aria-hidden="true">V</span>
+                <span class="al-cover plate-frame"><img src="images/hall/chair-cuts.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for Chair Cuts"></span>
+                <span class="al-body"><span class="al-title">Chair Cuts</span><span class="al-meta">9 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-005, released 3 Nov 2026, number 3"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-005</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 3 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 3</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="She Who Stays">
-          <a class="al-link" href="albums/she-who-stays.html">
-            <span class="al-num" aria-hidden="true">VI</span>
-            <span class="al-cover plate-frame"><img src="images/hall/she-who-stays.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for She Who Stays"></span>
-            <span class="al-body"><span class="al-title">She Who Stays</span><span class="al-meta">10 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="The Angel Over the Chair">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-06">6 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-the-angel-over-the-chair">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-006</span><span class="dr-name">The Angel Over the Chair</span><span class="dr-date">6 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-the-angel-over-the-chair"><div class="dr-in">
+              <a class="al-link" href="albums/the-angel-over-the-chair.html">
+                <span class="al-num" aria-hidden="true">VI</span>
+                <span class="al-cover plate-frame"><img src="images/hall/the-angel-over-the-chair.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for The Angel Over the Chair"></span>
+                <span class="al-body"><span class="al-title">The Angel Over the Chair</span><span class="al-meta">8 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-006, released 6 Nov 2026, number 6"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-006</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 6 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 6</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="She Dances the Sun Down">
-          <a class="al-link" href="albums/she-dances-the-sun-down.html">
-            <span class="al-num" aria-hidden="true">VII</span>
-            <span class="al-cover plate-frame"><img src="images/hall/she-dances-the-sun-down.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for She Dances the Sun Down"></span>
-            <span class="al-body"><span class="al-title">She Dances the Sun Down</span><span class="al-meta">4 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="Atramentum Custodit" data-live-from="2026-12-05T00:00:00+01:00" data-live-until="2026-12-19T00:00:00+01:00">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-08">8 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-atramentum-custodit">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-007</span><span class="dr-name">Atramentum Custodit</span><span class="dr-date">8 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-atramentum-custodit"><div class="dr-in">
+              <a class="al-link" href="albums/atramentum-custodit.html">
+                <span class="al-num" aria-hidden="true">VII</span>
+                <span class="al-cover plate-frame"><img src="images/hall/atramentum-custodit.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for Atramentum Custodit"></span>
+                <span class="al-body"><span class="al-title">Atramentum Custodit</span><span class="al-meta">6 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-007, released 8 Nov 2026, number 3"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-007</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 8 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 3</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="So May He Rest">
-          <a class="al-link" href="albums/so-may-he-rest.html">
-            <span class="al-num" aria-hidden="true">VIII</span>
-            <span class="al-cover plate-frame"><img src="images/hall/so-may-he-rest.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for So May He Rest"></span>
-            <span class="al-body"><span class="al-title">So May He Rest</span><span class="al-meta">14 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="Free Among the Dead">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-09">9 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-free-among-the-dead">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-008</span><span class="dr-name">Free Among the Dead</span><span class="dr-date">9 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-free-among-the-dead"><div class="dr-in">
+              <a class="al-link" href="albums/free-among-the-dead.html">
+                <span class="al-num" aria-hidden="true">VIII</span>
+                <span class="al-cover plate-frame"><img src="images/hall/free-among-the-dead.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for Free Among the Dead"></span>
+                <span class="al-body"><span class="al-title">Free Among the Dead</span><span class="al-meta">9 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-008, released 9 Nov 2026, number 5"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-008</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 9 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 5</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="The Unreturning">
-          <a class="al-link" href="albums/the-unreturning.html">
-            <span class="al-num" aria-hidden="true">IX</span>
-            <span class="al-cover plate-frame"><img src="images/hall/the-unreturning.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for The Unreturning"></span>
-            <span class="al-body"><span class="al-title">The Unreturning</span><span class="al-meta">5 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="The Unreturning">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-09">9 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-the-unreturning">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-009</span><span class="dr-name">The Unreturning</span><span class="dr-date">9 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-the-unreturning"><div class="dr-in">
+              <a class="al-link" href="albums/the-unreturning.html">
+                <span class="al-num" aria-hidden="true">IX</span>
+                <span class="al-cover plate-frame"><img src="images/hall/the-unreturning.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for The Unreturning"></span>
+                <span class="al-body"><span class="al-title">The Unreturning</span><span class="al-meta">5 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-009, released 9 Nov 2026, number 5"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-009</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 9 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 5</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="Free Among the Dead">
-          <a class="al-link" href="albums/free-among-the-dead.html">
-            <span class="al-num" aria-hidden="true">X</span>
-            <span class="al-cover plate-frame"><img src="images/hall/free-among-the-dead.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for Free Among the Dead"></span>
-            <span class="al-body"><span class="al-title">Free Among the Dead</span><span class="al-meta">9 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="So May He Rest">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-10">10 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-so-may-he-rest">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-010</span><span class="dr-name">So May He Rest</span><span class="dr-date">10 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-so-may-he-rest"><div class="dr-in">
+              <a class="al-link" href="albums/so-may-he-rest.html">
+                <span class="al-num" aria-hidden="true">X</span>
+                <span class="al-cover plate-frame"><img src="images/hall/so-may-he-rest.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for So May He Rest"></span>
+                <span class="al-body"><span class="al-title">So May He Rest</span><span class="al-meta">14 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-010, released 10 Nov 2026, number 4"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-010</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 10 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 4</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="Atramentum Custodit" data-live-from="2026-12-05T00:00:00+01:00" data-live-until="2026-12-19T00:00:00+01:00">
-          <a class="al-link" href="albums/atramentum-custodit.html">
-            <span class="al-num" aria-hidden="true">XI</span>
-            <span class="al-cover plate-frame"><img src="images/hall/atramentum-custodit.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for Atramentum Custodit"></span>
-            <span class="al-body"><span class="al-title">Atramentum Custodit</span><span class="al-meta">6 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="She Dances the Sun Down">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-11">11 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-she-dances-the-sun-down">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-011</span><span class="dr-name">She Dances the Sun Down</span><span class="dr-date">11 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-she-dances-the-sun-down"><div class="dr-in">
+              <a class="al-link" href="albums/she-dances-the-sun-down.html">
+                <span class="al-num" aria-hidden="true">XI</span>
+                <span class="al-cover plate-frame"><img src="images/hall/she-dances-the-sun-down.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for She Dances the Sun Down"></span>
+                <span class="al-body"><span class="al-title">She Dances the Sun Down</span><span class="al-meta">4 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-011, released 11 Nov 2026, number 5"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-011</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 11 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 5</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="From the Chair — Demo">
-          <a class="al-link" href="albums/from-the-chair-demo.html">
-            <span class="al-num" aria-hidden="true">XII</span>
-            <span class="al-cover plate-frame"><img src="images/hall/from-the-chair-demo.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for From the Chair — Demo"></span>
-            <span class="al-body"><span class="al-title">From the Chair — Demo</span><span class="al-meta">5 songs · Demo</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="She Who Stays">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-11">11 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-she-who-stays">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-012</span><span class="dr-name">She Who Stays</span><span class="dr-date">11 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-she-who-stays"><div class="dr-in">
+              <a class="al-link" href="albums/she-who-stays.html">
+                <span class="al-num" aria-hidden="true">XII</span>
+                <span class="al-cover plate-frame"><img src="images/hall/she-who-stays.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for She Who Stays"></span>
+                <span class="al-body"><span class="al-title">She Who Stays</span><span class="al-meta">10 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-012, released 11 Nov 2026, number 9"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-012</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 11 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 9</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="Chair Cuts">
-          <a class="al-link" href="albums/chair-cuts.html">
-            <span class="al-num" aria-hidden="true">XIII</span>
-            <span class="al-cover plate-frame"><img src="images/hall/chair-cuts.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for Chair Cuts"></span>
-            <span class="al-body"><span class="al-title">Chair Cuts</span><span class="al-meta">9 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="Mochipa">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-12">12 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-mochipa">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-013</span><span class="dr-name">Mochipa</span><span class="dr-date">12 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-mochipa"><div class="dr-in">
+              <a class="al-link" href="albums/mochipa.html">
+                <span class="al-num" aria-hidden="true">XIII</span>
+                <span class="al-cover plate-frame"><img src="images/hall/mochipa.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for Mochipa"></span>
+                <span class="al-body"><span class="al-title">Mochipa</span><span class="al-meta">10 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-013, released 12 Nov 2026, number 11"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-013</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 12 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 11</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="The Face-Down">
-          <a class="al-link" href="albums/the-face-down.html">
-            <span class="al-num" aria-hidden="true">XIV</span>
-            <span class="al-cover plate-frame"><img src="images/hall/the-face-down.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for The Face-Down"></span>
-            <span class="al-body"><span class="al-title">The Face-Down</span><span class="al-meta">5 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="Decima Signata">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-13">13 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-decima-signata">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-014</span><span class="dr-name">Decima Signata</span><span class="dr-date">13 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-decima-signata"><div class="dr-in">
+              <a class="al-link" href="albums/decima-signata.html">
+                <span class="al-num" aria-hidden="true">XIV</span>
+                <span class="al-cover plate-frame"><img src="images/hall/decima-signata.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for Decima Signata"></span>
+                <span class="al-body"><span class="al-title">Decima Signata</span><span class="al-meta">10 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-014, released 13 Nov 2026, number 7"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-014</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 13 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 7</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="Soft God Is the Lie">
-          <a class="al-link" href="albums/soft-god-is-the-lie.html">
-            <span class="al-num" aria-hidden="true">XV</span>
-            <span class="al-cover plate-frame"><img src="images/hall/soft-god-is-the-lie.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for Soft God Is the Lie"></span>
-            <span class="al-body"><span class="al-title">Soft God Is the Lie</span><span class="al-meta">7 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="What the Fire Kept">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-13">13 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-what-the-fire-kept">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-015</span><span class="dr-name">What the Fire Kept</span><span class="dr-date">13 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-what-the-fire-kept"><div class="dr-in">
+              <a class="al-link" href="albums/what-the-fire-kept.html">
+                <span class="al-num" aria-hidden="true">XV</span>
+                <span class="al-cover plate-frame"><img src="images/hall/what-the-fire-kept.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for What the Fire Kept"></span>
+                <span class="al-body"><span class="al-title">What the Fire Kept</span><span class="al-meta">10 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-015, released 13 Nov 2026, number 4"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-015</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 13 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 4</span></span>
+            </div></div>
+          </div>
         </li>
-        <li class="al-row" data-album="He Goes to the Priest">
-          <a class="al-link" href="albums/he-goes-to-the-priest.html">
-            <span class="al-num" aria-hidden="true">XVI</span>
-            <span class="al-cover plate-frame"><img src="images/hall/he-goes-to-the-priest.jpg?v=1794926500" width="512" height="512" loading="lazy" alt="Album cover for He Goes to the Priest"></span>
-            <span class="al-body"><span class="al-title">He Goes to the Priest</span><span class="al-meta">9 songs</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
-          </a>
+        <li class="al-row drawer" data-album="Deus Fabricatus">
+          <span class="dr-node" aria-hidden="true"><i></i><time datetime="2026-11-14">14 Nov 2026</time></span>
+          <div class="dr-case">
+            <button class="dr-front" type="button" aria-expanded="true" aria-controls="dr-deus-fabricatus">
+              <span class="dr-pull" aria-hidden="true"></span>
+              <span class="dr-label"><span class="dr-cat">PB-016</span><span class="dr-name">Deus Fabricatus</span><span class="dr-date">14 Nov 2026</span></span>
+              <span class="dr-seal" aria-hidden="true"><i class="s1"></i><i class="s2"></i></span>
+              <span class="dr-hint"><span class="dr-h-shut" data-i18n>Break the seal</span><span class="dr-h-open" data-i18n>Close the drawer</span></span>
+            </button>
+            <div class="dr-inner" id="dr-deus-fabricatus"><div class="dr-in">
+              <a class="al-link" href="albums/deus-fabricatus.html">
+                <span class="al-num" aria-hidden="true">XVI</span>
+                <span class="al-cover plate-frame"><img src="images/hall/deus-fabricatus.jpg?v=1794931165" width="512" height="512" loading="lazy" draggable="false" alt="Album cover for Deus Fabricatus"></span>
+                <span class="al-body"><span class="al-title">Deus Fabricatus</span><span class="al-meta">12 songs · Live ritual</span><span class="al-open">Open the album <i aria-hidden="true">&#8250;</i></span></span>
+              </a>
+              <span class="dr-stamp" aria-label="Archive stamp: PB-016, released 14 Nov 2026, number 5"><span class="ds-top" aria-hidden="true">Archivum &middot; P.B.</span><span class="ds-cat" aria-hidden="true">PB-016</span><span class="ds-row" aria-hidden="true"><span data-i18n>Released</span> 14 Nov 2026</span><span class="ds-num" aria-hidden="true"><span data-i18n>Number</span> 5</span></span>
+            </div></div>
+          </div>
         </li>
 
-        </ol>
+
+          </ol>
+        </div>
       </div>
     </section>
 
@@ -208,7 +405,7 @@
       <p class="copyright">&copy; 2026 Porcelain Ballerina. All rights reserved.</p>
       <p class="copyright-note">The music, lyrics and images on this site may not be copied, reused or redistributed without permission.</p>
       <button type="button" class="replay-welcome" data-replay-welcome><span class="seal seal-red" aria-hidden="true"></span><span data-i18n>Replay the threshold</span></button>
-      <p class="foot-press"><a href="press.html" data-i18n>Press</a></p>
+      <p class="foot-press"><a href="mirror.html" data-i18n>The Mirror</a> &middot; <a href="press.html" data-i18n>Press</a></p>
     </div>
   </footer>
   </div>
@@ -224,8 +421,8 @@
     </div>
   </div>
   <noscript><style>.search-toggle{display:none!important}.ink-pre{opacity:1!important;filter:none!important}.ms-envelope .ms-open{display:block!important}.ms-packet{display:none!important}</style></noscript>
-  <script type="module" src="js/core.js?v=1794926500"></script>
-  <script type="module" src="js/search.js?v=1794926500"></script>
-  <script type="module" src="js/features.js?v=1794926500"></script>
+  <script type="module" src="js/core.js?v=1794931165"></script>
+  <script type="module" src="js/search.js?v=1794931165"></script>
+  <script type="module" src="js/features.js?v=1794931165"></script>
 </body>
 </html>

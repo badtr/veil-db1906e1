@@ -1,6 +1,7 @@
 // Porcelain Ballerina — core: atmosphere layers, sound toggle, ink reveals, tilt, seamless page transitions.
 import { reduceMotion, coarse, hasWebGL, ROOT } from './env.js';
 import { sound } from './audio.js';
+import { isSealCode } from './seal-code.js';
 import { startSmoke } from './smoke.js';
 import { startEmbers } from './embers.js';
 import { drawSigils, inkSigil } from './sigil.js';
@@ -261,6 +262,40 @@ function initTilt(root) {
   root.querySelectorAll('.btn').forEach((b) => b.addEventListener('pointermove', (e) => { const r = b.getBoundingClientRect(); b.style.setProperty('--bx', e.clientX - r.left + 'px'); b.style.setProperty('--by', e.clientY - r.top + 'px'); }));
 }
 
+// the rite chooses: a truly random released album (crypto, uniform, never the same one twice running)
+const ALBUM_ROWS = '.al-row:not(.folder) .al-link[href^="albums/"]';
+function cryptoIndex(n) {
+  if (n <= 1) return 0;
+  const lim = Math.floor(0x100000000 / n) * n; const b = new Uint32Array(1);
+  do { crypto.getRandomValues(b); } while (b[0] >= lim); // rejection sampling: no modulo bias
+  return b[0] % n;
+}
+let riting = false;
+function riteChoose() {
+  if (riting) return;
+  const seen = new Set(); const pool = [];
+  document.querySelectorAll(ALBUM_ROWS).forEach((l) => { const h = l.getAttribute('href'); if (seen.has(h)) return; seen.add(h); pool.push({ href: h, title: l.closest('.al-row')?.dataset.album || l.textContent.trim() }); });
+  if (!pool.length) return;
+  let last = ''; try { last = sessionStorage.getItem('pb-rite-last') || ''; } catch (e) {}
+  const cand = pool.length > 1 ? pool.filter((p) => p.href !== last) : pool;
+  const pick = cand[cryptoIndex(cand.length)];
+  try { sessionStorage.setItem('pb-rite-last', pick.href); } catch (e) {}
+  riting = true;
+  const no = (() => { try { return localStorage.getItem('pb-lang') === 'no'; } catch (e) { return false; } })();
+  const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ov = document.createElement('div'); ov.className = 'rite-choose'; ov.setAttribute('role', 'status'); ov.setAttribute('aria-live', 'assertive');
+  ov.innerHTML = '<div class="rc-in"><span class="rc-seal" aria-hidden="true"></span><p class="rc-k"></p><p class="rc-t"></p></div>';
+  const k0 = ov.querySelector('.rc-k'); k0.textContent = no ? 'Ritualet velger\u2026' : 'The rite chooses\u2026';
+  const t = ov.querySelector('.rc-t'); document.body.append(ov);
+  requestAnimationFrame(() => ov.classList.add('is-on'));
+  const land = () => { t.textContent = pick.title; ov.classList.add('is-chosen'); k0.textContent = no ? 'Ritualet har valgt' : 'The rite has chosen'; try { sound.bell(73.42, 0.3); } catch (e) {} };
+  const leave = () => { const url = new URL(pick.href, location.href); riting = false; go(url); setTimeout(() => ov.remove(), 400); };
+  if (rm) { land(); setTimeout(leave, 700); return; }
+  let k = 0, d = 60;
+  const flick = () => { if (k++ < 14) { t.textContent = pool[cryptoIndex(pool.length)].title; d *= 1.17; setTimeout(flick, d); } else { land(); setTimeout(leave, 900); } };
+  flick();
+}
+
 // ---------- ritual path: remember visited steps, random altar ----------
 function initPath(root) {
   let done = []; try { done = JSON.parse(localStorage.getItem('pb-path') || '[]'); } catch (e) {}
@@ -268,13 +303,7 @@ function initPath(root) {
   if (cur && !done.includes(cur.dataset.step)) { done.push(cur.dataset.step); try { localStorage.setItem('pb-path', JSON.stringify(done)); } catch (e) {} }
   root.querySelectorAll('.ritual-path li').forEach((li) => li.classList.toggle('is-done', done.includes(li.dataset.step)));
   root.querySelectorAll('[data-replay-welcome]').forEach((b) => b.addEventListener('click', () => { location.href = new URL('index.html?welcome=1', ROOT).href; }));
-  root.querySelectorAll('[data-random-album]').forEach((a) => a.addEventListener('click', (e) => {
-    e.preventDefault(); e.stopPropagation();
-    const links = [...document.querySelectorAll('.album-grid a.album-card')];
-    if (!links.length) return;
-    const pick = links[Math.floor(Math.random() * links.length)];
-    sound.bell(73.42, 0.3); go(new URL(pick.getAttribute('href'), location.href));
-  }));
+  root.querySelectorAll('[data-random-album]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); riteChoose(); }));
 }
 
 
@@ -369,27 +398,76 @@ document.addEventListener('click', (e) => {
   if (document.body.classList.contains('nav-open') && (t.closest('#primary-nav a') || !t.closest('#primary-nav'))) setNav(false);
   const keep = t.closest('.pk-keep');
   if (keep) { const env = keep.closest('[data-envelope]'); env.classList.remove('is-warned'); env.querySelector('.pk-warning').hidden = true; const p0 = env.querySelector('.ms-packet'); p0.setAttribute('aria-expanded', 'false'); p0.focus({ preventScroll: true }); return; }
+  const leave = t.closest('.sl-leave');
+  if (leave) { const env = leave.closest('[data-envelope]'); closeLock(env); return; }
   const brk = t.closest('.pk-break');
   const pk = brk || t.closest('.ms-packet');
   if (pk) {
     const env = pk.closest('[data-envelope]'); if (!env || env.classList.contains('is-open') || env.classList.contains('is-breaking')) return;
-    const packet = env.querySelector('.ms-packet');
     // the second leaf carries a warning: the first touch only shows it
-    if (env.hasAttribute('data-warn') && !brk) {
+    if (env.hasAttribute('data-warn') && !brk && !env.classList.contains('is-asking')) {
       if (!env.classList.contains('is-warned')) { env.classList.add('is-warned'); const w = env.querySelector('.pk-warning'); w.hidden = false; try { sound && sound.bell && sound.bell(70, 0.1); } catch (_) {} const b = w.querySelector('.pk-break'); b && b.focus({ preventScroll: true }); }
       return;
     }
-    env.classList.remove('is-warned'); const wp = env.querySelector('.pk-warning'); if (wp) wp.hidden = true;
-    env.classList.add('is-breaking'); packet.setAttribute('aria-expanded', 'true');
-    try { sound && sound.bell && sound.bell(92, 0.12); } catch (_) {}
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setTimeout(() => {
-      env.classList.add('is-open'); env.classList.remove('is-breaking');
-      const h = env.querySelector('.ms-title'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
-      const top = env.getBoundingClientRect().top + scrollY - 90; scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
-    }, reduce ? 0 : 1250);
+    askCode(env);
   }
 });
+
+// the sealed letters ask for the same number as the threshold; a wrong one is refused gently and the seal holds
+function closeLock(env) {
+  const lock = env.querySelector('.seal-lock'); if (lock) lock.hidden = true;
+  env.classList.remove('is-asking', 'is-warned'); const wp = env.querySelector('.pk-warning'); if (wp) wp.hidden = true;
+  const p0 = env.querySelector('.ms-packet'); p0.setAttribute('aria-expanded', 'false'); p0.focus({ preventScroll: true });
+}
+function askCode(env) {
+  const wp = env.querySelector('.pk-warning'); if (wp) wp.hidden = true; env.classList.remove('is-warned');
+  let lock = env.querySelector('.seal-lock');
+  if (!lock) {
+    const id = (env.querySelector('.ms-open')?.id || 'letter') + '-lock';
+    lock = document.createElement('form'); lock.className = 'seal-lock'; lock.autocomplete = 'off'; lock.setAttribute('aria-label', 'The letter is sealed');
+    lock.innerHTML = `<p class="sl-kicker">Sigillum &middot; the sealed word</p>
+      <p class="sl-riddle">This place is sealed with the number of the beast.</p>
+      <label class="sl-label" for="${id}-0" data-i18n>Write the number</label>
+      <div class="sl-digits"><input id="${id}-0" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="First digit"><input inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Second digit"><input inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Third digit"></div>
+      <div class="sl-btns"><button type="submit" class="btn btn-solid sl-go" data-i18n>Open the letter</button><button type="button" class="sl-leave" data-i18n>Leave it sealed</button></div>
+      <p class="sl-msg" role="status" aria-live="polite"></p>`;
+    env.querySelector('.ms-packet').after(lock);
+    const ds = [...lock.querySelectorAll('.sl-digits input')], msg = lock.querySelector('.sl-msg');
+    const no = () => { try { return localStorage.getItem('pb-lang') === 'no'; } catch (_) { return false; } };
+    const check = (force) => {
+      const v = ds.map((d) => d.value).join('');
+      if (v.length < 3) { if (force) ds[v.length].focus(); return; }
+      if (isSealCode(v)) {
+        lock.classList.add('is-accepted'); lock.classList.remove('is-refused'); msg.textContent = no() ? 'Så skje det.' : 'So be it.';
+        ds.forEach((d) => (d.disabled = true));
+        setTimeout(() => { lock.hidden = true; env.classList.remove('is-asking'); breakSeal(env); }, 500);
+        return;
+      }
+      lock.classList.add('is-refused'); msg.textContent = no() ? 'Voksen holder. Brevet forblir forseglet.' : 'The wax holds. The letter stays sealed.';
+      try { sound && sound.bell && sound.bell(55, 0.06); } catch (_) {}
+      setTimeout(() => { ds.forEach((d) => (d.value = '')); ds[0].focus({ preventScroll: true }); }, 700);
+    };
+    ds.forEach((d, i) => {
+      d.addEventListener('input', () => { d.value = d.value.replace(/\D/g, '').slice(-1); lock.classList.remove('is-refused'); if (d.value && i < 2) ds[i + 1].focus(); if (ds.every((x) => x.value)) check(); });
+      d.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !d.value && i > 0) { ds[i - 1].focus(); ds[i - 1].value = ''; } if (e.key === 'ArrowLeft' && i > 0) ds[i - 1].focus(); if (e.key === 'ArrowRight' && i < 2) ds[i + 1].focus(); if (e.key === 'Escape') closeLock(env); });
+      d.addEventListener('paste', (e) => { const v = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 3); if (v) { e.preventDefault(); v.split('').forEach((c, k) => ds[k] && (ds[k].value = c)); if (v.length === 3) check(); } });
+    });
+    lock.addEventListener('submit', (e) => { e.preventDefault(); check(true); });
+  }
+  lock.hidden = false; env.classList.add('is-asking'); env.querySelector('.ms-packet').setAttribute('aria-expanded', 'false');
+  const first = lock.querySelector('.sl-digits input'); first && first.focus({ preventScroll: true });
+}
+function breakSeal(env) {
+  const packet = env.querySelector('.ms-packet');
+  env.classList.add('is-breaking'); packet.setAttribute('aria-expanded', 'true');
+  try { sound && sound.bell && sound.bell(92, 0.12); } catch (_) {}
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  setTimeout(() => {
+    env.classList.add('is-open'); env.classList.remove('is-breaking');
+    const h = env.querySelector('.ms-title'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+    const top = env.getBoundingClientRect().top + scrollY - 90; scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
+  }, reduce ? 0 : 1250);
+}
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.body.classList.contains('nav-open')) { setNav(false); const b = document.querySelector('.nav-toggle'); b && b.focus(); } });
 document.addEventListener('pointermove', (e) => {
   const g = e.target.closest && e.target.closest('.graveyard'); if (!g) return;
