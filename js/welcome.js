@@ -36,7 +36,7 @@ export function playWelcome({ sound }) {
         <p class="wel-kicker">Sigillum &middot; the sealed word</p>
         <p class="wel-riddle">This place is sealed with the number of the beast.<br><em>Three sixes, side by side, open what was sealed.</em></p>
         <p class="wel-margin" aria-hidden="true">Rev. XIII &middot; 18</p>
-        <label class="wel-label" for="wel-d0" data-i18n>Write the number</label>
+        <label class="wel-label" for="wel-d0">Write the number</label>
         <div class="wel-digits">
           <input id="wel-d0" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="First digit">
           <input inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Second digit">

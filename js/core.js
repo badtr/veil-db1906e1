@@ -281,14 +281,13 @@ function riteChoose() {
   const pick = cand[cryptoIndex(cand.length)];
   try { sessionStorage.setItem('pb-rite-last', pick.href); } catch (e) {}
   riting = true;
-  const no = (() => { try { return localStorage.getItem('pb-lang') === 'no'; } catch (e) { return false; } })();
   const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const ov = document.createElement('div'); ov.className = 'rite-choose'; ov.setAttribute('role', 'status'); ov.setAttribute('aria-live', 'assertive');
   ov.innerHTML = '<div class="rc-in"><span class="rc-seal" aria-hidden="true"></span><p class="rc-k"></p><p class="rc-t"></p></div>';
-  const k0 = ov.querySelector('.rc-k'); k0.textContent = no ? 'Ritualet velger\u2026' : 'The rite chooses\u2026';
+  const k0 = ov.querySelector('.rc-k'); k0.textContent = 'The rite chooses\u2026';
   const t = ov.querySelector('.rc-t'); document.body.append(ov);
   requestAnimationFrame(() => ov.classList.add('is-on'));
-  const land = () => { t.textContent = pick.title; ov.classList.add('is-chosen'); k0.textContent = no ? 'Ritualet har valgt' : 'The rite has chosen'; try { sound.bell(73.42, 0.3); } catch (e) {} };
+  const land = () => { t.textContent = pick.title; ov.classList.add('is-chosen'); k0.textContent = 'The rite has chosen'; try { sound.bell(73.42, 0.3); } catch (e) {} };
   const leave = () => { const url = new URL(pick.href, location.href); riting = false; go(url); setTimeout(() => ov.remove(), 400); };
   if (rm) { land(); setTimeout(leave, 700); return; }
   let k = 0, d = 60;
@@ -427,23 +426,22 @@ function askCode(env) {
     lock = document.createElement('form'); lock.className = 'seal-lock'; lock.autocomplete = 'off'; lock.setAttribute('aria-label', 'The letter is sealed');
     lock.innerHTML = `<p class="sl-kicker">Sigillum &middot; the sealed word</p>
       <p class="sl-riddle">This place is sealed with the number of the beast.</p>
-      <label class="sl-label" for="${id}-0" data-i18n>Write the number</label>
+      <label class="sl-label" for="${id}-0">Write the number</label>
       <div class="sl-digits"><input id="${id}-0" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="First digit"><input inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Second digit"><input inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Third digit"></div>
-      <div class="sl-btns"><button type="submit" class="btn btn-solid sl-go" data-i18n>Open the letter</button><button type="button" class="sl-leave" data-i18n>Leave it sealed</button></div>
+      <div class="sl-btns"><button type="submit" class="btn btn-solid sl-go">Open the letter</button><button type="button" class="sl-leave">Leave it sealed</button></div>
       <p class="sl-msg" role="status" aria-live="polite"></p>`;
     env.querySelector('.ms-packet').after(lock);
     const ds = [...lock.querySelectorAll('.sl-digits input')], msg = lock.querySelector('.sl-msg');
-    const no = () => { try { return localStorage.getItem('pb-lang') === 'no'; } catch (_) { return false; } };
     const check = (force) => {
       const v = ds.map((d) => d.value).join('');
       if (v.length < 3) { if (force) ds[v.length].focus(); return; }
       if (isSealCode(v)) {
-        lock.classList.add('is-accepted'); lock.classList.remove('is-refused'); msg.textContent = no() ? 'Så skje det.' : 'So be it.';
+        lock.classList.add('is-accepted'); lock.classList.remove('is-refused'); msg.textContent = 'So be it.';
         ds.forEach((d) => (d.disabled = true));
         setTimeout(() => { lock.hidden = true; env.classList.remove('is-asking'); breakSeal(env); }, 500);
         return;
       }
-      lock.classList.add('is-refused'); msg.textContent = no() ? 'Voksen holder. Brevet forblir forseglet.' : 'The wax holds. The letter stays sealed.';
+      lock.classList.add('is-refused'); msg.textContent = 'The wax holds. The letter stays sealed.';
       try { sound && sound.bell && sound.bell(55, 0.06); } catch (_) {}
       setTimeout(() => { ds.forEach((d) => (d.value = '')); ds[0].focus({ preventScroll: true }); }, 700);
     };

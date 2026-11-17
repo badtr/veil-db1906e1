@@ -19,7 +19,7 @@ function release(root) {
       if (left <= 0) {
         $$('.rl-links', card).forEach((l) => { l.hidden = l.dataset.when !== 'after'; });
         card.classList.add('is-open'); box.hidden = true; $('.rl-open', card).hidden = false; $('.rl-live', card).hidden = false;
-        $('.rl-k', card).textContent = lang() === 'no' ? 'Ute nå' : 'Released'; $('.rl-note', card).hidden = true; return true;
+        $('.rl-k', card).textContent = 'Released'; $('.rl-note', card).hidden = true; return true;
       }
       const s = Math.floor(left / 1000);
       $('[data-u="d"]', box).textContent = Math.floor(s / 86400); $('[data-u="h"]', box).textContent = pad(Math.floor(s / 3600) % 24);
@@ -33,7 +33,7 @@ function release(root) {
   $$('.al-row[data-show-from]', root).forEach((r) => { r.hidden = now < Date.parse(r.dataset.showFrom); });
   $$('.al-row[data-live-from]', root).forEach((r) => {
     const on = now >= Date.parse(r.dataset.liveFrom) && now < Date.parse(r.dataset.liveUntil);
-    let b = $('.al-live', r); if (on && !b) { b = document.createElement('span'); b.className = 'al-live'; b.textContent = lang() === 'no' ? 'Ute nå' : 'Live now'; $('.al-body', r)?.prepend(b); }
+    let b = $('.al-live', r); if (on && !b) { b = document.createElement('span'); b.className = 'al-live'; b.textContent = 'Live now'; $('.al-body', r)?.prepend(b); }
     if (!on && b) b.remove();
   });
 }
@@ -42,7 +42,7 @@ function release(root) {
 function coven(root) {
   $$('[data-coven] form', root).forEach((f) => {
     if (f.dataset.bound) return; f.dataset.bound = '1';
-    f.addEventListener('submit', (e) => { e.preventDefault(); const m = f.parentElement.querySelector('.coven-msg'); f.reset(); m.textContent = lang() === 'no' ? 'Listen åpner snart.' : 'The list opens soon.'; f.closest('.coven-sheet').classList.add('is-sealed'); });
+    f.addEventListener('submit', (e) => { e.preventDefault(); const m = f.parentElement.querySelector('.coven-msg'); f.reset(); m.textContent = 'The list opens soon.'; f.closest('.coven-sheet').classList.add('is-sealed'); });
   });
 }
 
@@ -60,59 +60,8 @@ function inkLyrics(root) {
   timers.push(setTimeout(() => { removeEventListener('scroll', onScroll); lines.forEach((l) => l.classList.add('is-inked')); }, 60000)); // never leave lines hidden
 }
 
-// ---------- EN / NO for navigation and interface labels only (lyrics and texts stay English) ----------
-const NO = {
-  'Home': 'Hjem', 'Albums': 'Album', 'Archive': 'Arkiv', 'Tarot': 'Tarot', 'Numbers': 'Tall', 'Journal': 'Dagbok', 'About': 'Om', 'Images': 'Bilder', 'Six signed etchings': 'Seks signerte raderinger',
-  'The threshold': 'Terskelen', 'Every record, every song': 'Hver plate, hver sang', 'Sealed plates': 'Forseglede trykk', 'Three cards, turned': 'Tre kort, snudd',
-  'A date, a name, counted': 'En dato, et navn, talt', 'In his own hand': 'Med egen hånd', 'The one behind it': 'Den som står bak',
-  'The rooms of the rite': 'Ritualets rom', 'Search': 'Søk', 'Guide': 'Meny', 'Back': 'Tilbake', 'Find us': 'Finn oss', 'Press': 'Presse',
-  'Replay the threshold': 'Gå over terskelen igjen', 'Upcoming': 'Kommer snart', 'Under seal until': 'Forseglet til', 'days': 'dager', 'hours': 'timer',
-  'minutes': 'minutter', 'seconds': 'sekunder', 'Live now': 'Ute nå', 'Listen now': 'Lytt nå', 'Pre-save': 'Forhåndslagre', 'Open the album': 'Åpne albumet',
-  'The seal breaks by itself at midnight on release day.': 'Seglet brytes av seg selv ved midnatt på utgivelsesdagen.',
-  'The oracle': 'Orakelet', 'Draw another line': 'Trekk en ny linje', 'Today\u2019s line': 'Dagens linje', 'One line from the songs for each day. It changes at midnight.': 'Én linje fra sangene hver dag. Den skifter ved midnatt.',
-  'The Coven List': 'Coven-listen', 'Join the list': 'Bli med på listen', 'A letter when a record breaks its seal. Nothing more.': 'Et brev når en plate bryter seglet. Ikke noe mer.',
-  'Sign the list': 'Skriv deg på', 'Nothing you type is sent or kept.': 'Ingenting du skriver blir sendt eller lagret.',
-  'A sealed promise': 'Et forseglet løfte', 'For the press': 'For pressen', 'Short bio': 'Kort biografi', 'Download the press kit': 'Last ned pressepakken',
-  'Sigil (SVG)': 'Sigill (SVG)', 'Wax seal (PNG)': 'Voksegl (PNG)', 'Album covers': 'Albumomslag', 'Download': 'Last ned',
-  'Close the drawer': 'Lukk skuffen', 'Write the number': 'Skriv tallet', 'Open the letter': 'Åpne brevet', 'The wax holds. The letter stays sealed.': 'Voksen holder. Brevet forblir forseglet.', 'So be it.': 'Så skje det.', 'The wax refuses you. Try again.': 'Voksen avviser deg. Prøv igjen.', 'The rite chooses…': 'Ritualet velger…', 'Open every drawer': 'Åpne alle skuffene', 'Seal them again': 'Forsegl dem igjen', 'Released': 'Utgitt', 'Number': 'Tall', 'Count': 'Tell', 'Clear': 'Tøm', 'Look into the mirror': 'Se i speilet', 'The Mirror': 'Speilet', 'Look again': 'Se igjen', 'Return to the song': 'Tilbake til sangen', 'Return to the album': 'Tilbake til albumet', 'Mirror greeting': 'Speilhilsen', 'Medium off': 'Medium av', 'Medium on': 'Medium på', 'Tap for the medium': 'Trykk for mediet', 'Sound off': 'Lyd av', 'Sound on': 'Lyd på', 'Tap for sound': 'Trykk for lyd', 'Sound off': 'Lyd av', 'Sound on': 'Lyd på', 'Tap for sound': 'Trykk for lyd'
-};
-const PH = { 'An album, a song, a line, a card\u2026': 'Et album, en sang, en linje, et kort\u2026', 'An album or a song title\u2026': 'Et album eller en sangtittel\u2026' };
-const lang = () => { try { return localStorage.getItem('pb-lang') === 'no' ? 'no' : 'en'; } catch (e) { return 'en'; } };
-Object.assign(NO, {
-  'Search albums, songs, lyrics, tarot cards and pages': 'Søk i album, sanger, tekster, tarotkort og sider', 'Search the albums and their songs': 'Søk i albumene og sangene deres',
-  'Enter the albums': 'Gå inn til albumene', 'Open the archive': 'Åpne arkivet', 'Enter the tarot room': 'Gå inn i tarotrommet', 'Return to the threshold': 'Tilbake til terskelen',
-  'Let the rite choose': 'La ritualet velge', 'Listen on Spotify': 'Lytt på Spotify', 'Listen on Suno': 'Lytt på Suno', 'Back to the album': 'Tilbake til albumet',
-  'Break the seal': 'Bryt seglet', 'Leave it sealed': 'La det forbli forseglet', 'Close': 'Lukk', 'Email address': 'E-postadresse',
-  'Birth date': 'Fødselsdato', 'Full birth name': 'Fullt fødselsnavn', 'How the numbers are counted': 'Slik telles tallene',
-  'Ask again': 'Spør igjen', 'Begin the reading': 'Begynn lesningen', 'Choose for me': 'Velg for meg', 'Turn the next card': 'Snu neste kort', 'Your question': 'Ditt spørsmål',
-  'Visit the archive': 'Besøk arkivet', 'Draw the cards': 'Trekk kortene', 'Choose an altar': 'Velg et alter', 'Return to the albums': 'Tilbake til albumene',
-  'The rite is complete': 'Ritualet er fullført', 'Count': 'Tell', 'Clear': 'Tøm', 'Back to the altar': 'Tilbake til alteret',
-});
-const MOON_NO = { 'New moon': 'Nymåne', 'Waxing crescent': 'Voksende månesigd', 'First quarter': 'Første kvarter', 'Waxing gibbous': 'Voksende måne', 'Full moon': 'Fullmåne', 'Waning gibbous': 'Minkende måne', 'Last quarter': 'Siste kvarter', 'Waning crescent': 'Minkende månesigd' };
-const NO_PREFIX = [['Next altar: ', 'Neste alter: '], ['Next · ', 'Neste · ']];
-const AUTO_I18N = 'button, label, a.btn, summary, .next-title, .next-step .kicker, .mt-label, .sound-label';
-const toNo = (t) => NO[t] || (NO_PREFIX.find(([a]) => t.startsWith(a)) || [])[1]?.concat(t.slice(NO_PREFIX.find(([a]) => t.startsWith(a))[0].length));
-function applyLang() {
-  const no = lang() === 'no';
-  const els = new Set([...$$('[data-i18n]'), ...$$(AUTO_I18N)]);
-  els.forEach((el) => {
-    if (el.children.length || el.closest('[data-lang-toggle]')) return;
-    const cur = el.textContent.trim();
-    if (no) {
-      if (el.dataset.no && cur === el.dataset.no) return;          // already ours
-      const t = toNo(cur); if (!t) return;
-      el.dataset.en = cur; el.dataset.no = t; el.textContent = t; el.setAttribute('lang', 'nb');
-    } else if (el.dataset.no && cur === el.dataset.no) {            // only undo what we set; other scripts may have changed the text since
-      el.textContent = el.dataset.en; el.removeAttribute('lang');
-    }
-  });
-  $$('input[placeholder]').forEach((i) => { if (!i.dataset.en) i.dataset.en = i.placeholder; const t = PH[i.dataset.en]; if (t) i.placeholder = no ? t : i.dataset.en; });
-  $$('[data-lang-toggle]').forEach((b) => { b.classList.toggle('is-no', no); b.setAttribute('aria-pressed', String(no)); b.setAttribute('aria-label', no ? 'Switch to English' : 'Bytt til norsk'); });
-}
-// labels that other scripts write later (tarot buttons, viewers) follow the chosen language too
-let langRaf = 0;
-new MutationObserver(() => { if (lang() !== 'no' || langRaf) return; langRaf = requestAnimationFrame(() => { langRaf = 0; applyLang(); }); }).observe(document.body, { subtree: true, childList: true, characterData: true });
-document.addEventListener('click', (e) => { if (!e.target.closest('[data-lang-toggle]')) return; try { localStorage.setItem('pb-lang', lang() === 'no' ? 'en' : 'no'); } catch (_) {} applyLang(); moon(document.getElementById('swap') || document); });
+// English only: forget any language choice left from the old EN/NO toggle
+try { localStorage.removeItem('pb-lang'); } catch (e) {}
 
 // ---------- daily oracle ----------
 let ORACLE = null;
@@ -265,8 +214,8 @@ function moon(root) {
   document.querySelectorAll('.moon-phase').forEach((m) => m.remove());
   const m = moonState(NOW());
   const el = document.createElement('p'); el.className = 'moon-phase';
-  const no = lang() === 'no', nm = no ? (MOON_NO[m.name] || m.name) : m.name, lit = `${Math.round(m.illum * 100)}% ${no ? 'opplyst' : 'lit'}`;
-  el.innerHTML = `${moonSVG(m.f)}<span class="mp-t"><span class="mp-n"${no ? ' lang="nb"' : ''}>${nm}</span><span class="mp-i">${lit}</span></span>`;
+  const nm = m.name, lit = `${Math.round(m.illum * 100)}% lit`;
+  el.innerHTML = `${moonSVG(m.f)}<span class="mp-t"><span class="mp-n">${nm}</span><span class="mp-i">${lit}</span></span>`;
   el.title = `${nm}, ${lit}`;
   const bar = $('.backbar .wrap', root), hero = $('.hero', root);
   if (bar) bar.appendChild(el); else if (hero) { el.classList.add('mp-hero'); hero.appendChild(el); } else return;
@@ -306,7 +255,7 @@ function mirrorLink(root) {
   const anchor = $('.song-codex .wrap', root); if (!anchor) return;
   const a = document.createElement('p'); a.className = 'mirror-door';
   const u = new URL('mirror.html', ROOT); u.searchParams.set('album', album); u.searchParams.set('song', song);
-  a.innerHTML = `<a class="btn btn-solid" href="${u.href}"><span class="md-glass" aria-hidden="true"></span><span data-i18n>Look into the mirror</span></a>`;
+  a.innerHTML = `<a class="btn btn-solid" href="${u.href}"><span class="md-glass" aria-hidden="true"></span><span>Look into the mirror</span></a>`;
   anchor.prepend(a);
 }
 
@@ -349,7 +298,6 @@ function mirror(root) {
       if (o && fromSong) { back.href = new URL(o.url, ROOT).href; back.textContent = 'Return to the song'; }
       else if (fromAlbum) { const al = $$('[data-album-url]', st).find((e) => e.dataset.albumTitle === fromAlbum); if (al) { back.href = new URL(al.dataset.albumUrl, ROOT).href; back.textContent = 'Return to the album'; } else back.hidden = true; }
       else back.hidden = true;
-      applyLang();
     }
   }).catch(() => { st.classList.add('is-clear'); });
   $('[data-mirror-again]', st)?.addEventListener('click', () => show(true));
@@ -418,6 +366,6 @@ function whisperArm() { clearTimeout(WH.t); WH.t = setTimeout(whisperShow, WH.id
 whisperArm();
 // the medium's sound (opt-in, off by default)
 import(new URL('medium.js?v=' + (document.querySelector('link[href*="style.css"]')?.getAttribute('href').split('?v=')[1] || ''), import.meta.url).href).catch(() => {});
-function mount() { timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); mirrorLink(r); protect(r); mirror(r); riteLine(false); coven(r); inkLyrics(r); parlour(); channel(r); spiritPhoto(r); applyLang(); }
+function mount() { timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); mirrorLink(r); protect(r); mirror(r); riteLine(false); coven(r); inkLyrics(r); parlour(); channel(r); spiritPhoto(r); }
 document.addEventListener('pb:page', mount);
 mount();

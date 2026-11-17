@@ -2023,7 +2023,7 @@ body.ms-reading .occ-frame,body[data-page="tarot"] .occ-frame .bl,body[data-page
 .nav-ext a{font:600 .74rem/1 var(--f-sc)!important;letter-spacing:.2em;text-transform:uppercase;color:rgba(236,224,198,.75)!important;text-decoration:none;padding:.35rem 0}
 .nav-ext a:hover{color:#fff1d6!important}
 .nav-toggle{display:none}
-@media (max-width:1060px){
+@media (max-width:1240px){
   .site-header .wrap{justify-content:space-between!important}
   .nav-toggle{display:inline-flex;align-items:center;gap:.65rem;position:relative;z-index:72;padding:.45rem .9rem .45rem .5rem;border:1px solid rgba(201,164,98,.5);border-radius:999px;background:radial-gradient(circle at 30% 30%,rgba(120,16,18,.35),rgba(8,4,5,.9));color:#ecdcbc;font:600 .78rem/1 var(--f-sc);letter-spacing:.24em;text-transform:uppercase;box-shadow:inset 0 0 0 3px rgba(8,4,5,.9),inset 0 0 0 4px rgba(201,164,98,.2),0 6px 18px rgba(0,0,0,.6)}
   .nt-ring{position:relative;width:26px;height:26px;border-radius:50%;border:1px solid rgba(201,164,98,.65);display:grid;place-items:center}
@@ -2044,7 +2044,7 @@ body.ms-reading .occ-frame,body[data-page="tarot"] .occ-frame .bl,body[data-page
   .nav > a::after{left:-.2rem!important;bottom:auto!important;top:1.35rem}
   .nav-ext{margin:1.6rem 0 0;padding:0;border:0;gap:1.6rem}
 }
-@media (max-width:1060px){body:not(.nav-open) .nav{pointer-events:none}}
+@media (max-width:1240px){body:not(.nav-open) .nav{pointer-events:none}}
 
 /* --- the guide: the rite rail --- */
 .ritual-path ol::before{width:1px!important;background:repeating-linear-gradient(rgba(201,164,98,.55) 0 6px,transparent 6px 10px)!important}
@@ -2313,7 +2313,7 @@ body.ms-reading .occ-frame .oc-sigil{opacity:0}
 .search-toggle:hover,.search-toggle:focus-visible{color:#fff3d6;border-color:#d8b46e;outline:none;box-shadow:inset 0 0 0 2px #0a0607,inset 0 0 0 3px rgba(216,180,110,.45),0 0 16px rgba(201,120,60,.35)}
 .st-icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
 .st-icon .st-cross{stroke-width:1;opacity:.75}
-@media (max-width:1060px){.search-toggle{margin-left:auto;margin-right:.5rem}}
+@media (max-width:1240px){.search-toggle{margin-left:auto;margin-right:.5rem}}
 @media (max-width:420px){.search-toggle{padding:.42rem .6rem}.st-label{font-size:.72rem;letter-spacing:.12em}}
 .site-search{position:fixed;inset:0;z-index:200;display:flex;justify-content:center;align-items:flex-start;padding:clamp(1rem,7vh,5rem) clamp(.7rem,3vw,2rem)}
 .site-search[hidden]{display:none}
@@ -2731,13 +2731,6 @@ html.pb-full-moon .moon-phase{box-shadow:inset 0 0 0 1px #e2483e,0 0 16px rgba(2
 .pr-dl{font:600 .78rem/1.4 var(--f-sc);letter-spacing:.16em;text-transform:uppercase;color:#f1c98a}
 .foot-press{margin:.6rem 0 0;text-align:center}.foot-press a{font:600 .8rem/1.4 var(--f-sc);letter-spacing:.2em;text-transform:uppercase;color:#e2bf7c}
 
-/* ===== v25: language toggle ===== */
-.lang-toggle{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:.3rem;min-height:36px;padding:0 .7rem;margin-left:.5rem;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(201,160,85,.6);font:600 .76rem/1 var(--f-sc);letter-spacing:.12em;color:#b9a888}
-.lang-toggle .lt-en,.lang-toggle.is-no .lt-no{color:#f5e3b8}
-.lang-toggle.is-no .lt-en{color:#b9a888}
-.lang-toggle .lt-no{color:#b9a888}
-.lang-toggle:hover,.lang-toggle:focus-visible{box-shadow:inset 0 0 0 1px #f1d18a,0 0 10px rgba(230,150,70,.35)}
-
 /* ===== v25: ink-reveal lyrics (text stays real and selectable) ===== */
 .ly-body .ink-wait{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 40%,transparent 60%,transparent 100%);mask-image:linear-gradient(90deg,#000 0,#000 40%,transparent 60%,transparent 100%);-webkit-mask-size:260% 100%;mask-size:260% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;opacity:.35}
 .ly-body .ink-wait.is-inked{-webkit-mask-position:0 0;mask-position:0 0;opacity:1;transition:-webkit-mask-position 1.6s cubic-bezier(.3,.6,.3,1) var(--ink-d,0s),mask-position 1.6s cubic-bezier(.3,.6,.3,1) var(--ink-d,0s),opacity 1.2s ease var(--ink-d,0s)}
@@ -3068,3 +3061,8 @@ img[src*="images/hall/"],img[src*="images/albums/"],img[src*="images/etchings/"]
 .seal-lock.is-refused .sl-digits input{border-bottom-color:#8a1a14;background:rgba(150,30,20,.12)}
 .seal-lock.is-accepted .sl-digits input{color:#6a4a10}
 @media (max-width:760px){.seal-lock{padding:1.4rem 1rem 1.1rem}.sl-digits input{width:3rem;height:3.8rem}}
+
+/* v29: header fits without the language toggle: search stays on screen on every desktop width */
+@media (min-width:1241px) and (max-width:1799px){#primary-nav>a{padding-left:.6rem!important;padding-right:.6rem!important}}
+@media (min-width:1241px) and (max-width:1659px){#primary-nav .nav-ext{display:none!important}}
+@media (min-width:1241px) and (max-width:1279px){#primary-nav>a{padding-left:.3rem!important;padding-right:.3rem!important;letter-spacing:.06em!important;font-size:.92rem!important}.site-header .brand{gap:.5rem}}
