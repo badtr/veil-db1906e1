@@ -301,7 +301,7 @@ async function initPage(first) {
       const mod = await import(path);
       current = await mod.init({ first, sound, smoke, embers, revealNow, initReveals });
     } catch (e) { console.error(e); }
-  }
+  }  document.dispatchEvent(new CustomEvent('pb:page', { detail: { first } }));
 }
 
 // ---------- seamless navigation (keeps the sound alive between pages) ----------
@@ -327,6 +327,7 @@ async function go(url, { push = true, x = innerWidth / 2, y = innerHeight / 2 } 
     const html = await resP;
     const ndoc = new DOMParser().parseFromString(html, 'text/html');
     const nswap = ndoc.getElementById('swap'); if (!nswap) throw new Error('no swap');
+    { const v = (d) => (d.querySelector('link[rel="stylesheet"][href*="style.css"]')?.getAttribute('href') || '').split('?v=')[1] || ''; if (v(ndoc) !== v(document)) throw new Error('new build'); }
     if (current && current.destroy) { try { current.destroy(); } catch (e) {} }
     current = null;
     if (push) history.pushState({}, '', url.href);

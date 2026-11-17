@@ -153,7 +153,9 @@ export function init({ sound }) {
     else {
       phase = 'done'; bNext.hidden = true;
       const R = composeReading(asked, picks.map((p) => ({ card: DECK.find((x) => x.id === p.draw.id), reversed: p.draw.reversed })));
-      synth.innerHTML = `<p class="kicker">The reading, whole</p>${R.html}<p class="syn-note">For reflection only. The cards show patterns, not certainties; the choices remain yours.</p>`;
+      const back = '<span class="bb-seal" aria-hidden="true"><svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="#f6d995" stroke-width="2" stroke-linecap="round" focusable="false"><path class="bb-a" d="M25.5 16.6c-3.6-.5-8.4-.4-14.6.2"/><path class="bb-a" d="M14.2 10.4c-1.7 2.2-3.6 4-6.2 5.9 2.5 1.6 4.4 3.4 6.1 5.8"/><path class="bb-f" d="M25.5 16.6c1.6-.4 2.6-1.7 2-2.9-.6-1.1-2.2-.7-2.1.6"/></svg></span>';
+      synth.innerHTML = `<div class="syn-top"><button type="button" class="back-btn syn-back">${back}<span class="bb-t">Back to the deck</span></button></div><p class="kicker">The reading, whole</p>${R.html}<p class="syn-note">For reflection only. The cards show patterns, not certainties; the choices remain yours.</p>`
+        + `<div class="syn-actions"><button type="button" class="back-btn syn-back">${back}<span class="bb-t">Back to the deck</span></button><a class="btn syn-leave" href="${new URL('albums.html', ROOT).href}">Leave the tarot room</a></div>`;
       synth.hidden = false;
       await say('Now I lay the three together. ' + R.summary, 4200);
       await say('Read it slowly, below. Sit with it a while. The cards only show what you already carry.');
@@ -177,6 +179,12 @@ export function init({ sound }) {
   bChoose.addEventListener('click', () => { const pool = cards.filter((c) => !picks.includes(c)); for (let k = picks.length; k < 3; k++) { const c = pool.splice(rand(pool.length), 1)[0]; setTimeout(() => pick(c), (k - picks.length) * 450); } });
   bNext.addEventListener('click', turn);
   bAgain.addEventListener('click', again);
+  // after a reading: put the cards back and return to the deck
+  synth.addEventListener('click', (e) => {
+    if (!e.target.closest('.syn-back') || phase !== 'done') return;
+    stage.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    again();
+  });
   const onResize = () => { if (phase === 'idle') circle(false); };
   addEventListener('resize', onResize);
 

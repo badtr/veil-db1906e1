@@ -2358,3 +2358,232 @@ body.search-open{overflow:hidden}
 .backbar{position:absolute;left:0;right:0;top:calc(var(--bb-top,82px) + 8px);padding:0!important;pointer-events:none}
 .back-btn{pointer-events:auto}
 body:has(.backbar) #main{padding-top:46px}
+/* v21: way back after a tarot reading */
+.tr-synthesis .syn-top{position:relative;z-index:2;margin:-58px 0 1.4rem}
+.tr-synthesis .syn-top .back-btn{cursor:pointer;font-family:var(--f-sc)!important}
+.tr-synthesis .syn-top .back-btn span{color:#f0dcae!important;font:600 .8rem/1.2 var(--f-sc)!important;letter-spacing:.16em!important;text-transform:uppercase}
+.tr-synthesis .syn-actions{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid #795947}
+.tr-synthesis .syn-actions .btn{display:inline-flex;align-items:center;gap:.5rem}
+.tr-synthesis .syn-actions .btn span{color:inherit!important;font:inherit!important;letter-spacing:inherit!important}
+.tr-synthesis .syn-leave{color:#f0dcae!important;border-color:#9c7a45!important;background:#120c0c!important}
+.tr-stage{scroll-margin-top:calc(var(--bb-top,82px) + 20px)}
+@media (max-width:699px){.tr-synthesis .syn-top{margin-top:-52px}.tr-synthesis .syn-actions .btn{width:100%;justify-content:center}}
+
+/* ===== v21: the Back tab — gilded iron plate with a wax boss and a hand-drawn arrow ===== */
+.back-btn{all:unset;pointer-events:auto;box-sizing:border-box;position:relative;display:inline-flex;align-items:center;gap:.7rem;max-width:100%;min-height:46px;padding:.5rem 1.35rem .5rem .55rem;cursor:pointer;color:#f5e3b8!important;font:600 .82rem/1.2 var(--f-sc)!important;letter-spacing:.17em!important;text-transform:uppercase;text-decoration:none!important;isolation:isolate;
+  --tab:polygon(18px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,18px 100%,0 50%);
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.85))}
+.back-btn::before{content:"";position:absolute;inset:0;z-index:-2;clip-path:var(--tab);background:linear-gradient(180deg,#f1d48d 0%,#a87a35 38%,#5e3d14 62%,#c8994c 100%)}
+.back-btn::after{content:"";position:absolute;inset:2px;z-index:-1;clip-path:var(--tab);
+  background:radial-gradient(120% 90% at 30% 0%,rgba(255,220,160,.10),transparent 55%),repeating-linear-gradient(115deg,rgba(255,255,255,.018) 0 2px,rgba(0,0,0,.05) 2px 4px),linear-gradient(180deg,#2c1f19 0%,#17100d 55%,#0d0807 100%);
+  box-shadow:inset 0 1px 0 rgba(255,225,170,.25)}
+.back-btn .bb-t{position:relative;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 0 #000,0 0 8px rgba(0,0,0,.6);color:#f5e3b8!important;font:inherit!important;letter-spacing:inherit!important}
+.bb-seal{position:relative;flex:none;width:34px;height:34px;margin-left:6px;border-radius:50% 46% 52% 48%/48% 52% 46% 50%;
+  background:radial-gradient(circle at 34% 28%,#d9504a 0,#9e1a17 38%,#5d0b0b 80%,#3b0606 100%);
+  box-shadow:inset 0 0 0 2px rgba(80,6,6,.6),inset 0 0 0 4px rgba(255,140,120,.12),0 1px 2px rgba(0,0,0,.8)}
+.bb-seal svg{position:absolute;inset:3px;width:28px;height:28px;fill:none;stroke:#f6d995;stroke-linecap:round;stroke-linejoin:round}
+.bb-seal .bb-a{stroke-width:2.1}.bb-seal .bb-f{stroke-width:1.3;opacity:.85}
+.back-btn:hover,.back-btn:focus-visible{color:#fff4d8!important;filter:drop-shadow(0 3px 5px rgba(0,0,0,.85)) drop-shadow(0 0 10px rgba(230,150,70,.45));outline:none}
+.back-btn:hover .bb-seal,.back-btn:focus-visible .bb-seal{background:radial-gradient(circle at 34% 28%,#ef6a5c 0,#b8231e 38%,#6d0e0e 80%,#3b0606 100%)}
+.back-btn:hover .bb-seal svg{transform:translateX(-2px);transition:transform .3s}
+.back-btn:focus-visible::before{background:linear-gradient(180deg,#fff0c2,#e2b45e 50%,#fff0c2)}
+@media (max-width:699px){.back-btn{min-height:44px;font-size:.76rem!important;letter-spacing:.12em!important;padding-right:1.1rem}.bb-seal{width:30px;height:30px}.bb-seal svg{width:24px;height:24px}}
+.tr-synthesis .syn-actions .back-btn{font-size:.82rem!important}
+.tr-synthesis .syn-top .back-btn span.bb-t{font:inherit!important;letter-spacing:inherit!important;color:#f5e3b8!important}
+.tr-synthesis .back-btn span,.tr-synthesis .bb-seal{background-clip:border-box}
+
+/* ===== v21: letters as real old documents ===== */
+:is(.ms-envelope,.tarot-why,.why-section) .ms-letter{
+  background:
+    linear-gradient(180deg,transparent calc(33.3% - 10px),rgba(90,52,14,.10) calc(33.3% - 2px),rgba(255,247,226,.42) 33.3%,rgba(80,44,10,.20) calc(33.3% + 2px),transparent calc(33.3% + 12px)),
+    linear-gradient(180deg,transparent calc(66.6% - 10px),rgba(90,52,14,.10) calc(66.6% - 2px),rgba(255,247,226,.42) 66.6%,rgba(80,44,10,.20) calc(66.6% + 2px),transparent calc(66.6% + 12px)),
+    linear-gradient(90deg,transparent calc(50% - 9px),rgba(90,52,14,.08) calc(50% - 2px),rgba(255,247,226,.32) 50%,rgba(80,44,10,.16) calc(50% + 2px),transparent calc(50% + 10px)),
+    radial-gradient(ellipse 60% 22% at 82% 12%,rgba(120,72,24,.16),transparent 70%),
+    radial-gradient(ellipse 34% 18% at 14% 78%,rgba(110,64,20,.14),transparent 70%),
+    radial-gradient(ellipse at 50% 50%,rgba(255,246,222,.28),transparent 62%),
+    url(../images/letter/paper-real.jpg) 0 0/620px 620px repeat !important}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-age{opacity:.55;mix-blend-mode:multiply}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-blood,:is(.ms-envelope,.tarot-why,.why-section) .ms-drip,:is(.ms-envelope,.tarot-why,.why-section) .ms-spat{opacity:.55}
+/* written ink: iron-gall brown-black in an old-book face */
+:is(.ms-envelope,.tarot-why,.why-section) .ms-letter :is(.ms-st,.au-body .ms-st,.tarot-why-copy .ms-st){font-family:"Fell","IM Fell English","Garamond",serif!important;font-style:normal;font-size:clamp(1.2rem,1.05rem + .45vw,1.42rem)!important;line-height:1.72!important;letter-spacing:.005em;color:#24120a!important;
+  text-shadow:0 0 .5px rgba(36,18,10,.85),.3px .25px .4px rgba(70,34,12,.35)!important}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-letter .ms-l:nth-child(3n+1){letter-spacing:.012em}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-letter .ms-l:nth-child(3n+2){color:#2c160a}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-letter .ms-l:nth-child(5n+3){color:#1f0f08}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-kicker{color:#5a1208!important}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-title{color:#4a0a06!important;text-shadow:0 0 .6px rgba(70,10,5,.6)!important}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-sign{color:#3a0a05!important}
+/* broken M.A. wax seal with a crimson ribbon at the head of each opened document */
+:is(.ms-envelope,.tarot-why,.why-section) .ms-seal{display:block!important;width:86px!important;aspect-ratio:368/378;top:-1.1rem!important;transform:translateX(-50%) rotate(-5deg)!important;background:url(../images/letter/seal-ma-cracked.webp) center/contain no-repeat!important;filter:drop-shadow(0 4px 4px rgba(40,6,0,.6))!important}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-seal::before,:is(.ms-envelope,.tarot-why,.why-section) .ms-seal::after{content:"";position:absolute;top:58%;width:16px;height:74px;z-index:-1;background:linear-gradient(90deg,#4d0608,#8e1416 35%,#b42a26 50%,#7a0f12 70%,#3d0406);clip-path:polygon(0 0,100% 0,100% 100%,50% 86%,0 100%);box-shadow:0 2px 4px rgba(0,0,0,.4)}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-seal::before{left:30%;transform:rotate(14deg);transform-origin:top}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-seal::after{left:52%;transform:rotate(-10deg);transform-origin:top}
+.author-doc .au-wax{background-image:url(../images/letter/seal-ma-cracked.webp)!important}
+@media (max-width:699px){:is(.ms-envelope,.tarot-why,.why-section) .ms-seal{width:70px!important}:is(.ms-envelope,.tarot-why,.why-section) .ms-letter :is(.ms-st,.tarot-why-copy .ms-st){font-size:1.12rem!important}}
+
+/* sealed envelopes: real paper, deckled shadow, twine tied under the seal */
+.pk-paper{background:linear-gradient(180deg,rgba(255,246,222,.18),rgba(90,50,14,.12)),url(../images/letter/paper-real.jpg) 40px 30px/520px 520px!important}
+.pk-flap{background:linear-gradient(180deg,rgba(255,246,222,.12),rgba(80,40,8,.30)),url(../images/letter/paper-real.jpg) 300px 140px/520px 520px!important}
+.pk-paper::before,.pk-paper::after{content:"";position:absolute;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(60deg,#8d6a3b 0 3px,#5e4322 3px 5px,#a8844d 5px 7px);box-shadow:0 2px 3px rgba(30,15,4,.55),inset 0 1px 0 rgba(255,230,180,.35)}
+.pk-paper::before{left:-2px;right:-2px;top:calc(64% - 3px);height:6px}
+.pk-paper::after{top:-2px;bottom:-2px;left:calc(50% - 3px);width:6px;background:repeating-linear-gradient(150deg,#8d6a3b 0 3px,#5e4322 3px 5px,#a8844d 5px 7px)}
+.is-breaking .pk-paper::before,.is-breaking .pk-paper::after{transition:opacity .6s;opacity:0}
+.pk-seal{z-index:3}
+.pk-half{background-image:url(../images/letter/seal-ma.webp)}
+/* v21 fix: seal sits inside the deckled sheet (mask clips anything above it) */
+:is(.ms-envelope,.tarot-why,.why-section) .ms-letter{padding-top:clamp(8.2rem,11vw,9rem)!important}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-seal{top:1.3rem!important;width:78px!important}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-seal::before,:is(.ms-envelope,.tarot-why,.why-section) .ms-seal::after{top:62%;height:46px;width:14px}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-seal::before{left:22%;transform:rotate(32deg)}
+:is(.ms-envelope,.tarot-why,.why-section) .ms-seal::after{left:62%;transform:rotate(-30deg)}
+@media (max-width:699px){:is(.ms-envelope,.tarot-why,.why-section) .ms-letter{padding-top:7.6rem!important}:is(.ms-envelope,.tarot-why,.why-section) .ms-seal{width:66px!important;top:1.1rem!important}}
+.tr-synthesis .back-btn .bb-seal{background:radial-gradient(circle at 34% 28%,#d9504a 0,#9e1a17 38%,#5d0b0b 80%,#3b0606 100%)!important;border:0!important;padding:0!important}
+
+/* ===== v21 READABILITY: one clear old-book serif for every body passage (titles keep their ornate faces) ===== */
+:root{--f-read:"Garamond","EB Garamond",Georgia,"Times New Roman",serif}
+.ms-st,.ms-letter .ms-st,.ms-st .ms-l,.ms-letter .ms-l,
+.ly-body,.ly-body p,.ly-o,.ly-t,.ly-text,.lyr-tr,.lyr-diary,.lyr-codex p,
+.tr-synthesis p,.tr-synthesis li,.tr-voice,.tr-meaning,.tr-card-text,.tarot-why-copy p,
+.lead,.intro,.section-intro,.album-hero p:not(.kicker):not(.crumb),.album-why p,.why-section p:not(.ms-kicker),
+.lib-page,.lib-page-m,.au-body p,.prose p,.diary p,.song-meta{
+  font-family:var(--f-read)!important;font-style:normal!important;font-weight:450!important;
+  letter-spacing:0!important;word-spacing:normal!important;text-shadow:none!important;filter:none!important}
+.ms-st,.ly-body,.tr-synthesis p,.tarot-why-copy p,.lead,.intro,.section-intro,.why-section p:not(.ms-kicker),.lyr-diary,.au-body p{
+  font-size:20px!important;line-height:1.65!important}
+.ms-st .ms-l,.ly-o,.ly-t{font-size:inherit!important;line-height:1.65!important}
+.ms-st,.tr-synthesis p,.tarot-why-copy p,.lead,.intro,.section-intro,.why-section p:not(.ms-kicker),.lyr-diary,.au-body p{max-width:68ch}
+.ms-st,.tarot-why-copy p{margin-left:auto;margin-right:auto}
+/* ink on paper: near-black brown, >=12:1 on the parchment */
+.ms-letter .ms-st,.ms-letter .ms-l,.ms-letter .ly-o,.ms-letter .ly-t{color:#1a0c05!important;mix-blend-mode:normal!important}
+.ms-letter .ly-tocome{font-family:var(--f-read)!important;font-style:normal!important;color:#4a2410!important}
+/* dark panels: warm bone on near-black */
+.tr-synthesis p,.tr-synthesis li{color:#efe4cf!important}
+.tr-synthesis q{font-style:normal!important}
+.lead,.intro,.section-intro{color:#ece0c8!important}
+.ly-alb,.ms-sign{font-style:normal!important}
+@media (max-width:699px){
+  .ms-st,.ly-body,.tr-synthesis p,.tarot-why-copy p,.lead,.intro,.section-intro,.why-section p:not(.ms-kicker),.lyr-diary,.au-body p{font-size:18px!important;line-height:1.65!important}
+}
+
+/* ===== v22: entrance — darker, closer, quietly wrong ===== */
+.hero-dread{position:absolute;inset:0;z-index:5;pointer-events:none;
+  background:radial-gradient(ellipse 62% 70% at 62% 42%,transparent 0,rgba(0,0,0,.18) 45%,rgba(0,0,0,.78) 82%,#000 100%),linear-gradient(180deg,rgba(0,0,0,.55) 0,transparent 22%,transparent 55%,rgba(0,0,0,.92) 100%);
+  animation:dreadBreath 9s ease-in-out infinite}
+.hero-dread .hd-pass{position:absolute;inset:-10% -40%;background:linear-gradient(100deg,transparent 30%,rgba(0,0,0,.55) 45%,rgba(0,0,0,.55) 52%,transparent 68%);transform:translateX(-70%);animation:dreadPass 23s cubic-bezier(.5,0,.5,1) infinite 4s}
+.hero-dread .hd-gutter{position:absolute;inset:0;background:#000;opacity:0;animation:dreadGutter 13s steps(1) infinite 6s}
+@keyframes dreadBreath{0%,100%{opacity:.92}50%{opacity:1}}
+@keyframes dreadPass{0%{transform:translateX(-75%)}55%,100%{transform:translateX(75%)}}
+@keyframes dreadGutter{0%,100%{opacity:0}61%{opacity:.35}62%{opacity:0}63%{opacity:.5}64.5%{opacity:0}}
+.hero .hero-copy{z-index:7!important}
+.hero-whisper{margin:0 0 .4rem;font:500 1.05rem/1.4 var(--f-sc);letter-spacing:.22em;text-transform:uppercase;color:#e2483e;text-shadow:0 0 1px #000,0 2px 10px #000}
+.hero .lead{max-width:34rem!important;color:#efe4cf!important;text-shadow:0 1px 2px #000,0 0 18px rgba(0,0,0,.9)!important}
+.hero .kicker{color:#d9b779!important}
+@media (prefers-reduced-motion:reduce){.hero-dread,.hero-dread i{animation:none!important}.hero-dread .hd-pass{display:none}}
+
+/* ===== v22: the release seal and the oracle side by side ===== */
+.home-pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,3vw,2.4rem);max-width:1180px;margin:clamp(2rem,6vh,4rem) auto;padding:0 clamp(1rem,4vw,2rem);align-items:stretch}
+.home-pair>section>.wrap{width:auto;max-width:none;padding:0;height:100%}
+@media (max-width:860px){.home-pair{grid-template-columns:1fr}}
+.rl-doc,.oracle-sheet{position:relative;height:100%;box-sizing:border-box;padding:2.4rem clamp(1.2rem,3vw,2.2rem) 2rem;text-align:center;color:#1a0c05;
+  background:radial-gradient(ellipse at 50% 40%,rgba(255,246,222,.35),transparent 65%),linear-gradient(180deg,rgba(90,50,14,.06),rgba(90,50,14,.22)),url(../images/letter/paper-real.jpg) 0 0/520px;
+  box-shadow:inset 0 0 0 1px rgba(60,30,8,.35),inset 0 0 50px rgba(80,40,10,.45),0 22px 46px rgba(0,0,0,.75);-webkit-mask-box-image:url(../images/letter/edge-mask.png) 96 / 26px round}
+.rl-k,.oracle-k{margin:0 0 .5rem;font:600 .82rem/1.3 var(--f-sc);letter-spacing:.2em;text-transform:uppercase;color:#5a1208}
+.rl-title{margin:.2rem 0 1.1rem;font-family:var(--f-hand);font-weight:400;font-size:clamp(2rem,1.6rem + 1.6vw,2.8rem);line-height:1.05;color:#4a0a06}
+.rl-seal{position:relative;display:block;width:92px;aspect-ratio:360/372;margin:-.6rem auto .6rem}
+.rl-seal i{position:absolute;inset:0;background:url(../images/letter/seal-ma.webp) center/contain no-repeat;transition:transform 1.4s cubic-bezier(.5,0,.3,1)}
+.rl-seal .h1{clip-path:polygon(0 0,54% 0,46% 34%,56% 52%,44% 70%,52% 100%,0 100%)}
+.rl-seal .h2{clip-path:polygon(54% 0,100% 0,100% 100%,52% 100%,44% 70%,56% 52%,46% 34%)}
+.release.is-open .rl-seal .h1{transform:translate(-10px,4px) rotate(-9deg)}.release.is-open .rl-seal .h2{transform:translate(10px,6px) rotate(8deg)}
+.rl-count{display:flex;justify-content:center;gap:clamp(.5rem,2vw,1.2rem);margin:0 0 1rem}
+.rl-count span{display:grid;min-width:4.2rem;padding:.5rem .3rem;border:1px solid rgba(70,30,8,.45);background:rgba(255,248,230,.35)}
+.rl-count b{font:600 clamp(1.6rem,1.3rem + 1vw,2.2rem)/1 var(--f-read);color:#1a0c05;font-variant-numeric:tabular-nums}
+.rl-count small{font:600 .72rem/1.6 var(--f-sc);letter-spacing:.14em;text-transform:uppercase;color:#4a2410}
+.rl-note,.oracle-hint{margin:.6rem 0 0;font:450 1rem/1.5 var(--f-read);color:#3b1d0c}
+.rl-opened{font:500 1.25rem/1.5 var(--f-read);color:#1a0c05;margin:0 0 1rem}
+.oracle-line{margin:.6rem auto 1rem;max-width:34ch;border:0;padding:0}
+.oracle-en{margin:0;font:500 clamp(1.4rem,1.2rem + .8vw,1.8rem)/1.45 var(--f-read);color:#1a0c05}
+.oracle-o{margin:.6rem 0 0;font:450 1rem/1.5 var(--f-read);color:#4a2410}
+.oracle-src{margin:0 0 1rem;font:450 1.02rem/1.5 var(--f-read);color:#3b1d0c}
+.oracle-src a{color:#6e0f0a;text-decoration:underline;text-underline-offset:3px}
+.oracle-act .btn{color:#f5e3b8}
+.oracle.is-drawn .oracle-line{animation:inkIn .9s ease both}
+@keyframes inkIn{from{opacity:0;filter:blur(3px)}to{opacity:1;filter:none}}
+@media (prefers-reduced-motion:reduce){.oracle.is-drawn .oracle-line{animation:none}}
+
+/* ===== v22: music box on every song page ===== */
+.musicbox{position:relative;max-width:30rem;margin:1.2rem 0 0;border-radius:6px;overflow:hidden;color:#f3e6c8;
+  background:linear-gradient(90deg,rgba(0,0,0,.25),transparent 12%,transparent 88%,rgba(0,0,0,.25)),repeating-linear-gradient(92deg,#3a1d10 0 7px,#2c140b 7px 11px,#41210f 11px 19px),#2b150b;
+  box-shadow:inset 0 0 0 2px #b88a45,inset 0 0 0 5px #24110a,inset 0 0 0 6px rgba(225,185,110,.35),0 14px 30px rgba(0,0,0,.7)}
+.mb-lid{position:relative;display:flex;align-items:center;gap:.8rem;height:58px;padding:0 1.1rem;background:linear-gradient(180deg,rgba(255,220,160,.08),rgba(0,0,0,.35));border-bottom:1px solid rgba(200,160,90,.45)}
+.mb-drum{position:relative;flex:1;height:26px;border-radius:13px;background:linear-gradient(180deg,#f3d48a,#9c7330 45%,#5e4114 70%,#c7a055);box-shadow:inset 0 0 0 1px rgba(0,0,0,.5)}
+.mb-drum i{position:absolute;inset:4px 10px;background:radial-gradient(circle,#2a1a08 1.2px,transparent 1.6px) 0 0/11px 6px;opacity:.75}
+.musicbox.is-playing .mb-drum i{animation:mbTurn 1.2s linear infinite}
+@keyframes mbTurn{to{background-position:0 6px}}
+.mb-comb{width:46px;height:30px;background:repeating-linear-gradient(90deg,#d8dadc 0 3px,transparent 3px 5px);clip-path:polygon(0 0,100% 0,100% 100%,0 60%);opacity:.85}
+.mb-crank{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,#f1d18a 0 4px,#7a5418 5px 7px,transparent 8px),conic-gradient(from 20deg,#c9a055 0 12%,transparent 12% 50%,#c9a055 50% 62%,transparent 62%)}
+.mb-front{padding:.9rem 1.1rem 1.1rem}
+.mb-plate{margin:0 0 .6rem;padding:.35rem .7rem;display:inline-block;background:linear-gradient(180deg,#e9cf8f,#b8904a);color:#24120a;font:600 1.02rem/1.3 var(--f-read);box-shadow:inset 0 0 0 1px #6b4a1c,0 1px 2px #000}
+.mb-plate span{display:block;font:600 .66rem/1.4 var(--f-sc);letter-spacing:.2em;text-transform:uppercase;color:#4a2a0c}
+.mb-note{margin:0 0 .8rem;font:450 1.05rem/1.55 var(--f-read);color:#f3e6c8}
+.mb-links{display:flex;flex-wrap:wrap;gap:.6rem}
+.mb-link{display:inline-flex;align-items:center;min-height:42px;padding:.4rem 1rem;border:1px solid #c9a055;background:linear-gradient(180deg,#24120a,#120804);color:#f5e3b8;font:600 .8rem/1.2 var(--f-sc);letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
+.mb-link:first-child{background:linear-gradient(180deg,#8e1416,#5a0a0c);border-color:#e0b46a;color:#fff3dc}
+.mb-link:hover,.mb-link:focus-visible{box-shadow:0 0 14px rgba(230,150,70,.45);outline:none}
+.mb-play{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:.6rem;min-height:42px;padding:.3rem 1rem;border:1px solid #e0b46a;background:linear-gradient(180deg,#8e1416,#5a0a0c);color:#fff3dc;font:600 .8rem/1 var(--f-sc);letter-spacing:.14em;text-transform:uppercase}
+.mb-bar{height:4px;margin:.8rem 0 .3rem;background:rgba(255,230,180,.2)}.mb-bar i{display:block;height:100%;width:0;background:#e0b46a}
+.mb-time{font:450 .9rem var(--f-read)}
+
+/* ===== v22: engraved sign plates (number and Marseille card) ===== */
+.sign-plates{display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:62rem;margin:1.6rem auto 0;position:relative;z-index:3}
+@media (max-width:760px){.sign-plates{grid-template-columns:1fr}}
+.sign-plate{position:relative;padding:1rem 1.2rem 1.1rem 5.6rem;min-height:5.6rem;color:#f0e2c2;
+  background:radial-gradient(120% 90% at 20% 0%,rgba(255,220,160,.08),transparent 60%),linear-gradient(180deg,#22160f,#120b08);
+  box-shadow:inset 0 0 0 1px #b88a45,inset 0 0 0 4px #120b08,inset 0 0 0 5px rgba(201,160,85,.45),0 10px 22px rgba(0,0,0,.6)}
+.sp-k{display:block;font:600 .74rem/1.4 var(--f-sc);letter-spacing:.2em;text-transform:uppercase;color:#e2bf7c}
+.sp-v{position:absolute;left:1rem;top:50%;translate:0 -50%;width:3.6rem;height:3.6rem;display:grid;place-items:center;border-radius:50%;font:600 1.7rem/1 var(--f-read);color:#2a1606;background:radial-gradient(circle at 35% 30%,#f6dc9c,#c39645 55%,#7c5719);box-shadow:inset 0 0 0 2px rgba(60,30,8,.5),0 2px 4px #000}
+.sp-v-card{position:static;translate:none;width:auto;height:auto;display:block;border-radius:0;margin:.15rem 0 .3rem;background:none;box-shadow:none;color:#f6e2b3;font:500 1.15rem/1.35 var(--f-read)}
+.sp-card{padding-left:5.6rem}
+.sp-card::before{content:"";position:absolute;left:1.2rem;top:50%;translate:0 -50%;width:2.9rem;height:4.4rem;border-radius:3px;background:linear-gradient(180deg,#f2e2bd,#d8bf8a);box-shadow:inset 0 0 0 2px #7a1a12,inset 0 0 0 4px #f2e2bd,inset 0 0 0 5px #2a1606,0 2px 5px #000}
+.sp-card::after{content:"✦";position:absolute;left:1.2rem;top:50%;translate:0 -50%;width:2.9rem;text-align:center;font-size:1.3rem;color:#7a1a12}
+.sp-r{margin:.25rem 0 0;font:450 1.02rem/1.55 var(--f-read);color:#efe4cf}
+
+/* ===== v22: numbers room ===== */
+.num-room .wrap{max-width:60rem}
+.num-form{display:grid;grid-template-columns:1fr 1.4fr;gap:1rem 1.4rem;padding:1.6rem clamp(1rem,3vw,2rem);background:linear-gradient(180deg,#1b120e,#0e0907);box-shadow:inset 0 0 0 1px #9c7a45,inset 0 0 0 4px #0e0907,inset 0 0 0 5px rgba(201,160,85,.3),0 18px 40px rgba(0,0,0,.7)}
+@media (max-width:700px){.num-form{grid-template-columns:1fr}}
+.num-field label{display:block;margin:0 0 .35rem;font:600 .8rem/1.3 var(--f-sc);letter-spacing:.18em;text-transform:uppercase;color:#e2bf7c}
+.num-field input{box-sizing:border-box;width:100%;min-height:46px;padding:.5rem .8rem;border:1px solid #9c7a45;background:#f1e4c6;color:#1a0c05;font:500 1.15rem/1.3 var(--f-read);color-scheme:light}
+.num-field input:focus{outline:2px solid #e9bb79;outline-offset:2px}
+.num-private,.num-act,.num-err{grid-column:1/-1;margin:0}
+.num-private{font:450 1rem/1.5 var(--f-read);color:#d9ccb2}
+.num-err{color:#ffb4a6;font:500 1.05rem/1.4 var(--f-read)}
+.num-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:1.4rem;margin:2rem 0}
+.num-card{padding:2rem 1.6rem 1.6rem;text-align:center;color:#1a0c05;background:radial-gradient(ellipse at 50% 40%,rgba(255,246,222,.35),transparent 65%),url(../images/letter/paper-real.jpg) 0 0/520px;box-shadow:inset 0 0 50px rgba(80,40,10,.45),0 18px 40px rgba(0,0,0,.7);-webkit-mask-box-image:url(../images/letter/edge-mask.png) 96 / 24px round}
+.num-results.is-drawn .num-card{animation:inkIn 1s ease both}
+.nc-k{margin:0;font:600 .8rem/1.3 var(--f-sc);letter-spacing:.2em;text-transform:uppercase;color:#5a1208}
+.nc-n{margin:.3rem 0 0;font:600 4rem/1 var(--f-read);color:#6e0f0a}.nc-n small{display:block;margin-top:.3rem;font:600 .72rem/1.3 var(--f-sc);letter-spacing:.18em;text-transform:uppercase;color:#4a2410}
+.nc-t{margin:.6rem 0 .8rem;font-family:var(--f-hand);font-weight:400;font-size:2rem;color:#4a0a06}
+.nc-text p{margin:0;font:450 20px/1.65 var(--f-read);color:#1a0c05}
+.nc-how{margin:1rem 0 0;padding-top:.8rem;border-top:1px solid rgba(70,30,8,.3);font:450 .98rem/1.5 var(--f-read);color:#3b1d0c}
+.num-method{margin:1rem 0 2rem;padding:1rem 1.4rem;border:1px solid rgba(201,160,85,.45);background:#120b08;color:#efe4cf}
+.num-method summary{cursor:pointer;font:600 .85rem/1.6 var(--f-sc);letter-spacing:.16em;text-transform:uppercase;color:#e9bb79}
+.num-method p{font:450 18px/1.65 var(--f-read);max-width:68ch}
+@media (max-width:699px){.nc-text p{font-size:18px}}
+
+/* ===== v22: hidden room (local preview builds only) ===== */
+.room-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,26rem),1fr));gap:1.6rem;padding-bottom:3rem}
+.room-etch{margin:0;padding:.8rem;background:#0e0907;box-shadow:inset 0 0 0 1px #9c7a45,0 18px 40px rgba(0,0,0,.7)}
+.room-etch img{display:block;width:100%;height:auto}
+.room-etch figcaption{padding:.7rem .2rem .1rem;font:450 1.05rem/1.4 var(--f-read);color:#efe4cf}
+.re-la{display:block;font:600 .78rem/1.4 var(--f-sc);letter-spacing:.18em;text-transform:uppercase;color:#e2bf7c}
+body[data-room="1"] .foot-sigil,body[data-room="1"] .fig-sigil{cursor:pointer}
+/* readability: sizes win over older, more specific letter rules */
+html body .ms-letter .ms-st,html body .ms-letter .ms-st .ms-l,html body .ly-body .ly-o,html body .ly-body .ly-t,html body .tr-synthesis p{font-size:20px!important;line-height:1.65!important}
+@media (max-width:699px){html body .ms-letter .ms-st,html body .ms-letter .ms-st .ms-l,html body .ly-body .ly-o,html body .ly-body .ly-t,html body .tr-synthesis p{font-size:18px!important}}
+.oracle-src a,.oracle-src a:visited{color:#6e0f0a!important;text-decoration:underline!important;text-decoration-color:rgba(110,15,10,.6)!important;-webkit-text-fill-color:#6e0f0a!important;background:none!important}
+html body .sign-plate .sp-r{color:#efe4cf!important;opacity:1!important;font:450 1.02rem/1.55 var(--f-read)!important}
+html body .rl-note,html body .oracle-hint{text-transform:none!important;letter-spacing:0!important;font:450 1rem/1.5 var(--f-read)!important;color:#3b1d0c!important}
+html body .ms-letter .ms-st .ms-l,html body .ms-letter .ms-st{text-shadow:none!important}
+html body .ms-letter .ly-body .ly-o,html body .ms-letter .ly-body .ly-t{color:#1a0c05!important;text-shadow:none!important}
+@media (max-width:699px){html body .ms-letter .ly-body .ly-o,html body .ms-letter .ly-body .ly-t,html body .ly-row .ly-t,html body .ly-row .ly-o{font-size:18px!important;line-height:1.65!important}}

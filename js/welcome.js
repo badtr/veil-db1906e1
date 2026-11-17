@@ -27,7 +27,7 @@ export function playWelcome({ sound }) {
       <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="welBleed" x="-5%" y="-20%" width="110%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.09" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4"/></filter></svg>
       <div class="wel-crypt" aria-hidden="true"><div class="wc-floor"></div><div class="wc-smoke"><i></i><i></i><i></i></div><div class="wc-scratch"></div><div class="wc-blood">${Array.from({ length: 14 }, (_, i) => `<i style="--x:${(i * 7.3 + (i % 3) * 2.1) % 100}%;--h:${40 + ((i * 53) % 160)}px;--w:${3 + (i % 4) * 2}px;--d:${(i % 5) * 0.9}s"></i>`).join('')}</div><div class="wc-skull wc-skull-l"></div><div class="wc-skull wc-skull-r"></div><div class="wc-flicker"></div></div>
       <div class="wel-grain" aria-hidden="true"></div>
-      <button type="button" class="wel-touch"><span class="wel-warn" aria-hidden="true"><span class="wel-warn-t">You should not be here</span></span><span class="wel-touch-dot" aria-hidden="true"></span><span class="wel-touch-t">Touch the dark to begin</span><small>Sound on &middot; headphones recommended</small></button>
+      <button type="button" class="wel-touch"><span class="wel-warn" aria-hidden="true"><span class="wel-warn-t">You should not be here</span></span><span class="wel-touch-dot" aria-hidden="true"></span><span class="wel-touch-t">Touch the dark to begin</span><small>Sound stays off unless you turn it on</small></button>
       <div class="wel-lines" aria-live="polite"></div>
       <section class="wel-warnstep" hidden aria-live="polite"><p class="ws-kicker">Ultima monitio &middot; the last warning</p><div class="ws-lines"></div><button type="button" class="ws-go" hidden>I have been warned &middot; go to the seal</button></section>
       <button type="button" class="wel-wick" aria-label="Light the candle" hidden><span class="wel-wick-hint">Touch the wick to light the candle</span></button>
@@ -100,7 +100,7 @@ export function playWelcome({ sound }) {
       }
       await wait(hold);
       p.classList.add('is-out'); setTimeout(() => p.remove(), 2200);
-      await wait(1700);
+      await wait(1100);
     }
 
     function finish(mode) {
@@ -116,22 +116,20 @@ export function playWelcome({ sound }) {
     // 1. touch the dark (also unlocks sound)
     touch.addEventListener('click', async () => {
       if (phase !== 'dark') return; phase = 'whisper';
-      if (sound.pref !== 'off') { try { await sound.enable(); } catch (e) {} }
       touch.classList.add('is-gone'); el.classList.add('is-woken');
       const hb = () => { if (done || phase === 'lock' || phase === 'open') return; sound.heartbeat && sound.heartbeat(); creep.push(setTimeout(hb, 1500)); }; hb();
-      await wait(2200);
-      await say('You were not meant to find this place.', { hold: 7000 });
-      await say('This was written long before you were born.', { hold: 7000 });
+      await wait(1200);
+      await say('You were not meant to find this place.', { hold: 3600 });
       // she rises out of the dark for a moment: whole, centred, just the start of her turn
       const fig = el.querySelector('.wel-figure'); const fv = fig.querySelector('video');
       try { fv.currentTime = 0; fv.play().catch(() => {}); } catch (e) {}
       fig.classList.add('is-on');
-      await new Promise((r) => creep.push(setTimeout(r, reduceMotion ? 1200 : 4500)));
+      await new Promise((r) => creep.push(setTimeout(r, reduceMotion ? 900 : 3000)));
       fig.classList.remove('is-on'); setTimeout(() => { try { fv.pause(); } catch (e) {} }, 2500);
       if (done) return;
-      await wait(1200);
-      await say('Turn back.', { hold: 5500, cls: 'is-red' });
-      await say('Or light the candle.', { hold: 6000 });
+      await wait(500);
+      await say('Turn back.', { hold: 2600, cls: 'is-red' });
+      await say('Or light the candle.', { hold: 2800 });
       if (done) return;
       phase = 'wick'; wick.hidden = false; el.classList.add('show-wick'); wick.focus({ preventScroll: true });
     });
@@ -140,10 +138,8 @@ export function playWelcome({ sound }) {
     wick.addEventListener('click', async () => {
       if (phase !== 'wick') return; phase = 'lit';
       sound.ignite(); el.classList.add('is-lit'); wick.hidden = true;
-      await wait(3400);
-      await say('Then you have chosen.', { hold: 5500 });
-      if (done) return;
-      await lastWarning();
+      await wait(1800);
+      await say('Then you have chosen.', { hold: 2600 });
       if (done) return;
       phase = 'lock'; el.classList.add('show-crypt'); sound.deny && sound.whisper(0.8); letter.hidden = false;
       requestAnimationFrame(() => el.classList.add('show-letter'));
