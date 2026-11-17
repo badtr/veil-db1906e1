@@ -8,13 +8,19 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 const NOW = (() => { const q = new URLSearchParams(location.search).get('pbnow'); const t = q ? Date.parse(q) : NaN; const off = isNaN(t) ? 0 : t - Date.now(); return () => new Date(Date.now() + off); })();
 let timers = [];
 
-// ---------- release seal ----------
+// ---------- upcoming releases: countdown, LIVE NOW on the day, gone from Upcoming 14 days later ----------
 function release(root) {
-  $$('[data-release]', root).forEach((sec) => {
-    const at = Date.parse(sec.dataset.release); const box = $('[data-release-count]', sec);
+  $$('[data-release]', root).forEach((card) => {
+    const at = Date.parse(card.dataset.release), until = Date.parse(card.dataset.expire || '') || Infinity; const box = $('[data-release-count]', card);
     const tick = () => {
-      const left = at - NOW().getTime();
-      if (left <= 0) { $$('.rl-links', sec).forEach((l) => { l.hidden = l.dataset.when !== 'after'; }); sec.classList.add('is-open'); box.hidden = true; $('.rl-open', sec).hidden = false; $('.rl-k', sec).textContent = 'Released'; $('.rl-note', sec).hidden = true; return false; }
+      const now = NOW().getTime();
+      if (now >= until) { card.hidden = true; const sec = card.closest('[data-upcoming]'); if (sec && !$$('[data-release]', sec).some((c) => !c.hidden)) sec.hidden = true; return false; }
+      const left = at - now;
+      if (left <= 0) {
+        $$('.rl-links', card).forEach((l) => { l.hidden = l.dataset.when !== 'after'; });
+        card.classList.add('is-open'); box.hidden = true; $('.rl-open', card).hidden = false; $('.rl-live', card).hidden = false;
+        $('.rl-k', card).textContent = lang() === 'no' ? 'Ute nå' : 'Released'; $('.rl-note', card).hidden = true; return true;
+      }
       const s = Math.floor(left / 1000);
       $('[data-u="d"]', box).textContent = Math.floor(s / 86400); $('[data-u="h"]', box).textContent = pad(Math.floor(s / 3600) % 24);
       $('[data-u="m"]', box).textContent = pad(Math.floor(s / 60) % 60); $('[data-u="s"]', box).textContent = pad(s % 60);
@@ -22,7 +28,63 @@ function release(root) {
     };
     if (tick()) { const id = setInterval(() => { if (!tick()) clearInterval(id); }, 1000); timers.push(id); }
   });
+  // overview: new releases appear from their day (only built when live on Suno); albums on the site get a LIVE NOW badge for 14 days
+  const now = NOW().getTime();
+  $$('.al-row[data-show-from]', root).forEach((r) => { r.hidden = now < Date.parse(r.dataset.showFrom); });
+  $$('.al-row[data-live-from]', root).forEach((r) => {
+    const on = now >= Date.parse(r.dataset.liveFrom) && now < Date.parse(r.dataset.liveUntil);
+    let b = $('.al-live', r); if (on && !b) { b = document.createElement('span'); b.className = 'al-live'; b.textContent = lang() === 'no' ? 'Ute nå' : 'Live now'; $('.al-body', r)?.prepend(b); }
+    if (!on && b) b.remove();
+  });
 }
+
+// ---------- The Coven List: a form that sends and keeps nothing (not connected yet) ----------
+function coven(root) {
+  $$('[data-coven] form', root).forEach((f) => {
+    if (f.dataset.bound) return; f.dataset.bound = '1';
+    f.addEventListener('submit', (e) => { e.preventDefault(); const m = f.parentElement.querySelector('.coven-msg'); f.reset(); m.textContent = lang() === 'no' ? 'Listen åpner snart.' : 'The list opens soon.'; f.closest('.coven-sheet').classList.add('is-sealed'); });
+  });
+}
+
+// ---------- ink-reveal lyrics: real, selectable text; the ink only spreads when motion is welcome ----------
+function inkLyrics(root) {
+  const lines = $$('.ly-body .ly-o, .ly-body .ly-t', root); if (!lines.length) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-inked'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  lines.forEach((l, i) => { if (l.getBoundingClientRect().top < innerHeight * 0.92) return; l.classList.add('ink-wait'); l.style.setProperty('--ink-d', (i % 2) * 0.12 + 's'); io.observe(l); });
+  timers.push(setTimeout(() => lines.forEach((l) => l.classList.add('is-inked')), 60000)); // never leave lines hidden
+}
+
+// ---------- EN / NO for navigation and interface labels only (lyrics and texts stay English) ----------
+const NO = {
+  'Home': 'Hjem', 'Albums': 'Album', 'Archive': 'Arkiv', 'Tarot': 'Tarot', 'Numbers': 'Tall', 'Journal': 'Dagbok', 'About': 'Om', 'Images': 'Bilder', 'Six signed etchings': 'Seks signerte raderinger',
+  'The threshold': 'Terskelen', 'Every record, every song': 'Hver plate, hver sang', 'Sealed plates': 'Forseglede trykk', 'Three cards, turned': 'Tre kort, snudd',
+  'A date, a name, counted': 'En dato, et navn, talt', 'In his own hand': 'Med egen hånd', 'The one behind it': 'Den som står bak',
+  'The rooms of the rite': 'Ritualets rom', 'Search': 'Søk', 'Guide': 'Meny', 'Back': 'Tilbake', 'Find us': 'Finn oss', 'Press': 'Presse',
+  'Replay the threshold': 'Gå over terskelen igjen', 'Upcoming': 'Kommer snart', 'Under seal until': 'Forseglet til', 'days': 'dager', 'hours': 'timer',
+  'minutes': 'minutter', 'seconds': 'sekunder', 'Live now': 'Ute nå', 'Listen now': 'Lytt nå', 'Pre-save': 'Forhåndslagre', 'Open the album': 'Åpne albumet',
+  'The seal breaks by itself at midnight on release day.': 'Seglet brytes av seg selv ved midnatt på utgivelsesdagen.',
+  'The oracle': 'Orakelet', 'Draw another line': 'Trekk en ny linje', 'Today\u2019s line': 'Dagens linje', 'One line from the songs for each day. It changes at midnight.': 'Én linje fra sangene hver dag. Den skifter ved midnatt.',
+  'The Coven List': 'Coven-listen', 'Join the list': 'Bli med på listen', 'A letter when a record breaks its seal. Nothing more.': 'Et brev når en plate bryter seglet. Ikke noe mer.',
+  'Sign the list': 'Skriv deg på', 'Nothing you type is sent or kept.': 'Ingenting du skriver blir sendt eller lagret.',
+  'A sealed promise': 'Et forseglet løfte', 'For the press': 'For pressen', 'Short bio': 'Kort biografi', 'Download the press kit': 'Last ned pressepakken',
+  'Sigil (SVG)': 'Sigill (SVG)', 'Wax seal (PNG)': 'Voksegl (PNG)', 'Album covers': 'Albumomslag', 'Download': 'Last ned',
+  'Make a lyric card': 'Lag et tekstkort', 'Count': 'Tell', 'Clear': 'Tøm', 'Sound off': 'Lyd av', 'Sound on': 'Lyd på', 'Tap for sound': 'Trykk for lyd'
+};
+const PH = { 'An album, a song, a line, a card\u2026': 'Et album, en sang, en linje, et kort\u2026', 'An album or a song title\u2026': 'Et album eller en sangtittel\u2026' };
+const lang = () => { try { return localStorage.getItem('pb-lang') === 'no' ? 'no' : 'en'; } catch (e) { return 'en'; } };
+function applyLang() {
+  const no = lang() === 'no';
+  $$('[data-i18n]').forEach((el) => {
+    if (el.children.length) return;
+    if (!el.dataset.en) el.dataset.en = el.textContent.trim();
+    const t = NO[el.dataset.en]; if (!t) return;
+    el.textContent = no ? t : el.dataset.en; if (no) el.setAttribute('lang', 'nb'); else el.removeAttribute('lang');
+  });
+  $$('input[placeholder]').forEach((i) => { if (!i.dataset.en) i.dataset.en = i.placeholder; const t = PH[i.dataset.en]; if (t) i.placeholder = no ? t : i.dataset.en; });
+  $$('[data-lang-toggle]').forEach((b) => { b.classList.toggle('is-no', no); b.setAttribute('aria-pressed', String(no)); b.setAttribute('aria-label', no ? 'Switch to English' : 'Bytt til norsk'); });
+}
+document.addEventListener('click', (e) => { if (!e.target.closest('[data-lang-toggle]')) return; try { localStorage.setItem('pb-lang', lang() === 'no' ? 'en' : 'no'); } catch (_) {} applyLang(); });
 
 // ---------- daily oracle ----------
 let ORACLE = null;
@@ -41,7 +103,7 @@ function oracle(root) {
       const song = o.url ? `<a href="${new URL(o.url, ROOT).href}">${esc(o.song)}</a>` : esc(o.song);
       $('[data-oracle-src]', sec).innerHTML = `From ${song} &middot; ${esc(o.album)}`;
       $('[data-oracle-today]', sec).hidden = daily;
-      $('.oracle-k span', sec).textContent = daily ? NOW().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'a line drawn for you';
+      $('[data-oracle-date]', sec).textContent = daily ? NOW().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'a line drawn for you';
       sec.classList.remove('is-drawn'); void sec.offsetWidth; sec.classList.add('is-drawn');
     };
     const today = () => { todayIdx = hash(dayKey(NOW())) % lines.length; show(todayIdx, true); };
@@ -210,29 +272,63 @@ const img = (src) => new Promise((ok, no) => { const i = new Image(); i.onload =
 function wrapText(ctx, text, maxW) { const words = text.split(/\s+/); const lines = []; let cur = ''; for (const w of words) { const t = cur ? cur + ' ' + w : w; if (ctx.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t; } if (cur) lines.push(cur); return lines; }
 async function drawCard(canvas, line, song, album) {
   const W = 1080, H = 1350; canvas.width = W; canvas.height = H; const c = canvas.getContext('2d');
-  await Promise.all(['500 60px Garamond', '400 72px Fondamento', '30px "Fell SC"'].map((f) => document.fonts.load(f).catch(() => {})));
-  const [paper, seal] = await Promise.all([img('images/letter/paper-real.jpg'), img('images/letter/seal-ma.webp')]);
+  await Promise.all(['60px Fell', '400 64px Fondamento', '30px "Fell SC"'].map((f) => document.fonts.load(f).catch(() => {})));
+  const [paper, seal] = await Promise.all([img('images/letter/paper-real.jpg'), img('images/letter/seal-logo.png')]);
+  let sd = [...(song + line)].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) >>> 0, 7);
+  const rnd = () => { sd = (sd * 1664525 + 1013904223) >>> 0; return sd / 4294967296; };
+  const nz = (t, k) => Math.sin(t * 1.7 + k) * .5 + Math.sin(t * 4.3 + k * 2.1) * .3 + Math.sin(t * 11.9 + k * .7) * .2;
   c.fillStyle = '#0b0606'; c.fillRect(0, 0, W, H);
-  // deckled sheet
-  const m = 60; c.save(); c.beginPath();
-  const pts = []; const jag = (a, b, n, axis) => { for (let i = 0; i <= n; i++) { const t = i / n; pts.push(axis(a + (b - a) * t, (Math.sin(i * 12.9898) * 43758.5453 % 1) * 9)); } };
-  jag(m, W - m, 60, (x, j) => [x, m + j]); jag(m, H - m, 70, (y, j) => [W - m - j, y]); jag(W - m, m, 60, (x, j) => [x, H - m - j]); jag(H - m, m, 70, (y, j) => [m + j, y]);
-  pts.forEach(([x, y], i) => (i ? c.lineTo(x, y) : c.moveTo(x, y))); c.closePath(); c.clip();
+  // torn, burnt deckle edge
+  const m = 56; const pts = [];
+  const side = (n, f) => { for (let i = 0; i < n; i++) pts.push(f(i / n)); };
+  const tear = (t, k) => 14 * nz(t * 9, k) + 7 * (rnd() - .5) + (rnd() < .05 ? 16 * rnd() : 0);
+  side(90, (t) => [m + t * (W - 2 * m), m + tear(t, 1)]); side(110, (t) => [W - m - tear(t, 2), m + t * (H - 2 * m)]);
+  side(90, (t) => [W - m - t * (W - 2 * m), H - m - tear(t, 3)]); side(110, (t) => [m + tear(t, 4), H - m - t * (H - 2 * m)]);
+  const path = new Path2D(); pts.forEach(([x, y], i) => (i ? path.lineTo(x, y) : path.moveTo(x, y))); path.closePath();
+  c.save(); c.shadowColor = 'rgba(0,0,0,.8)'; c.shadowBlur = 30; c.shadowOffsetY = 12; c.fillStyle = '#c9b07a'; c.fill(path); c.restore();
+  c.save(); c.clip(path);
   c.fillStyle = c.createPattern(paper, 'repeat'); c.fillRect(0, 0, W, H);
-  const g = c.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.75); g.addColorStop(0, 'rgba(255,246,222,.18)'); g.addColorStop(0.7, 'rgba(110,60,15,.18)'); g.addColorStop(1, 'rgba(60,25,5,.85)');
-  c.fillStyle = g; c.fillRect(0, 0, W, H);
+  // laid lines and chain lines of handmade paper
+  c.globalAlpha = .05; c.fillStyle = '#3a2208'; for (let y = 0; y < H; y += 4) c.fillRect(0, y, W, 1);
+  c.globalAlpha = .07; for (let x = 40; x < W; x += 94) c.fillRect(x + nz(x, 5) * 3, 0, 2, H); c.globalAlpha = 1;
+  // age, smudges, foxing
+  const g = c.createRadialGradient(W / 2, H / 2, H * .22, W / 2, H / 2, H * .72); g.addColorStop(0, 'rgba(255,246,222,.16)'); g.addColorStop(.75, 'rgba(110,60,15,.16)'); g.addColorStop(1, 'rgba(70,30,5,.55)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  for (let k = 0; k < 7; k++) { const x = rnd() * W, y = rnd() * H, rr = 30 + rnd() * 120; const s = c.createRadialGradient(x, y, 0, x, y, rr); s.addColorStop(0, `rgba(80,45,15,${.05 + rnd() * .07})`); s.addColorStop(1, 'rgba(80,45,15,0)'); c.fillStyle = s; c.beginPath(); c.ellipse(x, y, rr, rr * (.5 + rnd() * .5), rnd() * 3, 0, 7); c.fill(); }
+  for (let k = 0; k < 40; k++) { c.fillStyle = `rgba(120,70,25,${.08 + rnd() * .15})`; c.beginPath(); c.arc(rnd() * W, rnd() * H, 1 + rnd() * 3.5, 0, 7); c.fill(); }
   // folds
-  [[0, H / 3, W, H / 3], [0, (2 * H) / 3, W, (2 * H) / 3], [W / 2, 0, W / 2, H]].forEach(([x1, y1, x2, y2]) => { c.strokeStyle = 'rgba(90,50,14,.18)'; c.lineWidth = 3; c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke(); c.strokeStyle = 'rgba(255,247,226,.35)'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x1 + 2, y1 + 2); c.lineTo(x2 + 2, y2 + 2); c.stroke(); });
+  [[0, H / 3, W, H / 3], [0, (2 * H) / 3, W, (2 * H) / 3], [W / 2, 0, W / 2, H]].forEach(([x1, y1, x2, y2]) => { c.strokeStyle = 'rgba(90,50,14,.16)'; c.lineWidth = 3; c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke(); c.strokeStyle = 'rgba(255,247,226,.3)'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x1 + 2, y1 + 2); c.lineTo(x2 + 2, y2 + 2); c.stroke(); });
+  // burnt edge: scorch inward from the tear
+  c.save(); c.lineJoin = 'round'; [[46, 'rgba(70,30,6,.35)', 18], [18, 'rgba(40,14,2,.6)', 8], [5, 'rgba(15,4,0,.85)', 2]].forEach(([lw, col, bl]) => { c.strokeStyle = col; c.lineWidth = lw; c.shadowColor = col; c.shadowBlur = bl; c.stroke(path); }); c.restore();
+  for (let k = 0; k < 26; k++) { const [x, y] = pts[Math.floor(rnd() * pts.length)]; const rr = 25 + rnd() * 70; const s = c.createRadialGradient(x, y, 0, x, y, rr); s.addColorStop(0, 'rgba(25,8,0,.75)'); s.addColorStop(.45, 'rgba(90,40,8,.35)'); s.addColorStop(1, 'rgba(90,40,8,0)'); c.fillStyle = s; c.beginPath(); c.arc(x, y, rr, 0, 7); c.fill(); }
   c.restore();
-  // text
-  c.textAlign = 'center'; c.fillStyle = '#5a1208'; c.font = '30px "Fell SC", Georgia, serif'; c.fillText('PORCELAIN BALLERINA', W / 2, 190);
-  c.fillStyle = '#1a0c05'; let size = 64; c.font = `500 ${size}px Garamond, Georgia, serif`; let lines = wrapText(c, '\u201c' + line + '\u201d', W - 260);
-  while (lines.length > 6 && size > 40) { size -= 4; c.font = `500 ${size}px Garamond, Georgia, serif`; lines = wrapText(c, '\u201c' + line + '\u201d', W - 260); }
-  const lh = size * 1.45; let y = H / 2 - ((lines.length - 1) * lh) / 2 - 40; lines.forEach((l) => { c.fillText(l, W / 2, y); y += lh; });
-  c.strokeStyle = '#6e0f0a'; c.lineWidth = 2; c.beginPath(); c.moveTo(W / 2 - 110, y + 10); c.lineTo(W / 2 + 110, y + 10); c.stroke();
-  c.fillStyle = '#4a0a06'; c.font = '400 58px Fondamento, Georgia, serif'; c.fillText(song, W / 2, y + 90, W - 200);
-  c.fillStyle = '#3b1d0c'; c.font = '30px "Fell SC", Georgia, serif'; c.fillText(album, W / 2, y + 140, W - 200);
-  const sw = 150, sh = sw * seal.height / seal.width; c.shadowColor = 'rgba(40,6,0,.55)'; c.shadowBlur = 14; c.shadowOffsetY = 5; c.drawImage(seal, W / 2 - sw / 2, H - 120 - sh, sw, sh); c.shadowColor = 'transparent';
+  // hand-inked lettering: quill serif, per-letter jitter, uneven baseline, pooled ink
+  const ink = (text, x0, y0, font, size, col, maxW) => {
+    c.font = `${font.replace('@', size + 'px')}`; const wTot = Math.min(c.measureText(text).width, maxW || 1e9); let x = x0 - wTot / 2; const slope = (rnd() - .5) * .012;
+    const sc = maxW && c.measureText(text).width > maxW ? maxW / c.measureText(text).width : 1;
+    for (const ch of text) {
+      const fs = size * sc * (1 + (rnd() - .5) * .05); c.font = font.replace('@', fs.toFixed(1) + 'px');
+      const cw = c.measureText(ch).width; const y = y0 + (x - x0) * slope + (rnd() - .5) * 3.4; const rot = (rnd() - .5) * .07;
+      c.save(); c.translate(x + cw / 2, y); c.rotate(rot);
+      c.globalAlpha = .28; c.fillStyle = col; c.shadowColor = col; c.shadowBlur = 2.2; c.fillText(ch, -cw / 2 + .6, .8);   // bleed
+      c.globalAlpha = .82 + rnd() * .18; c.shadowBlur = 0; c.fillText(ch, -cw / 2, 0);
+      if (rnd() < .18) { c.globalAlpha = .35; c.fillText(ch, -cw / 2 + .4, .3); }                                              // pooled ink
+      c.restore(); x += cw;
+    }
+    c.globalAlpha = 1;
+  };
+  c.textAlign = 'left'; c.textBaseline = 'alphabetic';
+  ink('PORCELAIN BALLERINA', W / 2, 180, '@ "Fell SC", Georgia, serif', 30, '#5a1208');
+  let size = 66; c.font = `${size}px Fell, Georgia, serif`; let lines = wrapText(c, '\u201c' + line + '\u201d', W - 280);
+  while (lines.length > 6 && size > 42) { size -= 4; c.font = `${size}px Fell, Georgia, serif`; lines = wrapText(c, '\u201c' + line + '\u201d', W - 280); }
+  const lh = size * 1.42; let y = H / 2 - ((lines.length - 1) * lh) / 2 - 60;
+  lines.forEach((l) => { ink(l, W / 2 + (rnd() - .5) * 8, y, '@ Fell, Georgia, serif', size, '#1c0d06'); y += lh; });
+  c.strokeStyle = 'rgba(110,15,10,.85)'; c.lineWidth = 2.2; c.beginPath(); c.moveTo(W / 2 - 120, y + 6); c.bezierCurveTo(W / 2 - 40, y + 2, W / 2 + 40, y + 12, W / 2 + 120, y + 5); c.stroke();
+  ink(song, W / 2, y + 86, '400 @ Fondamento, Georgia, serif', 60, '#4a0a06', W - 220);
+  ink(album.toUpperCase(), W / 2, y + 136, '@ "Fell SC", Georgia, serif', 28, '#3b1d0c', W - 220);
+  // the wax seal, stamped with the mark
+  const sw = 270, sh = sw * seal.height / seal.width; c.save(); c.translate(W / 2 + 160, H - 150 - sh / 2); c.rotate(-.12 + rnd() * .08);
+  c.shadowColor = 'rgba(30,4,0,.6)'; c.shadowBlur = 16; c.shadowOffsetY = 6; c.drawImage(seal, -sw / 2, -sh / 2, sw, sh); c.restore();
+  c.save(); c.globalAlpha = .9; ink('\u2014 M.A.', W / 2 - 150, H - 150, '400 @ Fondamento, Georgia, serif', 46, '#3a0a05'); c.restore();
 }
 function lyricCard(root) {
   const body = $('.ly-body', root); if (!body || $('.lc-open', root)) return;
@@ -240,7 +336,7 @@ function lyricCard(root) {
   if (!lines.length) return;
   const song = ($('.ly-title', root)?.textContent || document.title.split(' — ')[0]).trim(); const album = ($('.ly-alb', root)?.textContent || '').trim();
   const wrap = document.createElement('div'); wrap.className = 'lc-tools';
-  wrap.innerHTML = `<button type="button" class="btn lc-open">Make a lyric card</button>
+  wrap.innerHTML = `<button type="button" class="btn lc-open" data-i18n>Make a lyric card</button>
     <div class="lc-panel" role="dialog" aria-label="Make a lyric card" hidden>
       <label class="lc-label" for="lc-pick">Choose a line</label>
       <select id="lc-pick" class="lc-pick">${lines.map((l, i) => `<option value="${i}">${esc(l)}</option>`).join('')}</select>
@@ -261,6 +357,6 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
   addEventListener('load', () => { navigator.serviceWorker.register(new URL('sw.js', ROOT).href, { scope: ROOT.href, updateViaCache: 'none' }).then((r) => r.update()).catch(() => {}); });
 }
 
-function mount() { timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); lyricCard(r); riteLine(false); }
+function mount() { timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); lyricCard(r); riteLine(false); coven(r); inkLyrics(r); applyLang(); }
 document.addEventListener('pb:page', mount);
 mount();
