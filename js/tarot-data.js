@@ -1,6 +1,6 @@
 // 78 cards of the Rider–Waite–Smith tradition with standard upright / reversed meanings.
-// Card images: Major Arcana and card back are the site's own dark artwork (v17); Minor Arcana are the Rider–Waite–Smith deck (1909), Pamela Colman Smith — public domain (via Wikimedia Commons).
-const M = (n, name, up, rev) => ({ id: 'm' + String(n).padStart(2, '0'), name, arcana: 'Major Arcana', number: n, up, rev });
+// Card images: Greater Mysteries and card back are the site's own dark artwork (v17); Lesser Mysteries are the Rider–Waite–Smith deck (1909), Pamela Colman Smith — public domain (via Wikimedia Commons).
+const M = (n, name, up, rev) => ({ id: 'm' + String(n).padStart(2, '0'), name, arcana: 'Greater Mysteries', number: n, up, rev });
 export const MAJORS = [
   M(0, 'The Fool', 'New beginnings, innocence, spontaneity, a leap of faith', 'Recklessness, naivety, hesitation, taking foolish risks'),
   M(1, 'The Magician', 'Willpower, skill, resourcefulness, manifestation', 'Manipulation, trickery, untapped talent, poor planning'),
@@ -93,6 +93,6 @@ const SUITS = {
   ] },
 };
 export const MINORS = Object.values(SUITS).flatMap((s) => s.m.map(([up, rev], i) => ({
-  id: s.file + String(i + 1).padStart(2, '0'), name: `${RANKS[i]} of ${s.name}`, arcana: 'Minor Arcana · ' + s.name, number: i + 1, up, rev,
+  id: s.file + String(i + 1).padStart(2, '0'), name: `${RANKS[i]} of ${s.name}`, arcana: 'Lesser Mysteries · ' + s.name, number: i + 1, up, rev,
 })));
 export const DECK = [...MAJORS, ...MINORS];

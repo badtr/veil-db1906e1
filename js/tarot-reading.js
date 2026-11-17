@@ -40,15 +40,15 @@ export function composeReading(question, draws) {
     out.push(`<span class="syn-pos">${P[i]}.</span> ${lead} ${name}: ${m}. ${cap(theme.bridge[i])}${d.reversed ? ', for it came reversed and shows the card\'s turned face' : ''}.`);
   });
   // the pattern between them
-  const majors = draws.filter((d) => d.card.arcana === 'Major Arcana').length;
+  const majors = draws.filter((d) => d.card.arcana === 'Greater Mysteries').length;
   const rev = draws.filter((d) => d.reversed).length;
   const suits = draws.map((d) => suitOf(d.card)).filter(Boolean);
   const counts = suits.reduce((a, s) => ((a[s] = (a[s] || 0) + 1), a), {});
   const dom = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
   const pat = [];
-  if (majors >= 2) pat.push(`${majors === 3 ? 'All three are' : 'Two are'} of the Major Arcana. This is not a small matter; larger forces are moving through it, and some of it is not yours to steer.`);
-  else if (majors === 1) pat.push(`One card of the Major Arcana stands among them, ${draws.find((d) => d.card.arcana === 'Major Arcana').card.name}. Let it be the spine of the reading; the others turn around it.`);
-  else pat.push('No card of the Major Arcana came. What you face is in your own hands, made of daily choices rather than fate.');
+  if (majors >= 2) pat.push(`${majors === 3 ? 'All three are' : 'Two are'} of the Greater Mysteries. This is not a small matter; larger forces are moving through it, and some of it is not yours to steer.`);
+  else if (majors === 1) pat.push(`One card of the Greater Mysteries stands among them, ${draws.find((d) => d.card.arcana === 'Greater Mysteries').card.name}. Let it be the spine of the reading; the others turn around it.`);
+  else pat.push('No card of the Greater Mysteries came. What you face is in your own hands, made of daily choices rather than fate.');
   if (dom && dom[1] >= 2) pat.push(`The ${dom[0]} speak twice. The heart of this lies in ${SUITS[dom[0]]}.`);
   if (rev === 0) pat.push('None came reversed. The currents run open and clear.');
   else if (rev === 3) pat.push('All three came reversed. Something is held back, turned inward, or resisted. Look at what you will not look at.');

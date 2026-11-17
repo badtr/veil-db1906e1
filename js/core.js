@@ -15,6 +15,10 @@ if (hasWebGL()) doc.classList.add('has-webgl-support');
 const base = document.createElement('div'); base.className = 'fx-base'; base.setAttribute('aria-hidden', 'true');
 document.body.prepend(base);
 const sym = document.createElement('div'); sym.className = 'fx-symbol'; sym.setAttribute('aria-hidden', 'true'); base.after(sym);
+let symIO = null;
+let heroIO = null;
+function heroCorners(root) { heroIO?.disconnect(); document.body.classList.remove('at-hero'); const h = (root || document).querySelector('.hero'); if (!h || !('IntersectionObserver' in window)) return; heroIO = new IntersectionObserver(([e]) => document.body.classList.toggle('at-hero', e.intersectionRatio > 0.6), { threshold: [0, 0.6, 1] }); heroIO.observe(h); }
+function symHush(root) { heroCorners(root); symIO?.disconnect(); document.body.classList.remove('sym-hush'); const d = (root || document).querySelector('#doors'); if (!d || !('IntersectionObserver' in window)) return; symIO = new IntersectionObserver(([e]) => document.body.classList.toggle('sym-hush', e.isIntersecting), { threshold: 0.25 }); symIO.observe(d); }
 const smoke = startSmoke();
 const embers = startEmbers();
 for (const cls of ['fx-vignette', 'fx-grain', 'fx-burn', 'fx-candles', 'fx-corner fx-corner-tl', 'fx-corner fx-corner-tr', 'fx-corner fx-corner-bl', 'fx-corner fx-corner-br', 'fx-edge fx-edge-t', 'fx-edge fx-edge-b']) { const d = document.createElement('div'); d.className = cls; d.setAttribute('aria-hidden', 'true'); document.body.appendChild(d); }
@@ -322,7 +326,7 @@ let current = null;
 async function initPage(first) {
   const swap = document.getElementById('swap');
   caseFile(swap); bleedTitles(swap); prose(swap); scatterRelics(swap);
-  initReveals(swap); initTilt(swap); onScroll(); litScan(); initPath(swap); letterReading(swap);
+  initReveals(swap); initTilt(swap); onScroll(); litScan(); initPath(swap); letterReading(swap); symHush(swap);
   const page = document.body.dataset.page;
   const path = CONTROLLERS[page];
   if (path) {

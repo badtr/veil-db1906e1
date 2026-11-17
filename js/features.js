@@ -38,14 +38,6 @@ function release(root) {
   });
 }
 
-// ---------- The Coven List: a form that sends and keeps nothing (not connected yet) ----------
-function coven(root) {
-  $$('[data-coven] form', root).forEach((f) => {
-    if (f.dataset.bound) return; f.dataset.bound = '1';
-    f.addEventListener('submit', (e) => { e.preventDefault(); const m = f.parentElement.querySelector('.coven-msg'); f.reset(); m.textContent = 'The list opens soon.'; f.closest('.coven-sheet').classList.add('is-sealed'); });
-  });
-}
-
 // ---------- ink-reveal lyrics: real, selectable text; the ink only spreads when motion is welcome ----------
 function inkLyrics(root) {
   const lines = $$('.ly-body .ly-o, .ly-body .ly-t', root); if (!lines.length) return;
@@ -346,7 +338,7 @@ function whisperShow() {
     if (!WH.el) { WH.el = document.createElement('div'); WH.el.className = 'whisper-dark'; WH.el.setAttribute('aria-hidden', 'true'); document.body.appendChild(WH.el); }
     WH.el.innerHTML = `<p class="wd-line">\u201c${o.en.replace(/[<>&]/g, '')}\u201d</p><p class="wd-src">${o.song.replace(/[<>&]/g, '')} &middot; ${o.album.replace(/[<>&]/g, '')}</p>`;
     // find a quiet place: never on top of anything readable or clickable
-    const TEXT = 'p, li, h1, h2, h3, h4, blockquote, figcaption, label, input, textarea, select, button, a, img, video, canvas, .ly-t, .ly-o, .ms-l, .tr-stage, .ms-letter, .jr-ledger, .rl-doc, .oracle-sheet, .coven-sheet, .vr-doc, .num-card, .sign-plate, .musicbox, .ly-body';
+    const TEXT = 'p, li, h1, h2, h3, h4, blockquote, figcaption, label, input, textarea, select, button, a, img, video, canvas, .ly-t, .ly-o, .ms-l, .tr-stage, .ms-letter, .jr-ledger, .rl-doc, .oracle-sheet, .vr-doc, .num-card, .sign-plate, .musicbox, .ly-body';
     const busy = $$(TEXT, document.getElementById('swap') || document).filter((e) => !e.closest('.whisper-dark, .seance-fx, .hero-stage') && (e.matches('.tr-stage, .ms-letter') || !e.closest('[aria-hidden="true"]')) && getComputedStyle(e).visibility !== 'hidden' && +getComputedStyle(e).opacity > 0.05).map((e) => e.getBoundingClientRect()).filter((r) => r.width && r.height && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth);
     const clear = (x, y, w, h) => !busy.some((r) => r.left < x + w && r.right > x && r.top < y + h && r.bottom > y);
     const ww = Math.min(260, innerWidth * 0.8), hh = 130, spots = [];
@@ -366,6 +358,6 @@ function whisperArm() { clearTimeout(WH.t); WH.t = setTimeout(whisperShow, WH.id
 whisperArm();
 // the medium's sound (opt-in, off by default)
 import(new URL('medium.js?v=' + (document.querySelector('link[href*="style.css"]')?.getAttribute('href').split('?v=')[1] || ''), import.meta.url).href).catch(() => {});
-function mount() { timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); mirrorLink(r); protect(r); mirror(r); riteLine(false); coven(r); inkLyrics(r); parlour(); channel(r); spiritPhoto(r); }
+function mount() { timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); mirrorLink(r); protect(r); mirror(r); riteLine(false); inkLyrics(r); parlour(); channel(r); spiritPhoto(r); }
 document.addEventListener('pb:page', mount);
 mount();
