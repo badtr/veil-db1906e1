@@ -14,9 +14,10 @@ if (hasWebGL()) doc.classList.add('has-webgl-support');
 // ---------- persistent layers ----------
 const base = document.createElement('div'); base.className = 'fx-base'; base.setAttribute('aria-hidden', 'true');
 document.body.prepend(base);
+const sym = document.createElement('div'); sym.className = 'fx-symbol'; sym.setAttribute('aria-hidden', 'true'); base.after(sym);
 const smoke = startSmoke();
 const embers = startEmbers();
-for (const cls of ['fx-vignette', 'fx-grain', 'fx-burn', 'fx-candles', 'fx-corner fx-corner-tl', 'fx-corner fx-corner-tr', 'fx-corner fx-corner-bl', 'fx-corner fx-corner-br']) { const d = document.createElement('div'); d.className = cls; d.setAttribute('aria-hidden', 'true'); document.body.appendChild(d); }
+for (const cls of ['fx-vignette', 'fx-grain', 'fx-burn', 'fx-candles', 'fx-corner fx-corner-tl', 'fx-corner fx-corner-tr', 'fx-corner fx-corner-bl', 'fx-corner fx-corner-br', 'fx-edge fx-edge-t', 'fx-edge fx-edge-b']) { const d = document.createElement('div'); d.className = cls; d.setAttribute('aria-hidden', 'true'); document.body.appendChild(d); }
 const veil = document.createElement('div'); veil.className = 'fx-veil'; veil.setAttribute('aria-hidden', 'true');
 veil.innerHTML = '<svg class="sigil" data-seed="veil" data-static viewBox="-50 -50 100 100"></svg>';
 document.body.appendChild(veil);

@@ -3066,3 +3066,36 @@ img[src*="images/hall/"],img[src*="images/albums/"],img[src*="images/etchings/"]
 @media (min-width:1241px) and (max-width:1799px){#primary-nav>a{padding-left:.6rem!important;padding-right:.6rem!important}}
 @media (min-width:1241px) and (max-width:1659px){#primary-nav .nav-ext{display:none!important}}
 @media (min-width:1241px) and (max-width:1279px){#primary-nav>a{padding-left:.3rem!important;padding-right:.3rem!important;letter-spacing:.06em!important;font-size:.92rem!important}.site-header .brand{gap:.5rem}}
+
+/* v30: corners reach further, a thorn line runs across, and the sigil she dances on lies faint behind everything */
+.fx-corner{width:min(21vw,300px)!important}
+.fx-edge{position:fixed;left:min(17vw,240px);right:min(17vw,240px);height:34px;z-index:6;pointer-events:none;background:url(../images/death/edge-vine.webp) center/auto 100% repeat-x;opacity:.3;mix-blend-mode:screen;
+  -webkit-mask-image:linear-gradient(90deg,#000 0,rgba(0,0,0,.55) 22%,rgba(0,0,0,.12) 42%,rgba(0,0,0,.12) 58%,rgba(0,0,0,.55) 78%,#000 100%);mask-image:linear-gradient(90deg,#000 0,rgba(0,0,0,.55) 22%,rgba(0,0,0,.12) 42%,rgba(0,0,0,.12) 58%,rgba(0,0,0,.55) 78%,#000 100%)}
+.fx-edge-t{top:72px}
+.fx-edge-b{bottom:12px;transform:scaleY(-1)}
+body.ms-reading .fx-edge{opacity:0!important;transition:opacity .8s}
+.fx-symbol{position:fixed;left:50%;top:54%;width:min(118vmin,1180px);aspect-ratio:1;translate:-50% -50%;z-index:-3;pointer-events:none;background:url(../images/fx/sigil-bg.webp) center/contain no-repeat;opacity:.45;mix-blend-mode:screen;filter:none;animation:symTurn 600s linear infinite}
+@keyframes symTurn{to{rotate:360deg}}
+body.ms-reading .fx-symbol{opacity:.1;transition:opacity .8s}
+@media (max-width:900px){
+  .fx-corner{width:28vw!important}
+  .fx-edge{left:26vw;right:26vw;height:22px;opacity:.18}
+  .fx-edge-t{top:128px}
+  .fx-edge-b{display:none}
+  .fx-symbol{width:140vmin;opacity:.32}
+}
+@media (prefers-reduced-motion:reduce){.fx-symbol{animation:none}}
+@media print{.fx-symbol,.fx-edge{display:none}}
+
+/* v32: home hero short lines lifted to at least 4.5:1 (same style, lighter ink) */
+.hero-whisper{color:#ff7a6e!important;text-shadow:0 0 1px #000,0 0 6px rgba(0,0,0,.95),0 2px 10px #000!important}
+.case-file .stamp,.case-file .cf-stamp,.case-file [class*="stamp"]{color:#ffb3ae!important;border-color:rgba(255,140,135,.85)!important;background-color:rgba(8,3,3,.5);text-shadow:0 0 4px rgba(0,0,0,.9)}
+
+/* v32: while the number is asked, the whole threshold holds perfectly still (the seal may still break on the right number) */
+.wel.show-letter:not(:has(.wel-letter.is-accepted)),
+.wel.show-letter:not(:has(.wel-letter.is-accepted)) *,
+.wel.show-letter:not(:has(.wel-letter.is-accepted)) *::before,
+.wel.show-letter:not(:has(.wel-letter.is-accepted)) *::after{animation:none!important}
+.wel.show-letter:not(:has(.wel-letter.is-accepted)) .wel-letter{transform:translate(-50%,-50%) rotate(-.6deg)!important}
+.wel.show-letter .wel-digits input{transition:none!important;caret-color:transparent!important}
+.wel.show-letter .wel-digits input::placeholder{color:transparent}
