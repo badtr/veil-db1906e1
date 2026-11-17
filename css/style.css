@@ -2784,3 +2784,4 @@ body[data-page="images"] .page-head .lead::first-letter{float:none!important;fon
 @media (max-width:640px){.reliquary .rq-item figcaption{font-size:1.05rem!important}}
 @media (max-width:699px){body:has(.backbar) #main{padding-top:68px}}
 @media (max-width:699px){body[data-page="about"]:has(.backbar) #main{padding-top:116px}}
+[data-release] [hidden],[data-upcoming][hidden]{display:none!important}

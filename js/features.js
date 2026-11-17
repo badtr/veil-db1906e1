@@ -52,7 +52,12 @@ function inkLyrics(root) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-inked'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
   lines.forEach((l, i) => { if (l.getBoundingClientRect().top < innerHeight * 0.92) return; l.classList.add('ink-wait'); l.style.setProperty('--ink-d', (i % 2) * 0.12 + 's'); io.observe(l); });
-  timers.push(setTimeout(() => lines.forEach((l) => l.classList.add('is-inked')), 60000)); // never leave lines hidden
+  // a jump (End key, anchor, fast fling) can skip lines without them ever crossing the view: ink everything above the fold edge
+  let raf = 0;
+  const sweep = () => { raf = 0; const edge = innerHeight * 0.92; let left = 0; lines.forEach((l) => { if (!l.classList.contains('ink-wait') || l.classList.contains('is-inked')) return; if (l.getBoundingClientRect().top < edge) { l.classList.add('is-inked'); io.unobserve(l); } else left++; }); if (!left) removeEventListener('scroll', onScroll); };
+  const onScroll = () => { if (!raf) raf = requestAnimationFrame(sweep); };
+  addEventListener('scroll', onScroll, { passive: true });
+  timers.push(setTimeout(() => { removeEventListener('scroll', onScroll); lines.forEach((l) => l.classList.add('is-inked')); }, 60000)); // never leave lines hidden
 }
 
 // ---------- EN / NO for navigation and interface labels only (lyrics and texts stay English) ----------
@@ -73,18 +78,41 @@ const NO = {
 };
 const PH = { 'An album, a song, a line, a card\u2026': 'Et album, en sang, en linje, et kort\u2026', 'An album or a song title\u2026': 'Et album eller en sangtittel\u2026' };
 const lang = () => { try { return localStorage.getItem('pb-lang') === 'no' ? 'no' : 'en'; } catch (e) { return 'en'; } };
+Object.assign(NO, {
+  'Search albums, songs, lyrics, tarot cards and pages': 'Søk i album, sanger, tekster, tarotkort og sider', 'Search the albums and their songs': 'Søk i albumene og sangene deres',
+  'Enter the albums': 'Gå inn til albumene', 'Open the archive': 'Åpne arkivet', 'Enter the tarot room': 'Gå inn i tarotrommet', 'Return to the threshold': 'Tilbake til terskelen',
+  'Let the rite choose': 'La ritualet velge', 'Listen on Spotify': 'Lytt på Spotify', 'Listen on Suno': 'Lytt på Suno', 'Back to the album': 'Tilbake til albumet',
+  'Break the seal': 'Bryt seglet', 'Leave it sealed': 'La det forbli forseglet', 'Close': 'Lukk', 'Email address': 'E-postadresse',
+  'Birth date': 'Fødselsdato', 'Full birth name': 'Fullt fødselsnavn', 'How the numbers are counted': 'Slik telles tallene',
+  'Ask again': 'Spør igjen', 'Begin the reading': 'Begynn lesningen', 'Choose for me': 'Velg for meg', 'Turn the next card': 'Snu neste kort', 'Your question': 'Ditt spørsmål',
+  'Visit the archive': 'Besøk arkivet', 'Draw the cards': 'Trekk kortene', 'Choose an altar': 'Velg et alter', 'Return to the albums': 'Tilbake til albumene',
+  'The rite is complete': 'Ritualet er fullført', 'Count': 'Tell', 'Clear': 'Tøm', 'Back to the altar': 'Tilbake til alteret',
+});
+const MOON_NO = { 'New moon': 'Nymåne', 'Waxing crescent': 'Voksende månesigd', 'First quarter': 'Første kvarter', 'Waxing gibbous': 'Voksende måne', 'Full moon': 'Fullmåne', 'Waning gibbous': 'Minkende måne', 'Last quarter': 'Siste kvarter', 'Waning crescent': 'Minkende månesigd' };
+const NO_PREFIX = [['Next altar: ', 'Neste alter: '], ['Next · ', 'Neste · ']];
+const AUTO_I18N = 'button, label, a.btn, summary, .next-title, .next-step .kicker';
+const toNo = (t) => NO[t] || (NO_PREFIX.find(([a]) => t.startsWith(a)) || [])[1]?.concat(t.slice(NO_PREFIX.find(([a]) => t.startsWith(a))[0].length));
 function applyLang() {
   const no = lang() === 'no';
-  $$('[data-i18n]').forEach((el) => {
-    if (el.children.length) return;
-    if (!el.dataset.en) el.dataset.en = el.textContent.trim();
-    const t = NO[el.dataset.en]; if (!t) return;
-    el.textContent = no ? t : el.dataset.en; if (no) el.setAttribute('lang', 'nb'); else el.removeAttribute('lang');
+  const els = new Set([...$$('[data-i18n]'), ...$$(AUTO_I18N)]);
+  els.forEach((el) => {
+    if (el.children.length || el.closest('[data-lang-toggle]')) return;
+    const cur = el.textContent.trim();
+    if (no) {
+      if (el.dataset.no && cur === el.dataset.no) return;          // already ours
+      const t = toNo(cur); if (!t) return;
+      el.dataset.en = cur; el.dataset.no = t; el.textContent = t; el.setAttribute('lang', 'nb');
+    } else if (el.dataset.no && cur === el.dataset.no) {            // only undo what we set; other scripts may have changed the text since
+      el.textContent = el.dataset.en; el.removeAttribute('lang');
+    }
   });
   $$('input[placeholder]').forEach((i) => { if (!i.dataset.en) i.dataset.en = i.placeholder; const t = PH[i.dataset.en]; if (t) i.placeholder = no ? t : i.dataset.en; });
   $$('[data-lang-toggle]').forEach((b) => { b.classList.toggle('is-no', no); b.setAttribute('aria-pressed', String(no)); b.setAttribute('aria-label', no ? 'Switch to English' : 'Bytt til norsk'); });
 }
-document.addEventListener('click', (e) => { if (!e.target.closest('[data-lang-toggle]')) return; try { localStorage.setItem('pb-lang', lang() === 'no' ? 'en' : 'no'); } catch (_) {} applyLang(); });
+// labels that other scripts write later (tarot buttons, viewers) follow the chosen language too
+let langRaf = 0;
+new MutationObserver(() => { if (lang() !== 'no' || langRaf) return; langRaf = requestAnimationFrame(() => { langRaf = 0; applyLang(); }); }).observe(document.body, { subtree: true, childList: true, characterData: true });
+document.addEventListener('click', (e) => { if (!e.target.closest('[data-lang-toggle]')) return; try { localStorage.setItem('pb-lang', lang() === 'no' ? 'en' : 'no'); } catch (_) {} applyLang(); moon(document.getElementById('swap') || document); });
 
 // ---------- daily oracle ----------
 let ORACLE = null;
@@ -236,8 +264,9 @@ function moon(root) {
   document.querySelectorAll('.moon-phase').forEach((m) => m.remove());
   const m = moonState(NOW());
   const el = document.createElement('p'); el.className = 'moon-phase';
-  el.innerHTML = `${moonSVG(m.f)}<span class="mp-t"><span class="mp-n">${m.name}</span><span class="mp-i">${Math.round(m.illum * 100)}% lit</span></span>`;
-  el.title = `${m.name}, ${Math.round(m.illum * 100)}% lit`;
+  const no = lang() === 'no', nm = no ? (MOON_NO[m.name] || m.name) : m.name, lit = `${Math.round(m.illum * 100)}% ${no ? 'opplyst' : 'lit'}`;
+  el.innerHTML = `${moonSVG(m.f)}<span class="mp-t"><span class="mp-n"${no ? ' lang="nb"' : ''}>${nm}</span><span class="mp-i">${lit}</span></span>`;
+  el.title = `${nm}, ${lit}`;
   const bar = $('.backbar .wrap', root), hero = $('.hero', root);
   if (bar) bar.appendChild(el); else if (hero) { el.classList.add('mp-hero'); hero.appendChild(el); } else return;
   document.documentElement.classList.toggle('pb-full-moon', m.illum >= 0.97);
