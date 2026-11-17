@@ -330,6 +330,7 @@ async function go(url, { push = true, x = innerWidth / 2, y = innerHeight / 2 } 
     if (current && current.destroy) { try { current.destroy(); } catch (e) {} }
     current = null;
     if (push) history.pushState({}, '', url.href);
+    { const ni = ndoc.querySelector('link[rel="icon"]'), oi = document.querySelector('link[rel="icon"]'); if (ni && oi) oi.href = new URL(ni.getAttribute('href'), url).href; }
     document.title = ndoc.title;
     document.body.dataset.page = ndoc.body.dataset.page || '';
     document.getElementById('swap').innerHTML = nswap.innerHTML;
@@ -393,3 +394,21 @@ document.addEventListener('pointermove', (e) => {
   const g = e.target.closest && e.target.closest('.graveyard'); if (!g) return;
   const r = g.getBoundingClientRect(); g.style.setProperty('--mx', `${e.clientX - r.left}px`); g.style.setProperty('--my', `${e.clientY - r.top}px`); g.classList.add('has-lamp');
 }, { passive: true });
+// Back on top-level rooms: return to the previous page on this site, otherwise go to the threshold.
+const trail = () => { try { return JSON.parse(sessionStorage.getItem('pb-trail') || '[]'); } catch (_) { return []; } };
+const noteTrail = () => { try { const t = trail(); if (t[t.length - 1] !== location.href) { t.push(location.href); sessionStorage.setItem('pb-trail', JSON.stringify(t.slice(-30))); } } catch (_) {} };
+addEventListener('popstate', () => { try { const t = trail(); const i = t.lastIndexOf(location.href); if (i >= 0) sessionStorage.setItem('pb-trail', JSON.stringify(t.slice(0, i + 1))); } catch (_) {} });
+document.addEventListener('click', (e) => {
+  const a = e.target.closest && e.target.closest('a[data-history-back]'); if (!a) return;
+  const t = trail();
+  if (t.length > 1 && history.length > 1) { e.preventDefault(); e.stopImmediatePropagation(); history.back(); }
+}, true);
+// Seat the Back button just below the fixed header, whatever its height on this screen.
+const seatBack = () => {
+  const bar = document.querySelector('.backbar'), hd = document.querySelector('.site-header'), main = document.getElementById('main');
+  if (!bar || !hd || !main) return;
+  bar.style.setProperty('--bb-top', Math.max(0, Math.round(hd.offsetHeight + hd.offsetTop - main.offsetTop)) + 'px');
+};
+addEventListener('resize', seatBack, { passive: true });
+new MutationObserver(() => { seatBack(); noteTrail(); }).observe(document.getElementById('swap') || document.body, { childList: true });
+seatBack(); noteTrail(); setTimeout(seatBack, 400);
