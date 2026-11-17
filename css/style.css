@@ -2785,3 +2785,135 @@ body[data-page="images"] .page-head .lead::first-letter{float:none!important;fon
 @media (max-width:699px){body:has(.backbar) #main{padding-top:68px}}
 @media (max-width:699px){body[data-page="about"]:has(.backbar) #main{padding-top:116px}}
 [data-release] [hidden],[data-upcoming][hidden]{display:none!important}
+
+/* =====================================================================
+   THE SÉANCE PARLOUR — smoke, candle light, ectoplasm, spirit board,
+   channelled headings, spirit-photograph doubles. Text layers untouched.
+   ===================================================================== */
+.seance-fx{position:fixed;inset:0;z-index:3;pointer-events:none;overflow:hidden;contain:strict}
+.seance-fx i{position:absolute;display:block}
+/* incense smoke: two slow tiled layers, kept to the edges so the reading column stays clear */
+.fx-smoke{inset:-10% -50% -10% -50%;background-repeat:repeat;will-change:transform;
+  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 14%,rgba(0,0,0,.18) 30%,rgba(0,0,0,.08) 50%,rgba(0,0,0,.18) 70%,#000 86%,#000 100%);
+          mask-image:linear-gradient(90deg,#000 0,#000 14%,rgba(0,0,0,.18) 30%,rgba(0,0,0,.08) 50%,rgba(0,0,0,.18) 70%,#000 86%,#000 100%)}
+.fx-s1{background-image:url(../images/fx/smoke-a.webp);background-size:900px 900px;opacity:.16;animation:fxDrift1 140s linear infinite}
+.fx-s2{background-image:url(../images/fx/smoke-b.webp);background-size:1300px 1300px;opacity:.11;animation:fxDrift2 210s linear infinite}
+@keyframes fxDrift1{from{transform:translate3d(0,0,0)}to{transform:translate3d(-900px,-900px,0)}}
+@keyframes fxDrift2{from{transform:translate3d(-1300px,0,0)}to{transform:translate3d(0,-1300px,0)}}
+/* ectoplasm wisps rising at the margins */
+.fx-ecto{bottom:-6vh;width:min(24vw,300px);height:78vh;background:url(../images/fx/ecto.webp) center bottom/100% 100% no-repeat;opacity:.0;mix-blend-mode:screen;will-change:transform,opacity}
+.fx-e1{left:-2vw;animation:fxEcto 26s ease-in-out infinite}
+.fx-e2{right:-2vw;transform:scaleX(-1);animation:fxEcto2 31s ease-in-out 7s infinite}
+@keyframes fxEcto{0%,100%{opacity:0;transform:translate3d(0,6vh,0) scaleY(.9)}35%{opacity:.22}55%{opacity:.16;transform:translate3d(1.5vw,-3vh,0) scaleY(1.05) skewX(3deg)}80%{opacity:0;transform:translate3d(-1vw,-9vh,0) scaleY(1.1)}}
+@keyframes fxEcto2{0%,100%{opacity:0;transform:scaleX(-1) translate3d(0,6vh,0)}40%{opacity:.18}60%{opacity:.12;transform:scaleX(-1) translate3d(1vw,-4vh,0) skewX(-3deg)}85%{opacity:0;transform:scaleX(-1) translate3d(0,-10vh,0)}}
+/* candle light licking the edges of the room */
+.fx-candle{bottom:-20vh;width:60vw;height:80vh;mix-blend-mode:screen;will-change:opacity}
+.fx-c1{left:-24vw;background:radial-gradient(closest-side,rgba(255,150,60,.16),rgba(200,70,20,.07) 55%,transparent);animation:fxFlick 3.7s steps(1) infinite}
+.fx-c2{right:-24vw;background:radial-gradient(closest-side,rgba(255,160,70,.14),rgba(190,60,20,.06) 55%,transparent);animation:fxFlick 5.3s steps(1) infinite .8s}
+@keyframes fxFlick{0%{opacity:.9}7%{opacity:.62}11%{opacity:1}23%{opacity:.78}31%{opacity:.95}44%{opacity:.7}49%{opacity:.88}63%{opacity:1}71%{opacity:.66}78%{opacity:.92}90%{opacity:.8}}
+/* the spirit plate: faint scratches and halation of an old glass negative over the whole room */
+.fx-plate{inset:0;background:radial-gradient(120% 90% at 50% 45%,transparent 60%,rgba(170,190,185,.05) 82%,rgba(0,0,0,.35) 100%);mix-blend-mode:screen}
+@media (max-width:699px){.fx-s2,.fx-ecto{display:none}.fx-s1{opacity:.12;background-size:700px 700px}
+  .fx-smoke{-webkit-mask-image:linear-gradient(90deg,#000,rgba(0,0,0,.2) 22%,rgba(0,0,0,.06) 50%,rgba(0,0,0,.2) 78%,#000);mask-image:linear-gradient(90deg,#000,rgba(0,0,0,.2) 22%,rgba(0,0,0,.06) 50%,rgba(0,0,0,.2) 78%,#000)}
+  .fx-candle{width:90vw;height:60vh}}
+@media (prefers-reduced-motion:reduce){.seance-fx i{animation:none!important}.fx-ecto{display:none}}
+.lb-lock .seance-fx,body:has(.lightbox.is-open) .seance-fx{display:none}
+@media print{.seance-fx{display:none}}
+
+/* channelled headings: the letters tremble into place, a ghost double hangs behind */
+.bt .h-ghost{position:absolute;inset:0;z-index:-1;pointer-events:none;white-space:inherit;
+  -webkit-text-fill-color:rgba(205,225,220,.16);color:rgba(205,225,220,.16);background:none!important;filter:blur(1.6px);
+  transform:translate(.07em,-.09em);animation:ghostDrift 13s ease-in-out infinite}
+h1 .bt{isolation:isolate}
+@keyframes ghostDrift{0%,100%{transform:translate(.07em,-.09em);opacity:.9}50%{transform:translate(-.05em,-.13em) skewX(-2deg);opacity:.5}}
+.bt.is-channeling .ch{animation:chIn 1.25s cubic-bezier(.2,.7,.2,1) var(--cd,0s) both}
+@keyframes chIn{0%{opacity:0;transform:translate(.08em,-.35em) scale(1.25);filter:blur(5px)}
+  30%{opacity:.5;transform:translate(-.06em,.08em);filter:blur(2px)}45%{transform:translate(.05em,-.05em)}
+  60%{opacity:.85;transform:translate(-.03em,.03em);filter:blur(.6px)}75%{transform:translate(.02em,0)}100%{opacity:1;transform:none;filter:none}}
+.bt .ch.ch-twitch{animation:chTwitch .7s steps(2) both}
+@keyframes chTwitch{0%{transform:translate(.04em,-.05em)}25%{transform:translate(-.05em,.03em)}50%{transform:translate(.03em,.04em)}75%{transform:translate(-.02em,-.03em)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){.bt .h-ghost{animation:none}.bt .ch{animation:none!important}}
+
+/* spirit photography: a faint double exposure drifts over album plates and etchings */
+.spirit-plate{position:relative;overflow:hidden}
+.spirit-plate .sp-ghost{position:absolute;inset:0;width:100%;height:100%;object-fit:inherit;pointer-events:none;opacity:.13;mix-blend-mode:screen;filter:grayscale(1) blur(1.5px) brightness(1.3);transform:translate(2.5%,-1.5%) scale(1.03);animation:spGhost 17s ease-in-out infinite}
+.rq-frame.spirit-plate .sp-ghost{inset:clamp(12px,1.6vw,20px);width:calc(100% - 2*clamp(12px,1.6vw,20px));height:calc(100% - 2*clamp(12px,1.6vw,20px));object-fit:contain;opacity:0;transition:opacity .8s}
+.rq-frame.spirit-plate:hover .sp-ghost{opacity:.14}
+@keyframes spGhost{0%,100%{transform:translate(2.5%,-1.5%) scale(1.03);opacity:.13}50%{transform:translate(-1.5%,1%) scale(1.05);opacity:.07}}
+@media (prefers-reduced-motion:reduce){.spirit-plate .sp-ghost{animation:none}}
+
+/* the séance table and its spirit board */
+.seance-table{position:relative;margin:0 auto clamp(1.6rem,3vw,2.6rem);max-width:820px;padding:clamp(16px,2.4vw,34px);border-radius:50% / 22%;
+  background:radial-gradient(ellipse at 50% 40%,#3a2214 0%,#24140b 45%,#120904 78%,#070302 100%);
+  box-shadow:0 30px 60px rgba(0,0,0,.8),inset 0 0 0 2px rgba(120,80,40,.35),inset 0 0 60px rgba(0,0,0,.85)}
+.st-glow{position:absolute;inset:-12% -6%;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,rgba(255,150,70,.16),transparent 62%);animation:fxFlick 4.4s steps(1) infinite;z-index:0}
+.spirit-board{position:relative;z-index:1;aspect-ratio:2.05/1;border-radius:18px;overflow:hidden;user-select:none;cursor:none;touch-action:manipulation;
+  background:
+    radial-gradient(ellipse at 50% 45%,rgba(255,236,190,.55),transparent 65%),
+    repeating-linear-gradient(92deg,rgba(90,52,20,.0) 0 7px,rgba(90,52,20,.07) 7px 9px,rgba(90,52,20,0) 9px 17px),
+    radial-gradient(ellipse at 50% 50%,#d4b47e 0%,#b98f55 55%,#7a5329 92%,#4a2f14 100%);
+  box-shadow:inset 0 0 0 3px #3d2510,inset 0 0 0 7px rgba(222,190,130,.5),inset 0 0 0 8px #3d2510,inset 0 0 40px rgba(60,30,8,.6)}
+.spirit-board::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(40,18,4,.45));mix-blend-mode:multiply}
+.sb-ch{position:absolute;transform:translate(-50%,-50%) rotate(var(--r,0deg));font:400 clamp(.95rem,2.6vw,1.9rem)/1 "Fell",var(--f-read),serif;color:#2a1405;text-shadow:0 1px 0 rgba(255,236,190,.55);transition:color .25s,text-shadow .25s}
+.sb-num{font-size:clamp(.85rem,2.1vw,1.45rem)}
+.sb-corner,.sb-bye{position:absolute;font:600 clamp(.8rem,1.9vw,1.25rem)/1 "Fell SC",var(--f-read),serif;letter-spacing:.16em;color:#2a1405;text-transform:uppercase;text-shadow:0 1px 0 rgba(255,236,190,.55)}
+.sb-yes{left:13%;top:9%}.sb-no{right:13%;top:9%}
+.sb-bye{left:50%;top:86%;transform:translate(-50%,-50%);padding:.2em .8em;border-top:1px solid rgba(42,20,5,.45);border-bottom:1px solid rgba(42,20,5,.45)}
+.sb-sun,.sb-moon{position:absolute;top:5%;width:clamp(22px,3.6vw,40px)}
+.sb-sun{left:4%}.sb-moon{right:4%}
+.sb-sun svg,.sb-moon svg{display:block;width:100%;fill:none;stroke:#2a1405;stroke-width:2}
+.sb-moon svg{fill:#2a1405}
+.sb-ch.is-lit,.sb-corner.is-lit,.sb-bye.is-lit{color:#8e0f16;text-shadow:0 0 10px rgba(255,190,90,.9),0 1px 0 rgba(255,236,190,.6)}
+.sb-ch.is-spoken,.sb-corner.is-spoken,.sb-bye.is-spoken{color:#7a0910;text-shadow:0 0 14px rgba(255,170,60,1),0 0 2px #fff}
+.sb-planchette{position:absolute;left:0;top:0;width:clamp(48px,8.4vw,84px);z-index:3;pointer-events:none;will-change:transform;filter:drop-shadow(0 8px 6px rgba(30,12,2,.55))}
+.sb-planchette svg{display:block;width:100%;height:auto}
+.spirit-board:not(.is-touched):not(.is-spelling) .sb-planchette svg{animation:plIdle 7s ease-in-out infinite}
+@keyframes plIdle{0%,100%{transform:translate(0,0) rotate(0)}30%{transform:translate(3px,-4px) rotate(2deg)}65%{transform:translate(-3px,-1px) rotate(-1.5deg)}}
+@media (hover:none){.spirit-board{cursor:auto}}
+@media (prefers-reduced-motion:reduce){.st-glow,.sb-planchette svg{animation:none!important}}
+@media (max-width:699px){.seance-table{padding:10px;border-radius:28px}.spirit-board{aspect-ratio:1.55/1;border-radius:12px}.sb-yes{left:9%}.sb-no{right:9%}}
+.seance-fx .fx-ecto,.seance-fx .fx-candle,.seance-fx .fx-plate{mix-blend-mode:normal}
+.fx-s1{opacity:.2}.fx-s2{opacity:.13}
+
+/* ---------- whisper in the dark ---------- */
+.whisper-dark{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));z-index:65;width:min(34ch,86vw);transform:translateX(-50%);pointer-events:none;
+  padding:.85rem 1.2rem .8rem;border-radius:14px;background:radial-gradient(ellipse at 50% 50%,rgba(8,4,5,.9),rgba(8,4,5,.78) 70%,rgba(8,4,5,.0) 100%);
+  text-align:center;opacity:0;visibility:hidden;transition:opacity 2.6s ease,visibility 0s linear 2.6s,filter 2.6s ease;filter:blur(3px)}
+.whisper-dark.is-in{opacity:1;visibility:visible;filter:none;transition:opacity 2.6s ease,visibility 0s,filter 2.6s ease}
+.whisper-dark.wd-edge{left:auto;right:2.2vw;bottom:auto;top:42vh;transform:none;width:min(240px,calc((100vw - 980px) / 2 - 2vw))}
+.wd-line{margin:0;font:500 1.12rem/1.45 var(--f-read,"EB Garamond",serif);color:#efe7da;text-shadow:0 0 14px rgba(190,215,210,.35)}
+.wd-src{margin:.45rem 0 0;font:600 .7rem/1.3 var(--f-sc,"Fell SC",serif);letter-spacing:.16em;text-transform:uppercase;color:#cdb98f}
+@media (prefers-reduced-motion:reduce){.whisper-dark,.whisper-dark.is-in{transition:none;filter:none}}
+
+/* ---------- medium sound toggle (sits above the sound toggle) ---------- */
+.medium-toggle{position:fixed;right:1.1rem;bottom:4.1rem;z-index:70;display:flex;align-items:center;gap:.5rem;padding:.5rem .85rem .5rem .65rem;border:1px solid rgba(168,135,79,.55);border-radius:999px;background:rgba(10,6,7,.78);color:#efe4cf;font:600 .72rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.medium-toggle:hover,.medium-toggle:focus-visible{border-color:#d9b56a;background:rgba(40,10,10,.85);outline:none;box-shadow:0 0 0 2px rgba(217,181,106,.5)}
+.mt-flame{width:9px;height:14px;border-radius:50% 50% 45% 45% / 65% 65% 35% 35%;background:radial-gradient(circle at 50% 70%,#fff3c4,#e7a24a 45%,#8e2a12 80%);opacity:.45;box-shadow:0 0 0 rgba(255,170,80,0)}
+.medium-toggle.is-on .mt-flame{opacity:1;box-shadow:0 0 10px rgba(255,170,80,.8);animation:fxFlick 2.9s steps(1) infinite}
+.medium-toggle.needs-tap{animation:pulse 2.4s ease-in-out infinite}
+@media (max-width:699px){.medium-toggle{bottom:auto;top:auto;right:.7rem;bottom:calc(3.9rem + env(safe-area-inset-bottom));padding:.45rem .6rem}.medium-toggle .mt-label{display:none}}
+@media (prefers-reduced-motion:reduce){.medium-toggle.is-on .mt-flame,.medium-toggle.needs-tap{animation:none}}
+.lb-lock .medium-toggle{display:none}
+
+/* ---------- the album séance ---------- */
+.album-seance{padding:clamp(2rem,5vw,4rem) 0}
+.album-seance .wrap{max-width:900px;text-align:center}
+.as-lead{max-width:60ch;margin:.6rem auto 1.6rem;font:400 1.15rem/1.6 var(--f-read,"EB Garamond",serif);color:#e9dfcc}
+.album-seance .seance-table{margin-bottom:1.2rem}
+.sb-title{position:absolute;left:50%;top:9%;transform:translate(-50%,-50%);max-width:52%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:600 clamp(.62rem,1.4vw,.92rem)/1 "Fell SC",var(--f-read),serif;letter-spacing:.2em;text-transform:uppercase;color:#4a2208;text-shadow:0 1px 0 rgba(255,236,190,.55)}
+.as-act{margin:0 0 1.4rem}
+.as-act .btn[disabled]{opacity:.6;cursor:progress}
+.as-list{list-style:none;margin:0 auto;padding:0;max-width:680px;text-align:left;counter-reset:none}
+.as-row{display:grid;grid-template-columns:2.2rem 1fr 2.6rem minmax(0,13rem);align-items:center;gap:.7rem;padding:.55rem .8rem;border-bottom:1px solid rgba(168,135,79,.22);font:400 1.08rem/1.35 var(--f-read,"EB Garamond",serif);color:#e9dfcc;transition:background .4s,box-shadow .4s}
+.as-i{font:600 .8rem/1 var(--f-sc,"Fell SC",serif);color:#cdb98f}
+.as-t{color:#f1e6d2;text-decoration:none;border-bottom:1px solid rgba(205,185,143,.35)}
+.as-t:hover,.as-t:focus-visible{color:#fff;border-bottom-color:#d9b56a}
+.as-n{justify-self:center;display:grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a51d17,#5a0907);color:#fbeee0;font:600 .95rem/1 var(--f-read,"EB Garamond",serif);box-shadow:0 2px 5px rgba(0,0,0,.6)}
+.as-c{font-size:.95rem;color:#d9ccb3}
+.as-row.is-called{background:rgba(160,30,24,.22);box-shadow:inset 3px 0 0 #d9b56a}
+@media (max-width:640px){.as-row{grid-template-columns:1.6rem 1fr 2.2rem;gap:.5rem}.as-c{grid-column:2 / 4;font-size:.9rem;margin-top:-.2rem}.sb-title{top:14%;max-width:60%}}
+.whisper-dark{left:0;top:0;bottom:auto;right:auto;transform:none}
+.whisper-dark.wd-edge{width:auto}
+.whisper-dark{padding:1.5rem 1.9rem 1.4rem;border-radius:50%;background:radial-gradient(farthest-side at 50% 50%,rgba(8,4,5,.9) 62%,rgba(8,4,5,.55) 82%,rgba(8,4,5,0) 100%)}
+@media (max-width:699px){.medium-toggle{bottom:calc(6.7rem + env(safe-area-inset-bottom))}}
+@media (max-width:699px){.medium-toggle{min-width:40px;min-height:40px;justify-content:center;bottom:calc(7.1rem + env(safe-area-inset-bottom))}}

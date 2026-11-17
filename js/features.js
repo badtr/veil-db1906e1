@@ -74,7 +74,7 @@ const NO = {
   'Sign the list': 'Skriv deg på', 'Nothing you type is sent or kept.': 'Ingenting du skriver blir sendt eller lagret.',
   'A sealed promise': 'Et forseglet løfte', 'For the press': 'For pressen', 'Short bio': 'Kort biografi', 'Download the press kit': 'Last ned pressepakken',
   'Sigil (SVG)': 'Sigill (SVG)', 'Wax seal (PNG)': 'Voksegl (PNG)', 'Album covers': 'Albumomslag', 'Download': 'Last ned',
-  'Make a lyric card': 'Lag et tekstkort', 'Count': 'Tell', 'Clear': 'Tøm', 'Sound off': 'Lyd av', 'Sound on': 'Lyd på', 'Tap for sound': 'Trykk for lyd'
+  'Make a lyric card': 'Lag et tekstkort', 'Count': 'Tell', 'Clear': 'Tøm', 'Ask the board': 'Spør brettet', 'Medium off': 'Medium av', 'Medium on': 'Medium på', 'Tap for the medium': 'Trykk for mediet', 'Sound off': 'Lyd av', 'Sound on': 'Lyd på', 'Tap for sound': 'Trykk for lyd', 'Sound off': 'Lyd av', 'Sound on': 'Lyd på', 'Tap for sound': 'Trykk for lyd'
 };
 const PH = { 'An album, a song, a line, a card\u2026': 'Et album, en sang, en linje, et kort\u2026', 'An album or a song title\u2026': 'Et album eller en sangtittel\u2026' };
 const lang = () => { try { return localStorage.getItem('pb-lang') === 'no' ? 'no' : 'en'; } catch (e) { return 'en'; } };
@@ -90,7 +90,7 @@ Object.assign(NO, {
 });
 const MOON_NO = { 'New moon': 'Nymåne', 'Waxing crescent': 'Voksende månesigd', 'First quarter': 'Første kvarter', 'Waxing gibbous': 'Voksende måne', 'Full moon': 'Fullmåne', 'Waning gibbous': 'Minkende måne', 'Last quarter': 'Siste kvarter', 'Waning crescent': 'Minkende månesigd' };
 const NO_PREFIX = [['Next altar: ', 'Neste alter: '], ['Next · ', 'Neste · ']];
-const AUTO_I18N = 'button, label, a.btn, summary, .next-title, .next-step .kicker';
+const AUTO_I18N = 'button, label, a.btn, summary, .next-title, .next-step .kicker, .mt-label, .sound-label';
 const toNo = (t) => NO[t] || (NO_PREFIX.find(([a]) => t.startsWith(a)) || [])[1]?.concat(t.slice(NO_PREFIX.find(([a]) => t.startsWith(a))[0].length));
 function applyLang() {
   const no = lang() === 'no';
@@ -182,7 +182,7 @@ function numbers(root) {
       if (!clean) { err.textContent = 'The room only counts the letters A to Z.'; err.hidden = false; }
       else { const tot = [...clean].reduce((a, c) => a + D.table[c], 0); const steps = []; const ex = reduce(tot, steps); html += card('Expression', ex, `${clean.length} letters, valued and added: ${tot}${tot !== ex ? ' &rarr; ' + ex : ''}.`); }
     }
-    if (html) rite('numbers');
+    if (html) { rite('numbers'); const got = [...html.matchAll(/class="nc-n">(\d+)/g)].map((m) => m[1]).join(''); try { document.dispatchEvent(new CustomEvent('pb:board', { detail: got })); } catch (e) {} }
     out.innerHTML = html; out.classList.remove('is-drawn'); void out.offsetWidth; out.classList.add('is-drawn');
     out.firstElementChild?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
   });
@@ -386,6 +386,106 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
   addEventListener('load', () => { navigator.serviceWorker.register(new URL('sw.js', ROOT).href, { scope: ROOT.href, updateViaCache: 'none' }).then((r) => r.update()).catch(() => {}); });
 }
 
-function mount() { timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); lyricCard(r); riteLine(false); coven(r); inkLyrics(r); applyLang(); }
+// ---------- the séance parlour: smoke, candle light, ectoplasm, the spirit board, channelled headings ----------
+const RM = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+function parlour() {
+  if (document.querySelector('.seance-fx')) return;
+  const fx = document.createElement('div'); fx.className = 'seance-fx'; fx.setAttribute('aria-hidden', 'true');
+  fx.innerHTML = '<i class="fx-smoke fx-s1"></i><i class="fx-smoke fx-s2"></i><i class="fx-ecto fx-e1"></i><i class="fx-ecto fx-e2"></i><i class="fx-candle fx-c1"></i><i class="fx-candle fx-c2"></i><i class="fx-plate"></i>';
+  document.body.appendChild(fx);
+}
+function board(root) {
+  $$('[data-board]', root).forEach((b) => {
+    if (b.dataset.bound) return; b.dataset.bound = '1';
+    const pl = $('.sb-planchette', b); const chs = $$('[data-ch]', b);
+    let cur = null, tgt = null, raf = 0, busy = false;
+    const lens = () => ({ x: pl.offsetWidth / 2, y: pl.offsetHeight * 0.43 });
+    const home = () => { const r = b.getBoundingClientRect(); return { x: r.width * 0.5, y: r.height * 0.86 }; };
+    const put = (p) => { const l = lens(); pl.style.transform = `translate(${(p.x - l.x).toFixed(1)}px, ${(p.y - l.y).toFixed(1)}px) rotate(${((p.x / b.clientWidth) - 0.5) * 16}deg)`; };
+    const lit = (p) => { let best = null, bd = 1e9; const r = b.getBoundingClientRect(); chs.forEach((c) => { const q = c.getBoundingClientRect(); const d = Math.hypot(q.left + q.width / 2 - r.left - p.x, q.top + q.height / 2 - r.top - p.y); if (d < bd) { bd = d; best = c; } }); chs.forEach((c) => c.classList.toggle('is-lit', c === best && bd < Math.max(26, b.clientWidth * 0.04))); };
+    const step = () => { raf = 0; if (!tgt) return; if (!cur) cur = { ...tgt }; const k = RM() ? 1 : 0.14; cur.x += (tgt.x - cur.x) * k; cur.y += (tgt.y - cur.y) * k; put(cur); lit(cur); if (Math.hypot(tgt.x - cur.x, tgt.y - cur.y) > 0.5) raf = requestAnimationFrame(step); };
+    const go = (p) => { tgt = p; if (!raf) raf = requestAnimationFrame(step); };
+    const at = (el) => { const r = b.getBoundingClientRect(), q = el.getBoundingClientRect(); return { x: q.left + q.width / 2 - r.left, y: q.top + q.height / 2 - r.top }; };
+    cur = home(); put(cur);
+    b.addEventListener('pointermove', (e) => { if (busy || e.pointerType === 'touch') return; const r = b.getBoundingClientRect(); go({ x: e.clientX - r.left, y: e.clientY - r.top }); b.classList.add('is-touched'); });
+    b.addEventListener('pointerleave', () => { if (!busy) go(home()); });
+    b.addEventListener('click', (e) => { const c = e.target.closest('[data-ch]'); if (c && !busy) go(at(c)); });
+    b.spell = async (word, keep) => {
+      const seq = []; let s = String(word).toUpperCase();
+      while (s) { const t = ['YES', 'NO', 'BYE'].find((w) => s.startsWith(w) && $(`[data-ch="${w}"]`, b)); const k = t || s[0]; s = s.slice(k.length); const el = $(`[data-ch="${CSS.escape(k)}"]`, b); if (el) seq.push(el); }
+      busy = true; b.classList.add('is-spelling');
+      for (const el of seq) { go(at(el)); await new Promise((r) => setTimeout(r, RM() ? 450 : 1050)); el.classList.add('is-spoken'); setTimeout(() => el.classList.remove('is-spoken'), 1400); }
+      if (keep) return; await new Promise((r) => setTimeout(r, 900)); busy = false; b.classList.remove('is-spelling'); go(home());
+    };
+    addEventListener('resize', () => { cur = null; go(home()); }, { passive: true });
+    b.rest = async () => { await new Promise((r) => setTimeout(r, 900)); busy = false; b.classList.remove('is-spelling'); go(home()); };
+  });
+  // the album séance: walk the numbers of the songs, one row at a time
+  $$('[data-ask-board]', root).forEach((btn) => {
+    if (btn.dataset.bound) return; btn.dataset.bound = '1';
+    const sec = btn.closest('.album-seance'); const b = $('[data-board]', sec); const rows = $$('.as-row', sec);
+    btn.addEventListener('click', async () => {
+      if (!b || !b.spell || btn.disabled) return; btn.disabled = true; b.scrollIntoView({ behavior: RM() ? 'auto' : 'smooth', block: 'center' });
+      await new Promise((r) => setTimeout(r, RM() ? 50 : 600));
+      await b.spell('YES', true);
+      for (const r of rows) { rows.forEach((x) => x.classList.toggle('is-called', x === r)); await b.spell(r.dataset.n, true); r.classList.add('is-done'); }
+      await b.spell('BYE', true); rows.forEach((x) => x.classList.remove('is-called')); await b.rest(); btn.disabled = false;
+    });
+  });
+}
+document.addEventListener('pb:board', (e) => { const b = $('[data-board]'); if (b && b.spell) { b.scrollIntoView({ behavior: RM() ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => b.spell(e.detail), 500); } });
+document.addEventListener('pb:rite', (e) => { if (e.detail !== 'tarot') return; const b = $('[data-board="tarot"]'); if (b && b.spell) b.spell('BYE'); });
+document.addEventListener('click', (e) => { const st = e.target.closest('.tr-stage'); if (!st || st.dataset.yes) return; st.dataset.yes = '1'; const b = $('[data-board="tarot"]'); if (b && b.spell) b.spell('YES'); });
+function channel(root) {
+  $$('h1 .bt, .lib-h .bt', root).forEach((bt) => {
+    if (bt.dataset.channel) return; bt.dataset.channel = '1';
+    const g = document.createElement('span'); g.className = 'h-ghost'; g.setAttribute('aria-hidden', 'true'); g.textContent = $$('.ch', bt).map((c) => c.textContent).join('') ? bt.textContent.replace(/\s+/g, ' ').trim() : ''; bt.appendChild(g);
+    if (RM()) return;
+    const letters = $$('.ch', bt); letters.forEach((c, i) => c.style.setProperty('--cd', (0.15 + i * 0.07 + Math.random() * 0.25).toFixed(2) + 's'));
+    bt.classList.add('is-channeling'); setTimeout(() => bt.classList.remove('is-channeling'), 1600 + letters.length * 90);
+    const twitch = () => { if (!bt.isConnected) return; const c = letters[Math.floor(Math.random() * letters.length)]; if (c) { c.classList.add('ch-twitch'); setTimeout(() => c.classList.remove('ch-twitch'), 700); } timers.push(setTimeout(twitch, 6000 + Math.random() * 9000)); };
+    timers.push(setTimeout(twitch, 4000 + letters.length * 90));
+  });
+}
+function spiritPhoto(root) {
+  $$('.album-hero img, .rq-frame img', root).forEach((img) => {
+    const box = img.parentElement; if (!box || box.querySelector('.sp-ghost')) return;
+    const g = img.cloneNode(); g.removeAttribute('loading'); g.className = 'sp-ghost'; g.alt = ''; g.setAttribute('aria-hidden', 'true'); box.classList.add('spirit-plate'); box.appendChild(g);
+  });
+}
+// ---------- whisper in the dark: after a long stillness, one real line drifts in at the edge, then leaves ----------
+const WH = { idle: 26000, gap: 90000, max: 4, el: null, t: 0, last: 0, out: 0 };
+function whisperShow() {
+  if (document.hidden || document.querySelector('.lightbox.is-open, .site-search:not([hidden]), .wel, .intro-overlay')) return;
+  const a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+  let n = 0; try { n = +sessionStorage.getItem('pb-whispers') || 0; } catch (e) {}
+  if (n >= WH.max || Date.now() - WH.last < WH.gap) return;
+  loadOracle().then((lines) => {
+    if (!lines || !lines.length) return;
+    const o = lines[Math.floor(Math.random() * lines.length)];
+    if (!WH.el) { WH.el = document.createElement('div'); WH.el.className = 'whisper-dark'; WH.el.setAttribute('aria-hidden', 'true'); document.body.appendChild(WH.el); }
+    WH.el.innerHTML = `<p class="wd-line">\u201c${o.en.replace(/[<>&]/g, '')}\u201d</p><p class="wd-src">${o.song.replace(/[<>&]/g, '')} &middot; ${o.album.replace(/[<>&]/g, '')}</p>`;
+    // find a quiet place: never on top of anything readable or clickable
+    const TEXT = 'p, li, h1, h2, h3, h4, blockquote, figcaption, label, input, textarea, select, button, a, img, video, canvas, .ly-t, .ly-o, .ms-l, .spirit-board, .tr-stage, .ms-letter, .jr-ledger, .rl-doc, .oracle-sheet, .coven-sheet, .vr-doc, .num-card, .sign-plate, .musicbox, .ly-body';
+    const busy = $$(TEXT, document.getElementById('swap') || document).filter((e) => !e.closest('.whisper-dark, .seance-fx, .hero-stage') && (e.matches('.spirit-board, .tr-stage, .ms-letter') || !e.closest('[aria-hidden="true"]')) && getComputedStyle(e).visibility !== 'hidden' && +getComputedStyle(e).opacity > 0.05).map((e) => e.getBoundingClientRect()).filter((r) => r.width && r.height && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth);
+    const clear = (x, y, w, h) => !busy.some((r) => r.left < x + w && r.right > x && r.top < y + h && r.bottom > y);
+    const ww = Math.min(260, innerWidth * 0.8), hh = 130, spots = [];
+    for (let y = innerHeight * 0.3; y < innerHeight * 0.75; y += 40) { spots.push([innerWidth - ww - innerWidth * 0.02, y]); spots.push([innerWidth * 0.02 + 56, y]); }
+    for (let y = innerHeight * 0.18; y < innerHeight - hh - 80; y += 36) spots.push([(innerWidth - ww) / 2, y]);
+    const spot = spots.find(([x, y]) => x > 0 && clear(x, y, ww, hh));
+    if (!spot) { whisperArm(); return; }
+    Object.assign(WH.el.style, { left: spot[0] + 'px', top: spot[1] + 'px', width: ww + 'px' });
+    requestAnimationFrame(() => WH.el.classList.add('is-in'));
+    WH.last = Date.now(); try { sessionStorage.setItem('pb-whispers', String(n + 1)); } catch (e) {}
+    clearTimeout(WH.out); WH.out = setTimeout(whisperHide, 9000);
+  }).catch(() => {});
+}
+function whisperHide() { if (WH.el) WH.el.classList.remove('is-in'); }
+function whisperArm() { clearTimeout(WH.t); WH.t = setTimeout(whisperShow, WH.idle); }
+['pointermove', 'pointerdown', 'keydown', 'wheel', 'touchstart', 'scroll'].forEach((ev) => addEventListener(ev, () => { if (WH.el && WH.el.classList.contains('is-in') && ev !== 'pointermove') whisperHide(); whisperArm(); }, { passive: true, capture: true }));
+whisperArm();
+// the medium's sound (opt-in, off by default)
+import(new URL('medium.js?v=' + (document.querySelector('link[href*="style.css"]')?.getAttribute('href').split('?v=')[1] || ''), import.meta.url).href).catch(() => {});
+function mount() { timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); lyricCard(r); riteLine(false); coven(r); inkLyrics(r); parlour(); board(r); channel(r); spiritPhoto(r); applyLang(); }
 document.addEventListener('pb:page', mount);
 mount();
