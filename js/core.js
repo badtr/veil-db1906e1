@@ -21,7 +21,7 @@ function heroCorners(root) { heroIO?.disconnect(); document.body.classList.remov
 function symHush(root) { heroCorners(root); symIO?.disconnect(); document.body.classList.remove('sym-hush'); const d = (root || document).querySelector('#doors'); if (!d || !('IntersectionObserver' in window)) return; symIO = new IntersectionObserver(([e]) => document.body.classList.toggle('sym-hush', e.isIntersecting), { threshold: 0.25 }); symIO.observe(d); }
 const smoke = startSmoke();
 const embers = startEmbers();
-for (const cls of ['fx-vignette', 'fx-grain', 'fx-burn', 'fx-candles', 'fx-corner fx-corner-tl', 'fx-corner fx-corner-tr', 'fx-corner fx-corner-bl', 'fx-corner fx-corner-br', 'fx-edge fx-edge-t', 'fx-edge fx-edge-b', 'fx-frieze fx-frieze-t', 'fx-frieze fx-frieze-b', 'fx-frieze fx-frieze-l', 'fx-frieze fx-frieze-r']) { const d = document.createElement('div'); d.className = cls; d.setAttribute('aria-hidden', 'true'); document.body.appendChild(d); }
+for (const cls of ['fx-vignette', 'fx-grain', 'fx-burn', 'fx-candles', 'fx-corner fx-corner-tl', 'fx-corner fx-corner-tr', 'fx-corner fx-corner-bl', 'fx-corner fx-corner-br', 'fx-edge fx-edge-t', 'fx-edge fx-edge-b', 'fx-frieze fx-frieze-t', 'fx-frieze fx-frieze-b']) { const d = document.createElement('div'); d.className = cls; d.setAttribute('aria-hidden', 'true'); if (cls.startsWith('fx-frieze')) d.innerHTML = '<i class="fz fz-l"></i><i class="fz fz-r"></i>'; document.body.appendChild(d); }
 const veil = document.createElement('div'); veil.className = 'fx-veil'; veil.setAttribute('aria-hidden', 'true');
 veil.innerHTML = '<svg class="sigil" data-seed="veil" data-static viewBox="-50 -50 100 100"></svg>';
 document.body.appendChild(veil);
@@ -179,6 +179,25 @@ const btn = document.createElement('button');
 btn.type = 'button'; btn.className = 'sound-toggle';
 btn.innerHTML = '<span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="sound-label">Sound off</span>';
 document.body.appendChild(btn);
+// v36: the sound controls live in the header bar, next to Search (re-docked after every page swap).
+function dockSound() {
+  const w = document.querySelector('.site-header .wrap');
+  if (!w) return;
+  let slot = w.querySelector('.hdr-sound');
+  if (!slot) {
+    slot = document.createElement('div'); slot.className = 'hdr-sound'; slot.setAttribute('role', 'group'); slot.setAttribute('aria-label', 'Sound');
+    const st = w.querySelector('.search-toggle'); st ? w.insertBefore(slot, st) : w.appendChild(slot);
+  }
+  const med = window.__pbMediumBtn || document.querySelector('.medium-toggle');
+  if (med && med.parentNode !== slot) slot.appendChild(med);
+  if (btn.parentNode !== slot) slot.appendChild(btn);
+  btn.title = btn.querySelector('.sound-label').textContent;
+  if (med) med.title = med.querySelector('.mt-label').textContent;
+}
+window.__pbDockSound = dockSound;
+dockSound();
+document.addEventListener('pb:page', dockSound);
+addEventListener('load', dockSound);
 function syncBtn() {
   const on = sound.pref === 'on';
   const running = sound.state === 'running';
@@ -186,6 +205,7 @@ function syncBtn() {
   btn.querySelector('.sound-label').textContent = on ? (running ? 'Sound on' : 'Tap for sound') : 'Sound off';
   btn.setAttribute('aria-label', on && running ? 'Mute the ambient sound' : 'Play the ambient sound');
   btn.classList.toggle('needs-tap', on && !running);
+  btn.title = btn.querySelector('.sound-label').textContent;
 }
 sound.onChange(syncBtn); syncBtn();
 btn.addEventListener('click', async () => {
