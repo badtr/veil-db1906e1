@@ -450,20 +450,61 @@ function spotifyGate(root) {
   tick(); const id = setInterval(tick, 1000); try { timers.push(id); } catch (_) {}
 }
 
-// ---------- v35: project archive · letters that unseal one a day (opened ones are remembered in this browser) ----------
+// ---------- v40: project archive · sealed letters. The first lies open; each later one opens with the key hidden in the letter before it.
+// Keys live only as salted SHA-256 hashes; the ink is XOR-sealed with a keystream from the key. Opened keys are remembered in this browser.
+var SHA_K, SHA_H;
+function sha256(bytes) {
+  if (!SHA_K) { SHA_K = []; SHA_H = []; let n = 2, c = 0;
+  const frac = (x) => ((x - Math.floor(x)) * 4294967296) | 0;
+    while (c < 64) { let p = true; for (let d = 2; d * d <= n; d++) if (n % d === 0) { p = false; break; } if (p) { if (c < 8) SHA_H[c] = frac(Math.sqrt(n)); SHA_K[c] = frac(Math.cbrt(n)); c++; } n++; } }
+  const K = SHA_K, H0 = SHA_H;
+  {
+    const l = bytes.length, len = ((l + 9 + 63) >> 6) << 6, m = new Uint8Array(len); m.set(bytes); m[l] = 0x80;
+    const dv = new DataView(m.buffer); dv.setUint32(len - 4, (l * 8) >>> 0); dv.setUint32(len - 8, Math.floor(l / 536870912));
+    const h = H0.slice(), w = new Int32Array(64), r = (x, y) => (x >>> y) | (x << (32 - y));
+    for (let o = 0; o < len; o += 64) {
+      for (let i = 0; i < 16; i++) w[i] = dv.getInt32(o + i * 4);
+      for (let i = 16; i < 64; i++) { const a = w[i - 15], b = w[i - 2]; w[i] = (w[i - 16] + (r(a, 7) ^ r(a, 18) ^ (a >>> 3)) + w[i - 7] + (r(b, 17) ^ r(b, 19) ^ (b >>> 10))) | 0; }
+      let [A, B, C, D, E, F, G, Hh] = h;
+      for (let i = 0; i < 64; i++) {
+        const t1 = (Hh + (r(E, 6) ^ r(E, 11) ^ r(E, 25)) + ((E & F) ^ (~E & G)) + K[i] + w[i]) | 0, t2 = ((r(A, 2) ^ r(A, 13) ^ r(A, 22)) + ((A & B) ^ (A & C) ^ (B & C))) | 0;
+        Hh = G; G = F; F = E; E = (D + t1) | 0; D = C; C = B; B = A; A = (t1 + t2) | 0;
+      }
+      [A, B, C, D, E, F, G, Hh].forEach((v, i) => { h[i] = (h[i] + v) | 0; });
+    }
+    const out = new Uint8Array(32); const ov = new DataView(out.buffer); h.forEach((v, i) => ov.setInt32(i * 4, v)); return out;
+  }
+}
+var LNUM = { 0: 'zero', 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten', 11: 'eleven', 12: 'twelve' };
+function letterNorm(s) { s = String(s).toLowerCase().replace(/[^a-z0-9]/g, ''); if (Object.prototype.hasOwnProperty.call(LNUM, s)) s = LNUM[s]; if (s.length > 3 && s.endsWith('s')) s = s.slice(0, -1); return s; }
+function u8(s) { return new TextEncoder().encode(s); }
+function hex(b) { return [...b].map((x) => x.toString(16).padStart(2, '0')).join(''); }
+function letterInk(n, k, b64) {
+  const data = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0)), out = new Uint8Array(data.length);
+  for (let i = 0, blk = 0; i < data.length; blk++) { const s = sha256(u8(`pb-ink|${n}|${k}|${blk}`)); for (let j = 0; j < 32 && i < data.length; j++, i++) out[i] = data[i] ^ s[j]; }
+  return new TextDecoder().decode(out);
+}
 function paLetters(root) {
-  const ls = [...(root || document).querySelectorAll('.pa-letter')]; if (!ls.length) return;
-  let read = []; try { read = JSON.parse(localStorage.getItem('pb-letters-read') || '[]'); } catch (_) {}
-  const save = () => { try { localStorage.setItem('pb-letters-read', JSON.stringify(read)); } catch (_) {} };
-  const now = +NOW();
+  const ls = [...(root || document).querySelectorAll('.pa-letter[data-lock]')]; if (!ls.length) return;
+  let keys = {}; try { keys = JSON.parse(localStorage.getItem('pb-letters-keys') || '{}') || {}; } catch (_) {}
+  const save = () => { try { localStorage.setItem('pb-letters-keys', JSON.stringify(keys)); } catch (_) {} };
   ls.forEach((l) => {
-    const n = l.dataset.letter, at = Date.parse(l.dataset.openAt), page = l.querySelector('.pl-page'), btn = l.querySelector('.pl-break');
-    if (isNaN(at) || now < at) { l.classList.add('is-locked'); return; }
-    l.classList.add('is-due');
-    const open = (anim) => { l.classList.add('is-read'); if (anim && !RM()) l.classList.add('is-breaking'); page.hidden = false; btn.hidden = true; };
-    if (read.includes(n)) { open(false); return; }
-    btn.hidden = false;
-    btn.addEventListener('click', () => { if (!read.includes(n)) { read.push(n); save(); } open(true); });
+    const n = l.dataset.letter, page = l.querySelector('.pl-page'), form = l.querySelector('.pl-lock'), inp = l.querySelector('.pl-key');
+    const fits = (k) => k && hex(sha256(u8(`pb-letter|${n}|${k}`))) === l.dataset.lock;
+    const open = (k, anim) => {
+      page.innerHTML = letterInk(n, k, l.dataset.ink);
+      const show = () => { l.classList.remove('is-locked', 'is-breaking'); l.classList.add('is-read'); page.hidden = false; };
+      if (anim && !RM()) { l.classList.add('is-breaking'); setTimeout(() => { show(); l.classList.add('is-unfolding'); setTimeout(() => l.classList.remove('is-unfolding'), 1500); }, 1100); } else show();
+    };
+    if (fits(keys[n])) { open(keys[n], false); return; }
+    form.hidden = false;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); if (l.classList.contains('is-breaking')) return;
+      const k = letterNorm(inp.value);
+      if (fits(k)) { keys[n] = k; save(); inp.blur(); open(k, true); return; }
+      l.classList.remove('is-wrong'); void l.offsetWidth; l.classList.add('is-wrong'); inp.setAttribute('aria-invalid', 'true'); inp.select();
+      setTimeout(() => { l.classList.remove('is-wrong'); inp.removeAttribute('aria-invalid'); }, 600);
+    });
   });
 }
 
