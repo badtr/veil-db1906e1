@@ -3972,5 +3972,3 @@ body.ms-reading .fx-frieze{opacity:0!important}
 .backbar .wrap{padding-left:calc(min(36vw,540px) * .24 + 14px)!important}
 @media (max-width:900px){.backbar .wrap{padding-left:calc(52vw * .23 + 6px)!important}}
 .pl-hint .pl-ink{display:block;margin-top:.2rem;font-style:italic;font-weight:700;color:#8a0f0c}
-/* v42: the full-moon hint lives under the moon phase mark, small and quiet */
-.mp-ret{font:italic 400 .8rem/1.25 var(--f-read);color:#cdbb98;letter-spacing:.01em;margin-top:.1rem;white-space:nowrap}

@@ -262,11 +262,7 @@ function fullMoonNote(root, m) {
     const line = FM_LINES[((n % FM_LINES.length) + FM_LINES.length) % FM_LINES.length];
     el.innerHTML = `<span class="fm-k">Full moon</span><span class="fm-line">&ldquo;${esc(line)}&rdquo;</span><span class="fm-sig">&mdash; Ballerina</span>`;
   } else {
-    // v42: no card between full moons, only a quiet line under the moon phase mark (top right)
-    const mp = document.querySelector('.moon-phase.mp-hero .mp-t');
-    if (mp && !mp.querySelector('.mp-ret')) mp.insertAdjacentHTML('beforeend', '<span class="mp-ret">Return when the moon is full.</span>');
-    const mb = document.querySelector('.moon-phase.mp-hero'); if (mb && !/Return when/.test(mb.title)) mb.title += '. Return when the moon is full.';
-    return;
+    return; // v42b: between full moons nothing is shown, the moon mark keeps only phase and percent
   }
   const copy = $('.hero-copy .btn-row', root);
   if (matchMedia('(max-width: 1100px)').matches && copy) copy.insertAdjacentElement('afterend', el); else hero.appendChild(el);
