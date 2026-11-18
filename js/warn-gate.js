@@ -29,6 +29,7 @@
       <p class="wg-more"><a href="${fullHref}" class="wg-full-link" aria-expanded="false" aria-controls="pbwg-full">Read the full warning</a></p>
       <div class="pw-text wg-full" id="pbwg-full" hidden>${full}<p class="pw-sig">&mdash; M.A.</p></div>
       <span class="pw-seal" aria-hidden="true"></span>
+      <p class="wg-signhere" aria-hidden="true"><span class="wg-sh-t">Sign below</span><span class="wg-sh-a"></span></p>
       <div class="wg-sign">
         <input type="checkbox" id="pbwg-ok" class="wg-check">
         <label for="pbwg-ok" class="wg-label"><span class="wg-wax" aria-hidden="true"></span><span class="wg-words">I have read and understood the warning. I enter at my own risk.</span><span class="wg-line" aria-hidden="true"></span></label>

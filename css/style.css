@@ -4246,3 +4246,50 @@ body:not([data-page="about"]):not([data-page="home"]) .page-head .case-file + .k
 .pr-mail-t{min-width:0}
 .pr-contact-n{margin:.6rem 0 0!important;font:italic .95rem/1.45 "Garamond",serif;color:#cbb994!important}
 @media (max-width:600px){.pr-contact{margin-left:auto;margin-right:auto;text-align:left}.pr-bio .pr-mail,.pr-mail{font-size:1.02rem!important}}
+
+/* ---- v50: phone polish (390px class). Desktop and tablet untouched. ---- */
+@media (max-width:600px){
+  /* the dancer stands in the open sky above the dossier, never behind the words */
+  body[data-page="home"] .hero{align-items:flex-start}
+  body[data-page="home"] .hero .hero-figure{top:118px!important;bottom:auto!important;right:50%!important;left:auto!important;transform:translateX(50%)!important;height:500px!important;width:auto!important;aspect-ratio:3/4;opacity:1!important;z-index:3}
+  body[data-page="home"] .hero .hero-figure .fig-sigil{opacity:.55}
+  body[data-page="home"] .hero .hero-figure .fig-smoke{display:none}
+  body[data-page="home"] .hero .hero-copy{padding-top:560px!important;padding-bottom:4.5rem!important}
+  body[data-page="home"] .hero .hero-copy::before{content:"";position:absolute;left:-20px;right:-20px;top:500px;bottom:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(6,2,2,.78) 70px,rgba(6,2,2,.82))}
+  .hero-file{font-size:.7rem!important;letter-spacing:.14em}
+  /* the corner relics stay at the edge and do not crowd the back row */
+  .fx-corner{width:34vw!important;height:30vw!important;opacity:.24!important}
+  .fx-corner-tl,.fx-corner-tr{top:112px!important}
+  .fx-corner-bl,.fx-corner-br{opacity:.16!important}
+  .occ-frame .oc{width:44px;opacity:.08}
+  /* tap targets: 44px or more */
+  .hdr-sound .sound-toggle,.hdr-sound .medium-toggle,.sound-toggle,.medium-toggle{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+  .search-toggle{min-height:44px!important}
+  .rl-suno,.replay-welcome{min-height:44px!important;display:inline-flex!important;align-items:center;justify-content:center}
+  .ritual-path a,.rp a{position:relative}
+  .ritual-path a::after{content:"";position:absolute;inset:-9px}
+  .pa-letter .pl-key{min-height:44px;font-size:1rem}
+  .pa-letter .pl-break{min-height:44px;padding-left:1.1rem;padding-right:1.1rem}
+  .ob-go{display:inline-block;padding:1rem 0}
+  .pr-bio .pr-mail,.pr-mail{min-height:44px}
+  .pr-act .btn{display:flex!important;flex-wrap:wrap;justify-content:center;text-align:center;gap:.15rem .45rem;width:100%;min-height:48px}
+  /* small print a little larger */
+  .au-file-tags{font-size:.68rem!important}
+  .pb-folio,.fu-k{font-size:.8rem!important}
+  .pb-sealed{font-size:.86rem!important}
+  .sy-where{font-size:.8rem!important}
+  .mr-open{font-size:.8rem!important}
+  .notes-flag{font-size:.84rem!important}
+  /* the gate: sign below */
+  .wg-signhere{display:flex!important}
+}
+.wg-signhere{display:none;flex-direction:column;align-items:center;gap:.25rem;margin:1.6rem 0 -.6rem!important;color:#6a120c;font:600 .74rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.3em;text-transform:uppercase;transition:opacity .4s}
+.wg-sh-t{padding:0 .8rem;background:linear-gradient(90deg,transparent,rgba(106,18,12,.55) 0,rgba(106,18,12,.55)) center/100% 1px no-repeat}
+.wg-sh-t{background:none;position:relative}
+.wg-sh-t::before,.wg-sh-t::after{content:"";position:absolute;top:50%;width:2.2rem;height:1px;background:rgba(106,18,12,.6)}
+.wg-sh-t::before{right:100%}.wg-sh-t::after{left:100%}
+.wg-sh-a{width:1px;height:22px;background:linear-gradient(#6a120c,rgba(106,18,12,.2));position:relative;animation:wgSh 1.8s ease-in-out infinite}
+.wg-sh-a::after{content:"";position:absolute;left:50%;bottom:-1px;width:8px;height:8px;border-right:1px solid #6a120c;border-bottom:1px solid #6a120c;transform:translateX(-50%) rotate(45deg)}
+@keyframes wgSh{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(5px);opacity:1}}
+.wg-sheet:has(.wg-check:checked) .wg-signhere{opacity:0}
+@media (prefers-reduced-motion:reduce){.wg-sh-a{animation:none}}
