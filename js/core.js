@@ -104,7 +104,7 @@ function bleedTitles(root) {
 // ---- the forbidden layer: scratched warnings, case-file headers, flicker, glitch ----
 const FOLIO = { home: 'I', upcoming: 'I·a', albums: 'II', album: 'III', song: 'III·a', gallery: 'IV', images: 'IV·a', tarot: 'V', about: 'VI' };
 // ---- prose: illuminated initials, thorn rules and tiny skull/dagger ornaments between paragraphs ----
-const ORN = ['<svg viewBox="0 0 24 24"><path d="M12 3c-4.4 0-7.5 3-7.5 7 0 2.4 1.1 4.1 2.6 5.1V18h2v-1.6h1.4V18h3V16.4h1.4V18h2v-2.9c1.5-1 2.6-2.7 2.6-5.1C19.5 6 16.4 3 12 3zm-3.1 9.6a1.9 1.9 0 110-3.8 1.9 1.9 0 010 3.8zm6.2 0a1.9 1.9 0 110-3.8 1.9 1.9 0 010 3.8zM12 15l-1-2h2z"/></svg>',
+const ORN = ['<i class="orn-emb"></i>',
   '<svg viewBox="0 0 24 24"><path d="M12 1l1.3 4.5v9.5h-2.6V5.5zM7.5 15.2h9v1.6h-9zM11 17h2v3.2l1 1.1-2 1.7-2-1.7 1-1.1z"/></svg>'];
 function prose(root) {
   const blocks = root.querySelectorAll('.diary-entry, .why-note, .note, .about-section .wrap, .codex-veiled, .lead, .tarot-reading p:first-of-type');

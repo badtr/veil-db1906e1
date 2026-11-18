@@ -308,7 +308,7 @@ function mirrorLink(root) {
 }
 
 // ---------- no image downloads: covers, etchings and seals cannot be dragged out or right-click saved ----------
-const PROTECT = '.hero-figure img, .dr-thumb img, .cv-card img, .alb-card img, .pa-cabinet img, img[src*="images/archive/"], img[src*="images/hall/"], img[src*="images/albums/"], img[src*="images/etchings/"], img[src*="images/room/"], img[src*="images/gallery/"], img[src*="images/share/"], img[src*="seal-logo"], .lightbox img, .sp-ghost, .mirror-stage img';
+const PROTECT = '.hero-figure img, .pa-emblem img, .dr-thumb img, .cv-card img, .alb-card img, .pa-cabinet img, img[src*="images/archive/"], img[src*="images/hall/"], img[src*="images/albums/"], img[src*="images/etchings/"], img[src*="images/room/"], img[src*="images/gallery/"], img[src*="images/share/"], img[src*="seal-logo"], .lightbox img, .sp-ghost, .mirror-stage img';
 function protect(root) { $$(PROTECT, root).forEach((im) => { im.draggable = false; im.setAttribute('draggable', 'false'); }); }
 ['contextmenu', 'dragstart'].forEach((ev) => document.addEventListener(ev, (e) => { if (e.target instanceof Element && e.target.matches(PROTECT)) e.preventDefault(); }, true));
 
