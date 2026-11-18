@@ -4156,3 +4156,20 @@ body:not([data-page="about"]):not([data-page="home"]) .page-head .case-file + .k
 /* v48b: the stamp sits in the flow above the letter's number, never over it */
 .pa-letter.is-locked .pl-env{padding-top:1rem;min-height:250px}
 .pl-stamp{position:relative;top:auto;left:auto;translate:none;display:block;max-width:94%;margin:0 auto .1rem;font-size:.6rem!important;letter-spacing:.12em;line-height:1.3}
+/* v48c: desktop only - the dossier intro is taller, so the hero tightens and the moon pill gets air above the bottom frame */
+@media (min-width:901px){
+  .hero-file{margin-bottom:.6rem!important}
+  .hero-stamp{margin:.1rem 0 .5rem}
+  .hero .hero-copy .lead{margin-top:.8rem!important;margin-bottom:.9rem!important;max-width:42rem!important}
+  .hero-terms{max-width:42rem}
+  .hero-terms{margin:.3rem 0 .9rem!important}
+  .hero-copy .btn-row{margin-top:1.1rem!important}
+  .hero-copy .moon-phase.mp-inline{margin-top:.9rem!important}
+}
+@media (min-width:901px){
+  .hero .hero-copy .lead{margin-top:.5rem!important;margin-bottom:.6rem!important}
+  .hero-terms{margin:.2rem 0 .6rem!important}
+  .hero-copy .btn-row{margin-top:.8rem!important}
+  .hero-copy .moon-phase.mp-inline{margin-top:.7rem!important}
+}
+@media (min-width:901px){.hero .hero-copy{padding-bottom:136px!important}}
