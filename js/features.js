@@ -91,7 +91,7 @@ function oracle(root) {
     const show = (i, daily) => {
       const o = lines[i];
       $('[data-oracle-en]', sec).textContent = o.en;
-      const oo = $('[data-oracle-o]', sec); oo.textContent = o.o ? `${o.o}${o.lang ? ' · ' + o.lang : ''}` : ''; oo.hidden = !o.o;
+      const oo = $('[data-oracle-o]', sec); oo.textContent = o.o || ''; oo.hidden = !o.o; // v42: the line only, no language label
       const song = o.url ? `<a href="${new URL(o.url, ROOT).href}">${esc(o.song)}</a>` : esc(o.song);
       $('[data-oracle-src]', sec).innerHTML = `From ${song} &middot; ${esc(o.album)}`;
       $('[data-oracle-today]', sec).hidden = daily;
@@ -262,9 +262,11 @@ function fullMoonNote(root, m) {
     const line = FM_LINES[((n % FM_LINES.length) + FM_LINES.length) % FM_LINES.length];
     el.innerHTML = `<span class="fm-k">Full moon</span><span class="fm-line">&ldquo;${esc(line)}&rdquo;</span><span class="fm-sig">&mdash; Ballerina</span>`;
   } else {
-    const next = new Date(NEW0 + (n + (m.age > SYN / 2 ? 1 : 0)) * SYN * 86400000 + SYN / 2 * 86400000);
-    const day = next.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'Europe/Oslo' });
-    el.innerHTML = `<span class="fm-seal" aria-hidden="true"></span><span class="fm-hint">Return when the moon is full.</span><span class="fm-when">Sealed until ${esc(day)}</span>`;
+    // v42: no card between full moons, only a quiet line under the moon phase mark (top right)
+    const mp = document.querySelector('.moon-phase.mp-hero .mp-t');
+    if (mp && !mp.querySelector('.mp-ret')) mp.insertAdjacentHTML('beforeend', '<span class="mp-ret">Return when the moon is full.</span>');
+    const mb = document.querySelector('.moon-phase.mp-hero'); if (mb && !/Return when/.test(mb.title)) mb.title += '. Return when the moon is full.';
+    return;
   }
   const copy = $('.hero-copy .btn-row', root);
   if (matchMedia('(max-width: 1100px)').matches && copy) copy.insertAdjacentElement('afterend', el); else hero.appendChild(el);
