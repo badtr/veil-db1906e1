@@ -4173,3 +4173,65 @@ body:not([data-page="about"]):not([data-page="home"]) .page-head .case-file + .k
   .hero-copy .moon-phase.mp-inline{margin-top:.7rem!important}
 }
 @media (min-width:901px){.hero .hero-copy{padding-bottom:136px!important}}
+
+/* ---- v49: twelve letters, twelve hands - each under its own paper, wax and stamp ---- */
+.pa-letter .pl-env{background:var(--pl-tint,linear-gradient(transparent,transparent)),#d9c6a0 url(../images/letter/paper-tile.jpg) center/300px;background-blend-mode:var(--pl-blend,normal),normal}
+.pa-letter .pl-seal,.pa-letter .pl-half{background-image:var(--pl-wax,url(../images/letter/seal-ma-sm.webp))}
+.pa-letter.is-breaking .pl-seal{background-image:none}
+.pa-letter.is-locked .pl-seal{filter:drop-shadow(0 4px 5px rgba(0,0,0,.55)) var(--pl-waxf,saturate(1));rotate:var(--pl-waxr,0deg);scale:var(--pl-waxs,1)}
+.pa-letter .pl-stamp{rotate:var(--pl-sr,-4deg);justify-self:var(--pl-sj,center);margin-left:.2rem;margin-right:.2rem}
+.pa-letter .pl-no{color:var(--pl-ink,#5a1a14)}
+.pa-letter .pl-warn{color:var(--pl-wink,#4a160f)!important}
+.pa-letter .pl-msg{color:var(--pl-mink,#8a0f0c)!important}
+/* I - ivory, M.A. wax, double-ruled red stamp (the first, as it was) */
+.pl-v1{--pl-sr:-4deg}
+/* II - tobacco paper, black wax, a redaction bar */
+.pl-v2{--pl-tint:linear-gradient(160deg,rgba(70,40,15,.55),rgba(40,20,8,.7));--pl-blend:multiply;--pl-wax:url(../images/ritual/seal-black-sm.webp);--pl-sj:start;--pl-sr:0deg;--pl-ink:#e6d3ae;--pl-wink:#efdcb8;--pl-mink:#ff9a8a}
+.pl-v2 .pl-stamp{background:#120806;color:#e9d9b8;border:0;outline:0;mix-blend-mode:normal;padding:.34rem .7rem;letter-spacing:.3em;-webkit-mask:none;mask:none}
+.pl-v2 .pl-env::before{opacity:.35}
+/* III - ash-grey paper, heptagram wax turned, a round stamp at the right */
+.pl-v3{--pl-tint:linear-gradient(rgba(120,125,115,.55),rgba(90,95,88,.55));--pl-blend:color;--pl-wax:url(../images/ritual/seal-red-sm.webp);--pl-waxr:14deg;--pl-sj:end;--pl-sr:9deg;--pl-ink:#2b2420;--pl-wink:#26201c}
+.pl-v3 .pl-stamp{border-radius:999px;padding:.3rem .9rem;outline-offset:3px;color:#5b0d0a;border-color:rgba(91,13,10,.85)}
+/* IV - scorched at the edges, skull wax, rust ink, low left */
+.pl-v4{--pl-tint:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(120,50,10,.55) 78%,rgba(30,10,2,.9) 100%);--pl-wax:url(../images/ritual/seal-blood-sm.webp);--pl-sj:start;--pl-sr:-9deg;--pl-wink:#3a1206}
+.pl-v4 .pl-stamp{color:#8e3a12;border-color:rgba(142,58,18,.85);outline-color:rgba(142,58,18,.4);border-style:solid;border-width:3px 1px}
+/* V - cold mirror-grey, cracked wax, outlined italic stamp */
+.pl-v5{--pl-tint:linear-gradient(200deg,rgba(150,170,185,.6),rgba(80,95,110,.55));--pl-blend:color;--pl-wax:url(../images/letter/seal-ma-cracked-sm.webp);--pl-sr:3deg;--pl-waxf:saturate(.75) brightness(.9);--pl-ink:#1d2730;--pl-wink:#1a2129;--pl-mink:#7a0d0a}
+.pl-v5 .pl-stamp{font-style:italic;text-transform:none;letter-spacing:.06em;font-size:.78rem!important;border-width:1px;outline:0;color:#1d2730;border-color:rgba(29,39,48,.8)}
+/* VI - pale bone with a red rule, Ballerina wax, a solid red block */
+.pl-v6{--pl-tint:linear-gradient(rgba(245,235,215,.55),rgba(230,215,190,.45));--pl-wax:url(../images/letter/seal-logo-sm.webp);--pl-sr:-2deg;--pl-waxs:.92}
+.pl-v6 .pl-env{box-shadow:inset 0 0 0 1px rgba(60,35,15,.4),inset 0 0 0 7px #e8dcc3,inset 0 0 0 8px rgba(138,15,12,.7),inset 0 0 30px rgba(90,55,20,.35),0 8px 18px rgba(0,0,0,.55)}
+.pl-v6 .pl-stamp{background:#8a0f0c;color:#f3e6cc;border:0;outline:0;mix-blend-mode:normal;-webkit-mask:none;mask:none;padding:.32rem .8rem}
+/* VII - wine-stained, oversized M.A. wax, dashed stamp to the right */
+.pl-v7{--pl-tint:radial-gradient(circle at 70% 70%,rgba(110,10,20,.5),rgba(110,10,20,.15) 40%,transparent 62%),radial-gradient(circle at 18% 22%,rgba(110,10,20,.3),transparent 30%);--pl-waxs:1.18;--pl-waxr:-8deg;--pl-sj:end;--pl-sr:6deg}
+.pl-v7 .pl-stamp{border-style:dashed;outline-style:dotted}
+/* VIII - umber paper, black wax tilted, a black double-ruled stamp */
+.pl-v8{--pl-tint:linear-gradient(rgba(95,60,30,.55),rgba(70,42,20,.6));--pl-blend:multiply;--pl-wax:url(../images/ritual/seal-black-sm.webp);--pl-waxr:-18deg;--pl-waxs:.9;--pl-sj:start;--pl-sr:-6deg;--pl-ink:#f0dcb0;--pl-wink:#f3e2c0;--pl-mink:#ffb0a0}
+.pl-v8 .pl-stamp{color:#f0dcb0;border-color:rgba(240,220,176,.85);outline-color:rgba(240,220,176,.4);mix-blend-mode:normal;border-style:double;border-width:4px}
+/* IX - faded under a grey veil, heptagram wax, a typed line with no frame */
+.pl-v9{--pl-tint:repeating-linear-gradient(0deg,rgba(60,50,45,.07) 0 1px,transparent 1px 22px),linear-gradient(rgba(232,228,220,.68),rgba(205,200,192,.62));--pl-blend:normal;--pl-wax:url(../images/ritual/seal-red-sm.webp);--pl-waxf:saturate(.6) brightness(.85);--pl-sr:0deg;--pl-ink:#3a2a22}
+.pl-v9 .pl-stamp{border:0;outline:0;border-top:1px solid rgba(60,30,20,.6);border-bottom:1px solid rgba(60,30,20,.6);font-family:"Courier New",monospace;font-weight:700;letter-spacing:.24em;color:#3a1a12;-webkit-mask:none;mask:none}
+/* X - charcoal paper, skull wax, bone ink */
+.pl-v10{--pl-tint:linear-gradient(170deg,rgba(25,20,18,.86),rgba(12,9,8,.92));--pl-wax:url(../images/ritual/seal-blood-sm.webp);--pl-waxr:6deg;--pl-sj:end;--pl-sr:-5deg;--pl-ink:#d9c49a;--pl-wink:#e8d6b0;--pl-mink:#ff8a7a}
+.pl-v10 .pl-stamp{color:#e2cfa6;border-color:rgba(226,207,166,.75);outline-color:rgba(226,207,166,.35);mix-blend-mode:normal}
+.pl-v10 .pl-env::before{opacity:.25}
+/* XI - green-black like a card table, wax turned white with age, stencil box */
+.pl-v11{--pl-tint:linear-gradient(rgba(30,60,40,.7),rgba(15,35,22,.8));--pl-blend:multiply;--pl-wax:url(../images/letter/seal-ma-cracked-sm.webp);--pl-waxf:grayscale(1) brightness(1.9) contrast(.85);--pl-waxr:-24deg;--pl-sj:start;--pl-sr:-7deg;--pl-ink:#dfe6cf;--pl-wink:#e7ecd9;--pl-mink:#ffb0a0}
+.pl-v11 .pl-stamp{color:#ff6a5a;border-color:rgba(255,106,90,.85);outline:0;border-width:3px;mix-blend-mode:normal;font-family:Impact,"Arial Narrow",sans-serif;font-weight:400;letter-spacing:.2em}
+/* XII - mourning paper with a black border, the black seal at full size, a wide red bar */
+.pl-v12{--pl-wax:url(../images/ritual/seal-black-sm.webp);--pl-waxs:1.25;--pl-sr:0deg;--pl-wink:#2a0c08}
+.pl-v12 .pl-env{box-shadow:inset 0 0 0 10px #241210,inset 0 0 0 11px rgba(225,200,150,.85),inset 0 0 0 14px rgba(36,18,16,.35),inset 0 0 30px rgba(60,30,10,.5),0 8px 18px rgba(0,0,0,.55)}
+.pl-v12 .pl-stamp{justify-self:stretch;max-width:none;background:#5a0a08;color:#f0dfc0;border:0;outline:0;mix-blend-mode:normal;-webkit-mask:none;mask:none;letter-spacing:.34em;padding:.38rem .5rem;margin-top:.3rem}
+.pl-v12 .pl-seal{margin:.3rem 0}
+.pa-letter .pl-key{background-color:rgba(245,235,215,.92)}
+/* v49: the file on the author - a dark dossier sheet before his letter */
+.au-file{position:relative;z-index:3;padding:clamp(3rem,8vh,5.5rem) clamp(1rem,4vw,2rem) clamp(1rem,3vh,2rem)}
+.au-file-in{max-width:44rem;margin:0 auto;padding:clamp(1.4rem,4vw,2.6rem);background:linear-gradient(180deg,rgba(14,8,7,.92),rgba(8,4,4,.95));border:1px solid rgba(201,164,92,.28);box-shadow:inset 0 0 0 4px rgba(8,4,4,.9),inset 0 0 0 5px rgba(179,25,31,.35),0 18px 40px rgba(0,0,0,.6)}
+.au-file-tags{display:flex;flex-wrap:wrap;gap:.35rem .5rem;margin:0 0 1rem!important;font:600 .66rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.22em;text-transform:uppercase;color:#d8b77a}
+.au-file-tags span{padding:.36rem .55rem .32rem;border:1px solid rgba(216,183,122,.4)}
+.au-file-tags span:nth-child(2){color:#ff8a7e;border-color:rgba(255,120,110,.45)}
+.au-file-h{margin:0 0 1rem!important;font-size:clamp(2.2rem,6vw,3.4rem)!important;color:#efe3cc;line-height:1}
+.au-file-in > p:not(.au-file-tags){font:1.12rem/1.7 "Garamond",serif;color:#ddd0b6;margin:0 0 1rem}
+.au-file-in em{color:#f1e1bf;font-style:italic}
+.au-file-reader{margin-top:1.4rem!important;padding-left:.9rem;border-left:2px solid rgba(179,25,31,.75);font-style:italic!important;color:#e8c9a6!important}
+@media (max-width:600px){.au-file-in > p:not(.au-file-tags){font-size:1.04rem;line-height:1.62}.au-file-tags{font-size:.58rem;letter-spacing:.14em}}
