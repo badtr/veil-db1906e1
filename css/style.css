@@ -4235,3 +4235,14 @@ body:not([data-page="about"]):not([data-page="home"]) .page-head .case-file + .k
 .au-file-in em{color:#f1e1bf;font-style:italic}
 .au-file-reader{margin-top:1.4rem!important;padding-left:.9rem;border-left:2px solid rgba(179,25,31,.75);font-style:italic!important;color:#e8c9a6!important}
 @media (max-width:600px){.au-file-in > p:not(.au-file-tags){font-size:1.04rem;line-height:1.62}.au-file-tags{font-size:.58rem;letter-spacing:.14em}}
+/* v49: press contact - a sealed line under the kit */
+.pr-contact{margin:1.6rem 0 0;padding:1rem 1.1rem 1.05rem;border:1px solid rgba(201,164,92,.32);background:linear-gradient(180deg,rgba(18,9,8,.88),rgba(8,4,4,.92));box-shadow:inset 0 0 0 3px rgba(8,4,4,.9),inset 0 0 0 4px rgba(179,25,31,.35);max-width:34rem}
+.pr-contact-k{margin:0 0 .55rem!important;font:600 .68rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.24em;text-transform:uppercase;color:#d8b77a!important}
+.pr-bio .pr-mail,.pr-mail{display:inline-flex;align-items:center;gap:.6rem;max-width:100%;padding:.2rem 0;color:#f0e2c6!important;font:1.18rem/1.3 "Garamond",serif!important;letter-spacing:.02em;text-decoration:none;border-bottom:1px solid rgba(179,25,31,.7);overflow-wrap:anywhere;transition:color .2s,border-color .2s}
+.pr-mail:hover,.pr-mail:focus-visible{color:#ff8a7e!important;border-bottom-color:#ff5a4c}
+.pr-mail:focus-visible{outline:1px solid rgba(255,138,126,.7);outline-offset:4px}
+.pr-mail-ic{flex:0 0 auto;width:1.15rem;height:.82rem;border:1px solid currentColor;position:relative;opacity:.85}
+.pr-mail-ic::before{content:"";position:absolute;left:50%;top:-1px;width:.78rem;height:.78rem;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:translate(-50%,-55%) rotate(45deg) scale(.8);transform-origin:center}
+.pr-mail-t{min-width:0}
+.pr-contact-n{margin:.6rem 0 0!important;font:italic .95rem/1.45 "Garamond",serif;color:#cbb994!important}
+@media (max-width:600px){.pr-contact{margin-left:auto;margin-right:auto;text-align:left}.pr-bio .pr-mail,.pr-mail{font-size:1.02rem!important}}
