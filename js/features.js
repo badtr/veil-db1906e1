@@ -1,3 +1,4 @@
+import { init as greetingInit } from './greetings.js';
 // Porcelain Ballerina — small fittings: release seal, daily oracle, music box, numbers room, hidden room door.
 import { ROOT } from './env.js';
 const $ = (s, r = document) => r.querySelector(s);
@@ -10,32 +11,55 @@ let timers = [];
 
 // ---------- upcoming releases: countdown, LIVE NOW on the day, gone from Upcoming 14 days later ----------
 function release(root) {
-  $$('[data-release]', root).forEach((card) => {
-    const at = Date.parse(card.dataset.release), until = Date.parse(card.dataset.expire || '') || Infinity; const box = $('[data-release-count]', card);
-    const tick = () => {
-      const now = NOW().getTime();
-      if (now >= until) { card.hidden = true; const sec = card.closest('[data-upcoming]'); if (sec && !$$('[data-release]', sec).some((c) => !c.hidden)) sec.hidden = true; return false; }
-      const left = at - now;
-      if (left <= 0) {
-        $$('.rl-links', card).forEach((l) => { l.hidden = l.dataset.when !== 'after'; });
-        card.classList.add('is-open'); box.hidden = true; $('.rl-open', card).hidden = false; $('.rl-live', card).hidden = false;
-        $('.rl-k', card).textContent = 'Released'; $('.rl-note', card).hidden = true; return true;
+  // One shared clock keeps all cards in sync, and promotes the next home card as one expires.
+  const cards = $$('[data-release]', root);
+  const tick = () => {
+    const now = NOW().getTime();
+    cards.forEach((card) => {
+      const at = Date.parse(card.dataset.release);
+      const until = Date.parse(card.dataset.expire || '') || Infinity;
+      const expired = now >= until;
+      card.dataset.expired = String(expired);
+      card.hidden = expired;
+      if (expired) return;
+      const box = $('[data-release-count]', card);
+      const live = now >= at;
+      card.classList.toggle('is-open', live);
+      if (box) box.hidden = live;
+      $$('.rl-live, .al-spot, .rl-open', card).forEach((e) => { e.hidden = !live; });
+      $$('.rl-links', card).forEach((e) => { e.hidden = e.dataset.when !== (live ? 'after' : 'before'); });
+      const note = $('.rl-note', card); if (note) note.hidden = live;
+      // Preserve the exact Spotify date/time, including the zone, after release too.
+      if (live && !$('.rl-when', card)) { const k = $('.rl-k', card); if (k) k.textContent = 'Released'; }
+      if (!live && box) {
+        const s = Math.max(0, Math.floor((at - now) / 1000));
+        $('[data-u="d"]', box).textContent = Math.floor(s / 86400);
+        $('[data-u="h"]', box).textContent = pad(Math.floor(s / 3600) % 24);
+        $('[data-u="m"]', box).textContent = pad(Math.floor(s / 60) % 60);
+        $('[data-u="s"]', box).textContent = pad(s % 60);
       }
-      const s = Math.floor(left / 1000);
-      $('[data-u="d"]', box).textContent = Math.floor(s / 86400); $('[data-u="h"]', box).textContent = pad(Math.floor(s / 3600) % 24);
-      $('[data-u="m"]', box).textContent = pad(Math.floor(s / 60) % 60); $('[data-u="s"]', box).textContent = pad(s % 60);
-      return true;
-    };
-    if (tick()) { const id = setInterval(() => { if (!tick()) clearInterval(id); }, 1000); timers.push(id); }
-  });
-  // overview: new releases appear from their day (only built when live on Suno); albums on the site get a LIVE NOW badge for 14 days
-  const now = NOW().getTime();
-  $$('.al-row[data-show-from]', root).forEach((r) => { r.hidden = now < Date.parse(r.dataset.showFrom); });
-  $$('.al-row[data-live-from]', root).forEach((r) => {
-    const on = now >= Date.parse(r.dataset.liveFrom) && now < Date.parse(r.dataset.liveUntil);
-    let b = $('.al-live', r); if (on && !b) { b = document.createElement('span'); b.className = 'al-live'; b.textContent = 'Live now'; $('.al-body', r)?.prepend(b); }
-    if (!on && b) b.remove();
-  });
+    });
+    $$('[data-upcoming]', root).forEach((sec) => {
+      const available = $$('[data-release]', sec).filter(c => c.dataset.expired !== 'true');
+      const limit = Number(sec.dataset.limit) || Infinity;
+      available.forEach((c, i) => { c.hidden = i >= limit; });
+      sec.hidden = !available.length;
+      if (!available.length && document.body.dataset.page === 'upcoming' && !root.querySelector('.up-empty')) {
+        const p = document.createElement('p'); p.className = 'up-empty';
+        p.textContent = 'Every seal has opened. The records are waiting in the albums.'; sec.after(p);
+      }
+    });
+    $$('.al-row[data-show-from]', root).forEach((r) => { r.hidden = now < Date.parse(r.dataset.showFrom); });
+    $$('.al-row[data-live-from]', root).forEach((r) => {
+      // The compact platform panel carries its own linked Spotify mark for these records.
+      const on = !r.querySelector('.al-rel') && now >= Date.parse(r.dataset.liveFrom) && now < Date.parse(r.dataset.liveUntil);
+      let b = $('.al-live', r);
+      if (on && !b) { b = document.createElement('span'); b.className = 'al-live'; b.textContent = 'Live now'; $('.al-body', r)?.prepend(b); }
+      if (!on && b) b.remove();
+    });
+  };
+  tick();
+  if (cards.length) timers.push(setInterval(tick, 1000));
 }
 
 // ---------- ink-reveal lyrics: real, selectable text; the ink only spreads when motion is welcome ----------
@@ -252,9 +276,18 @@ function mirrorLink(root) {
 }
 
 // ---------- no image downloads: covers, etchings and seals cannot be dragged out or right-click saved ----------
-const PROTECT = 'img[src*="images/hall/"], img[src*="images/albums/"], img[src*="images/etchings/"], img[src*="images/room/"], img[src*="images/gallery/"], img[src*="images/share/"], img[src*="seal-logo"], .lightbox img, .sp-ghost, .mirror-stage img';
+const PROTECT = '.alb-card img, img[src*="images/hall/"], img[src*="images/albums/"], img[src*="images/etchings/"], img[src*="images/room/"], img[src*="images/gallery/"], img[src*="images/share/"], img[src*="seal-logo"], .lightbox img, .sp-ghost, .mirror-stage img';
 function protect(root) { $$(PROTECT, root).forEach((im) => { im.draggable = false; im.setAttribute('draggable', 'false'); }); }
 ['contextmenu', 'dragstart'].forEach((ev) => document.addEventListener(ev, (e) => { if (e.target instanceof Element && e.target.matches(PROTECT)) e.preventDefault(); }, true));
+
+// ---------- the card of the album: turns over the first time it is seen ----------
+function albumCards(root) {
+  const cs = $$('[data-album-card]', root).filter((c) => !c.closest('.mr-card')); if (!cs.length) return;
+  if (RM() || !('IntersectionObserver' in window)) { cs.forEach((c) => c.classList.add('is-turned')); return; }
+  cs.forEach((c) => c.classList.add('ac-wait'));
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting && e.intersectionRatio > 0) { const c = e.target; timers.push(setTimeout(() => c.classList.add('is-turned'), 180)); io.unobserve(c); } }), { threshold: 0.25 });
+  cs.forEach((c) => io.observe(c));
+}
 
 // ---------- the Mirror ----------
 const MIRROR_OPEN = ['You were not meant to find this place.', 'Sit. The candles are lit for you.', 'Ink that will not dry.'];
@@ -274,6 +307,12 @@ function mirror(root) {
     const src = $('.mr-src', g); src.innerHTML = ''; const a = document.createElement('a'); a.href = new URL(o.url, ROOT).href; a.textContent = `${o.song} \u00b7 ${o.album}`; src.appendChild(a);
     st.classList.remove('is-clear', 'is-spoken'); void st.offsetWidth;
     st.classList.add('is-gazing');
+    const box = $('[data-mr-cards]', root);
+    if (box) { const cards = $$('.mr-card', box); cards.forEach((c) => { c.hidden = true; c.querySelector('.alb-card')?.classList.remove('is-turned'); });
+      const c = cards.find((x) => x.dataset.acAlbum === o.album);
+      if (c) { st.classList.add('has-card'); const ln = $('.ac-line p', c); if (ln) ln.textContent = '\u201c' + o.en + '\u201d'; let sr = $('.ac-src', c); if (!sr) { sr = document.createElement('p'); sr.className = 'ac-src'; $('.ac-line', c).after(sr); } sr.innerHTML = ''; sr.append('from '); const i = document.createElement('a'); i.href = new URL(o.url, ROOT).href; i.textContent = o.song; sr.appendChild(i);
+        timers.push(setTimeout(() => { c.hidden = false; requestAnimationFrame(() => requestAnimationFrame(() => c.querySelector('.alb-card')?.classList.add('is-turned'))); }, RM() ? 0 : (again ? 1600 : 3000))); }
+      else st.classList.remove('has-card'); }
     const t1 = RM() ? 0 : (again ? 1400 : 2600), t2 = RM() ? 0 : (again ? 2600 : 4400);
     timers.push(setTimeout(() => st.classList.add('is-clear'), t1));
     timers.push(setTimeout(() => st.classList.add('is-spoken'), t2));
@@ -358,6 +397,23 @@ function whisperArm() { clearTimeout(WH.t); WH.t = setTimeout(whisperShow, WH.id
 whisperArm();
 // the medium's sound (opt-in, off by default)
 import(new URL('medium.js?v=' + (document.querySelector('link[href*="style.css"]')?.getAttribute('href').split('?v=')[1] || ''), import.meta.url).href).catch(() => {});
-function mount() { timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); mirrorLink(r); protect(r); mirror(r); riteLine(false); inkLyrics(r); parlour(); channel(r); spiritPhoto(r); }
+function mount() { greetingInit(document.getElementById('swap') || document); timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); mirrorLink(r); protect(r); mirror(r); albumCards(r); spotifyGate(r); riteLine(false); inkLyrics(r); parlour(); channel(r); spiritPhoto(r); }
 document.addEventListener('pb:page', mount);
 mount();
+
+// ---------- v34: "Listen on Spotify" appears by itself once the album's Spotify date has passed ----------
+function spotifyGate(root) {
+  const gs = [...(root || document).querySelectorAll('[data-spotify-at]')]; if (!gs.length) return;
+  const p2 = (n) => String(n).padStart(2, '0');
+  const tick = () => {
+    const now = Date.now();
+    gs.forEach((g) => {
+      const t = Date.parse(g.dataset.spotifyAt); if (isNaN(t)) return;
+      const real = g.querySelector('[data-sp-real]'), wait = g.querySelector('[data-sp-wait]');
+      if (now >= t) { if (real) real.hidden = false; if (wait) wait.hidden = true; g.classList.add('is-live'); return; }
+      let s = Math.floor((t - now) / 1000); const d = Math.floor(s / 86400); s %= 86400;
+      const c = g.querySelector('[data-sp-count]'); if (c) c.textContent = `${d}d ${p2(Math.floor(s / 3600))}:${p2(Math.floor((s % 3600) / 60))}:${p2(s % 60)}`;
+    });
+  };
+  tick(); const id = setInterval(tick, 1000); try { timers.push(id); } catch (_) {}
+}

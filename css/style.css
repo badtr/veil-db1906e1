@@ -3261,3 +3261,299 @@ body,.prose,p,li{font-feature-settings:"kern","liga","dlig"}
 :is(.ms-envelope,.tarot-why,.why-section) .ms-seal{background-image:image-set(url(../images/letter/seal-ma-cracked-sm.webp?v=33) 1x,url(../images/letter/seal-ma-cracked.webp?v=33) 2x)!important}
 /* v33: the corner ornaments only lie over the page while the opaque home hero fills the screen; everywhere else they sit beneath content, so no seal, button or line of text is ever crossed */
 @media (min-width:901px){.fx-corner{z-index:7!important}body.at-hero .fx-corner{z-index:9!important}}
+/* ===== v34: a shareable greeting from the ghost ===== */
+.greeting-room{padding:clamp(2rem,5vw,4rem) 0 3rem;overflow-x:clip;text-align:center}
+.greeting-room>.wrap{max-width:1000px}
+.greeting-room h1{font-size:clamp(2rem,4.5vw,3.8rem);line-height:1.12;margin:.4em auto 0;max-width:18em;color:#f2d49c}
+.greeting-room .kicker{color:#e4c990}
+.greeting-stage{width:min(740px,94vw);margin:-.5rem auto -1.5rem}
+.gr-line{margin:0!important;quotes:none}
+.gr-line p{margin:0!important;font:inherit!important;color:inherit!important;line-height:inherit!important;font-style:normal!important}
+.greeting-stage .mr-greeting{inset:13% 9% 16%!important;gap:.9rem!important}
+.greeting-stage .mr-line{font-size:clamp(1.18rem,2.25vw,1.55rem)!important;font-style:normal!important;line-height:1.48!important}
+.greeting-stage .mr-sign{font-family:var(--f-read)!important;font-size:1.1rem!important;letter-spacing:.03em}
+.gr-invite{font:400 1.3rem/1.55 var(--f-read);color:#efe2ca;max-width:34em;margin:0 auto 1rem}
+.gr-act,.gr-share-more{display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap}
+.gr-share{margin:1.2rem auto .2rem;max-width:46rem;position:relative;z-index:2}
+.gr-share-more{margin:.8rem 0 0}.gr-share-more[hidden]{display:none!important}
+.gr-share-msg{min-height:1.6em;font:400 1.1rem/1.5 var(--f-read);color:#f5d7a6;margin:.6rem auto 0}
+.gr-link{font:400 1rem/1.4 var(--f-read);width:min(100%,38rem);padding:.8rem;color:#f6ecd9;background:#100608;border:1px solid #ba945b}
+.mirror-greetings{border-top:1px solid rgba(196,160,96,.4);padding:2rem 1rem 1rem;margin:2.5rem auto 0;max-width:38rem;background:radial-gradient(ellipse at center,rgba(35,6,8,.7),transparent)}
+.mirror-greetings h2{font-size:2.4rem;color:#efd59f;margin:.1rem 0 .6rem}.mirror-greetings p:not(.kicker){font:400 1.2rem/1.6 var(--f-read);color:#e7dbc4}
+body[data-page=greeting] .ritual-path{display:none!important}
+@media(max-width:699px){
+  .greeting-room{padding-top:1.3rem}
+  .greeting-stage{width:150vw;margin-left:calc(50% - 75vw);margin-top:-.3rem;margin-bottom:-.8rem}
+  .greeting-stage .mr-greeting{inset:12% 8% 14%!important;gap:.8rem!important}
+  .greeting-stage .mr-line{font-size:1.17rem!important;line-height:1.45!important}
+  .gr-invite{font-size:1.18rem;padding:0 .5rem}
+  .gr-act .btn{min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){.greeting-stage *{animation:none!important;transition:none!important}}
+
+/* v34 · platform-specific coming rites */
+.up-more{text-align:center;margin:1.5rem 0 .4rem}
+.upcoming .rl-doc[hidden],.al-rel[hidden]{display:none!important}
+.rl-suno-live .rl-cover{width:140px;height:140px;aspect-ratio:1;object-fit:cover;object-position:center}
+.rl-marks{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;align-items:center;margin:.4rem 0 1rem}
+.rl-suno,.al-spot{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;min-height:36px;padding:.35rem .65rem;border:1px solid #b48c55;background:#160b0c;color:#f6e5be!important;font:600 .84rem/1.35 var(--f-sc);letter-spacing:.08em;text-decoration:none}
+.rl-suno i{width:6px;height:6px;border-radius:50%;background:#ebc576;box-shadow:0 0 4px #ebc576}
+.rl-suno:hover,.al-spot:hover{background:#3a1418;border-color:#f5d598}
+.rl-spot-live{color:#fff3dc!important;text-decoration:none;text-align:center;white-space:nowrap}
+.rl-suno-live .rl-live{position:static;display:table;translate:none;margin:0 auto .9rem}
+.rl-suno-live .rl-live[hidden]{display:none!important}
+.rl-suno-live .rl-seal{display:none}
+.rl-k.rl-when{color:#f2dfb4!important;line-height:1.6;letter-spacing:.04em;text-transform:none;font-size:1rem}
+.rl-k.rl-when span{font-family:var(--f-sc);font-weight:700;letter-spacing:.12em}
+.rl-k.rl-when time{white-space:normal}
+.rl-actions:empty{display:none}
+.rl-actions{margin:1rem 0 .2rem}
+.al-rel{position:relative;clear:both;width:min(100%,38rem);margin:1.2rem auto;padding:.9rem 1rem;border:1px solid #a47b49;background:#10090b;text-align:center;box-sizing:border-box}
+.al-rel .rl-marks{margin:0 0 .4rem}
+.al-rel .rl-k{margin:.4rem 0 .5rem}
+.al-rel .rl-count{max-width:22rem;margin:.6rem auto 0;gap:.5rem}
+.al-rel .rl-count b{font-size:1.6rem;color:#f8e3b3}
+.al-rel .rl-count small{color:#ead9b5}
+.al-rel .al-spot[hidden]{display:none!important}
+body[data-page="upcoming"] .upcoming>.wrap{max-width:1150px}
+body[data-page="upcoming"] .up-list{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+body[data-page="upcoming"] .rl-doc{width:100%;max-width:none;box-sizing:border-box}
+.up-hero .lead{max-width:42rem;margin-inline:auto}
+.up-hero{text-align:center;padding:2rem 0}
+.up-empty{max-width:40rem;text-align:center;margin:2rem auto;color:#f4e2bd}
+@media(max-width:650px){
+ body[data-page="upcoming"] .up-list{grid-template-columns:minmax(0,1fr)}
+ .al-rel{padding:.8rem .6rem;margin:1rem auto}
+ .al-rel .rl-count{gap:.3rem}.al-rel .rl-count b{font-size:1.45rem}
+ .rl-k.rl-when{font-size:.95rem}
+ .rl-suno-live .rl-cover{width:120px;height:120px}
+}
+.rl-doc .rl-k.rl-when{color:#5a1208!important;text-shadow:none}
+.rl-doc .rl-k.rl-when span{color:#7a1010}
+.al-rel .rl-k.rl-when{color:#f2dfb4!important}
+.up-hero{padding:1rem 0 0!important}
+.up-hero .lead::first-letter{float:none!important;font-size:inherit!important;line-height:inherit!important;padding:0!important;margin:0!important;background:none!important;border:0!important;box-shadow:none!important;color:inherit!important;text-shadow:none!important;font-family:inherit!important;font-weight:inherit!important}
+.up-hero{padding-top:1.4rem!important}
+.up-hero .kicker{position:relative;z-index:1}
+.home-pair{align-items:start}.home-pair .oracle .oracle-sheet{height:auto}
+
+/* ===== v34: the dancer belongs to the night (graded clip with true-black ground, screen blend: no matte, so no fringe) ===== */
+.hero-figure .fig-video.fig-graded{
+  -webkit-mask:radial-gradient(ellipse 47% 56% at 50% 45%,#000 40%,rgba(0,0,0,.75) 58%,rgba(0,0,0,.3) 78%,transparent 100%),linear-gradient(180deg,transparent 0,#000 7%,#000 58%,rgba(0,0,0,.6) 70%,rgba(0,0,0,.22) 80%,transparent 90%)!important;
+  -webkit-mask-composite:source-in!important;
+  mask:radial-gradient(ellipse 47% 56% at 50% 45%,#000 40%,rgba(0,0,0,.75) 58%,rgba(0,0,0,.3) 78%,transparent 100%),linear-gradient(180deg,transparent 0,#000 7%,#000 58%,rgba(0,0,0,.6) 70%,rgba(0,0,0,.22) 80%,transparent 90%)!important;
+  mask-composite:intersect!important;
+  mix-blend-mode:screen!important;
+  filter:contrast(1.08) saturate(1.05)!important}
+/* scene light spilling around her from the moon side (behind the clip) */
+.fig-back{position:absolute;left:6%;right:16%;top:4%;bottom:24%;z-index:0;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse 46% 44% at 42% 40%,rgba(150,20,18,.24),rgba(90,8,8,.1) 48%,transparent 72%);filter:blur(18px);animation:figFloat 9s ease-in-out infinite}
+.fig-rim{mix-blend-mode:soft-light!important;opacity:.7}
+/* her reflection on the sigil: a warm pool under the hem, mist in front of and behind her */
+.fig-hover{bottom:6%!important;height:12%!important;filter:blur(12px)!important}
+.fm-under{z-index:0!important}
+.fm-wisp{display:block!important;opacity:.24!important}
+@media (max-width:900px){.fm-wisp{opacity:.16!important}}
+@media (prefers-reduced-motion:reduce){.fig-back{animation:none}}
+
+/* v34 · a broader corner flourish with a quiet etched link between the corners */
+.fx-corner{width:min(36vw,540px)!important;height:min(31vw,470px)!important;aspect-ratio:auto!important;background-size:100% auto!important;background-position:0 0!important}
+.fx-edge{left:12vw!important;right:12vw!important;height:38px!important;background:url(../images/fx/frieze-v34.webp) center/480px 38px repeat-x!important;opacity:.85!important;mix-blend-mode:normal!important;z-index:9!important;filter:drop-shadow(0 1px 2px #000);-webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)}
+.fx-edge-t{top:84px!important}.fx-edge-b{bottom:0!important;height:28px!important;background-size:354px 28px!important;opacity:.6!important;transform:scaleY(-1)}
+@media(max-width:900px){
+ .fx-corner{width:52vw!important;height:45vw!important;opacity:.32!important}
+ .fx-edge{left:20vw!important;right:20vw!important;height:22px!important;background-size:278px 22px!important;opacity:.42!important}
+ .fx-edge-t{top:118px!important}.fx-edge-b{display:block!important;bottom:0!important}
+}
+@media(max-width:480px){.fx-corner-bl,.fx-corner-br{opacity:.22!important}}
+body.ms-reading .fx-edge{opacity:0!important}
+
+/* v34 · the dancer shares the scene: a little depth softness, reflection in the sigil, mist on both sides */
+.hero-figure .fig-video.fig-graded{filter:contrast(1.06) saturate(1.04) blur(.35px)!important;}
+.fig-back{background:radial-gradient(ellipse 46% 44% at 40% 38%,rgba(170,28,22,.3),rgba(100,10,10,.12) 48%,transparent 72%)!important}
+/* the moon is upper-left: a warm wash on her left edge only */
+.fig-rim{inset:2% 30% 26% 4%!important;background:radial-gradient(ellipse 70% 60% at 0% 25%,rgba(255,90,60,.5),rgba(190,24,16,.2) 45%,transparent 75%)!important;mix-blend-mode:soft-light!important;opacity:.6!important}
+.fm-under{opacity:.7!important}
+/* the left of the hero: lifted, still night */
+@media (min-width:701px){
+  .hero-stage::after{background:linear-gradient(180deg,rgba(3,2,3,.5),transparent 22%,transparent 58%,rgba(4,2,3,.88) 100%),linear-gradient(90deg,rgba(3,2,3,.45) 0,rgba(3,2,3,.22) 28%,transparent 50%)!important}
+  .hero-stage::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 38% 46% at 16% 38%,rgba(150,40,30,.16),transparent 70%),radial-gradient(ellipse 60% 30% at 20% 82%,rgba(120,70,70,.12),transparent 70%)}
+  .hero-fallback.hero-belfry{filter:saturate(1.04) contrast(1.05) brightness(1.02)!important}
+  .hero-copy .title-fraktur,.hero-copy .kicker,.hero-copy .lead{text-shadow:0 1px 3px #000,0 0 22px rgba(0,0,0,.95)}
+}
+@media (max-width:700px){.hero-stage::after{background:linear-gradient(180deg,rgba(3,2,3,.24),rgba(3,2,3,.44) 30%,rgba(3,2,3,.6) 55%,rgba(4,2,3,.93))!important}}
+
+/* a faint warm reflection pool where her hem meets the sigil */
+.fig-hover::after{content:"";position:absolute;left:18%;right:18%;top:30%;height:60%;border-radius:50%;background:radial-gradient(ellipse at 50% 40%,rgba(255,170,130,.28),transparent 70%);filter:blur(6px)}
+/* v34 · balanced night: the vignette no longer swallows the left (bell, arch and graves show), still dark at the rim */
+@media (min-width:701px){
+  .hero-dread{background:radial-gradient(ellipse 78% 80% at 50% 44%,transparent 0,rgba(0,0,0,.12) 50%,rgba(0,0,0,.5) 84%,rgba(0,0,0,.82) 100%),linear-gradient(180deg,rgba(0,0,0,.5) 0,transparent 20%,transparent 60%,rgba(0,0,0,.88) 100%)!important}
+  .hero-dread .hd-pass{opacity:.5}
+}
+@media (max-width:700px){.hero-dread{background:radial-gradient(ellipse 80% 70% at 50% 40%,transparent 0,rgba(0,0,0,.2) 55%,rgba(0,0,0,.7) 100%),linear-gradient(180deg,rgba(0,0,0,.45) 0,transparent 22%,transparent 60%,rgba(0,0,0,.9) 100%)!important}}
+@media (min-width:701px){
+  .hero-stage::before{mix-blend-mode:screen;background:radial-gradient(ellipse 34% 52% at 14% 40%,rgba(120,46,40,.34),transparent 72%),radial-gradient(ellipse 50% 26% at 22% 80%,rgba(90,70,80,.22),transparent 70%),linear-gradient(90deg,rgba(60,30,34,.22),transparent 45%)!important}
+  .hero-stage::after{background:linear-gradient(180deg,rgba(3,2,3,.45),transparent 22%,transparent 60%,rgba(4,2,3,.86) 100%),linear-gradient(90deg,rgba(3,2,3,.3) 0,rgba(3,2,3,.14) 30%,transparent 50%)!important}
+}
+/* her reflection pooled in the sigil's heart (shares the sigil's tilt) */
+.fig-sigil::before{content:"";position:absolute;left:36%;right:36%;top:36%;bottom:36%;z-index:2;border-radius:50%;background:radial-gradient(circle,rgba(255,150,110,.34),rgba(200,40,30,.16) 45%,transparent 72%);filter:blur(8px);mix-blend-mode:screen;animation:figHover 9s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.fig-sigil::before{animation:none}}
+.fig-sigil .fs-glow,.fig-sigil .fs-flare{-webkit-mask:none!important;mask:none!important}
+.fig-sigil .fs-flare{opacity:.95!important}
+
+/* ===== v34: a living blood moon over the graveyard; stones lit from the same side ===== */
+.gy-moon{right:11%!important;top:6%!important;width:clamp(84px,10vw,150px)!important;opacity:1!important;overflow:hidden;
+  background:url(../images/fx/moon-v34.webp) center/100% 100% no-repeat!important;
+  box-shadow:0 0 22px 4px rgba(200,60,40,.32),0 0 90px 26px rgba(150,24,20,.2)!important;
+  filter:saturate(.92) brightness(1.02);animation:gyMoonBreath 11s ease-in-out infinite}
+.gy-halo{position:absolute;right:calc(11% - clamp(84px,10vw,150px)*.9);top:calc(6% - clamp(84px,10vw,150px)*.9);width:calc(clamp(84px,10vw,150px)*2.8);aspect-ratio:1;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(220,90,60,.22) 0,rgba(160,30,24,.12) 30%,rgba(90,10,10,.05) 52%,transparent 70%);animation:gyHalo 11s ease-in-out infinite}
+.gy-cloud{position:absolute;inset:-30% -80%;background:url(../images/fx/smoke-a.webp) 0 50%/220% 100% repeat-x;opacity:.42;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.3) brightness(.7);animation:gyCloud 70s linear infinite}
+.gy-cloud.gc-2{background-image:url(../images/fx/smoke-b.webp);opacity:.3;animation-duration:110s;animation-direction:reverse;top:10%}
+/* a long, faint shaft of moonlight falling to the stones (moon upper right -> light from the right) */
+.gy-beam{position:absolute;right:4%;top:10%;width:42%;height:85%;pointer-events:none;background:linear-gradient(200deg,rgba(210,110,90,.1),rgba(160,50,40,.04) 45%,transparent 75%);filter:blur(10px);-webkit-mask:linear-gradient(90deg,transparent,#000 30%,#000 80%,transparent);mask:linear-gradient(90deg,transparent,#000 30%,#000 80%,transparent)}
+@keyframes gyMoonBreath{0%,100%{box-shadow:0 0 22px 4px rgba(200,60,40,.3),0 0 90px 26px rgba(150,24,20,.18)}50%{box-shadow:0 0 30px 6px rgba(220,70,50,.42),0 0 120px 34px rgba(160,26,22,.26)}}
+@keyframes gyHalo{0%,100%{opacity:.75;scale:1}50%{opacity:1;scale:1.05}}
+@keyframes gyCloud{to{background-position:-220% 50%}}
+/* the stones: same red-black grade, moonlight on the right edges, mist round the feet */
+.gr-stone{filter:sepia(.25) saturate(1.1) hue-rotate(-12deg) brightness(.92)}
+.gr-stone::after{content:"";position:absolute;inset:0;border-radius:inherit;clip-path:inherit;pointer-events:none;
+  background:linear-gradient(255deg,rgba(235,140,110,.32) 0,rgba(200,80,60,.1) 14%,transparent 34%),linear-gradient(0deg,rgba(0,0,0,.5),transparent 40%)}
+.grave::after{content:"";position:absolute;left:-18%;right:-18%;bottom:-14px;height:40px;z-index:1;pointer-events:none;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 60%,rgba(170,140,150,.2),rgba(120,70,80,.08) 50%,transparent 72%);filter:blur(6px)}
+.grave{box-shadow:none}
+.gy-row li{position:relative}
+.gy-row li::before{content:"";position:absolute;left:8%;right:-18%;bottom:-10px;height:16px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.7),transparent 70%);transform:skewX(-35deg);pointer-events:none}
+@media (max-width:700px){.gy-moon{right:7%!important;top:3%!important;width:84px!important}.gy-halo{right:calc(7% - 76px);top:calc(3% - 76px);width:236px}.gy-beam{display:none}}
+@media (prefers-reduced-motion:reduce){.gy-moon,.gy-halo,.gy-cloud{animation:none!important}}
+.gy-beam{-webkit-mask:radial-gradient(ellipse 60% 70% at 70% 20%,#000 0,transparent 75%)!important;mask:radial-gradient(ellipse 60% 70% at 70% 20%,#000 0,transparent 75%)!important;filter:blur(18px)!important}
+@media (min-width:701px){.gy-moon{top:10%!important}.gy-halo{top:calc(10% - clamp(84px,10vw,150px)*.9)}}
+.gy-cloud{mix-blend-mode:normal!important;filter:grayscale(1) brightness(.35) contrast(1.4)!important;opacity:.45!important}
+.gr-stone::after{background:linear-gradient(255deg,rgba(240,150,120,.42) 0,rgba(210,90,70,.14) 16%,transparent 36%),linear-gradient(0deg,rgba(0,0,0,.5),transparent 40%)!important}
+@media (max-width:700px){.gy-moon{top:84px!important;right:5%!important;width:64px!important}.gy-halo{top:30px;right:calc(5% - 54px);width:172px}}
+@media (max-width:700px){.gy-moon{top:196px!important;right:3%!important;width:58px!important}.gy-halo{top:144px;right:calc(3% - 52px);width:162px}}
+
+/* v34 · the thorned sun sigil keeps watch on both sides of the footer */
+.site-footer{overflow:hidden}
+.site-footer>.wrap{position:relative;z-index:1}
+.foot-thorn{position:absolute;bottom:clamp(2.5rem,7vh,5rem);width:clamp(150px,15vw,240px);aspect-ratio:1;pointer-events:none;z-index:0;
+  background:image-set(url(../images/fx/footer-sigil-sm.webp) 1x,url(../images/fx/footer-sigil.webp) 2x) center/contain no-repeat;
+  filter:drop-shadow(0 0 10px rgba(190,24,20,.35));opacity:.82;animation:ftGlow 12s ease-in-out infinite}
+.ft-l{left:clamp(1rem,5vw,5rem)}
+.ft-r{right:clamp(1rem,5vw,5rem);animation-delay:-6s}
+@keyframes ftGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(190,24,20,.3));opacity:.78}50%{filter:drop-shadow(0 0 22px rgba(220,40,30,.55));opacity:.92}}
+@media (max-width:1100px){.foot-thorn{width:130px;opacity:.6}}
+@media (max-width:700px){.foot-thorn{width:76px;bottom:7.2rem;opacity:.55}.ft-l{left:.6rem}.ft-r{right:.6rem}}
+@media (prefers-reduced-motion:reduce){.foot-thorn{animation:none}}
+.foot-thorn{bottom:210px;filter:brightness(1.7) contrast(1.1) drop-shadow(0 0 12px rgba(200,30,24,.45))}
+@keyframes ftGlow{0%,100%{filter:brightness(1.6) contrast(1.1) drop-shadow(0 0 8px rgba(190,24,20,.35));opacity:.85}50%{filter:brightness(1.85) contrast(1.1) drop-shadow(0 0 24px rgba(230,40,30,.6));opacity:1}}
+@media (min-width:1101px){.ft-l{left:clamp(6rem,11vw,14rem)}.ft-r{right:clamp(6rem,11vw,14rem)}}
+@media (max-width:700px){.foot-thorn{width:50px;bottom:478px;opacity:.8}.ft-l{left:.35rem}.ft-r{right:.35rem}}
+
+/* ===== v34 archive: sharp broken wax, stamp clear of the title, a skull emblem under every drawer ===== */
+.dr-seal i{clip-path:none!important}
+.dr-seal .s1{background-image:image-set(url(../images/letter/seal-half-l-sm.webp) 1x,url(../images/letter/seal-half-l.webp) 2x)!important}
+.dr-seal .s2{background-image:image-set(url(../images/letter/seal-half-r-sm.webp) 1x,url(../images/letter/seal-half-r.webp) 2x)!important}
+.al-row.is-open .dr-seal .s1{transform:translate(-12px,6px) rotate(-16deg)!important;opacity:1!important}
+.al-row.is-open .dr-seal .s2{transform:translate(12px,10px) rotate(14deg)!important;opacity:1!important}
+.dr-seal i{filter:drop-shadow(0 2px 1px rgba(0,0,0,.85)) drop-shadow(0 5px 6px rgba(0,0,0,.5))!important}
+/* stamp: its own column on desktop, so the title wraps before it and nothing runs into it */
+@media (min-width:701px){
+  .dr-in{position:relative}
+  .dr-in>.al-link{padding-right:clamp(10.5rem,16vw,13rem)!important;box-sizing:border-box}
+  .dr-stamp{top:1.2rem!important;right:1rem!important;max-width:11.5rem}
+  .al-title::after,.al-title::before{max-width:100%}
+}
+.ds-row{white-space:nowrap}
+.ds-row span{opacity:.85}
+/* the emblem: skull and crossed blades, small and quiet, centred under each drawer */
+.dr-emblem{display:flex;justify-content:center;margin:.5rem auto .2rem;pointer-events:none}
+.dr-emblem i{width:58px;height:58px;background:url(../images/death/skull-daggers.webp) center/contain no-repeat;opacity:.62;filter:sepia(.35) brightness(.85) drop-shadow(0 2px 4px rgba(0,0,0,.85))}
+@media (max-width:700px){.dr-emblem{margin:.35rem auto .1rem}.dr-emblem i{width:40px;height:40px;opacity:.55}}
+/* v34 · the top frieze lives in the header's lower edge, so it never crosses page text */
+.fx-edge-t{display:none!important}
+.site-header::after{left:9vw!important;right:9vw!important;bottom:0!important;height:24px!important;background:url(../images/fx/frieze-v34.webp) center/480px 24px repeat-x!important;opacity:.85;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.fx-edge-b{z-index:7!important}
+@media (max-width:900px){.site-header::after{left:6vw!important;right:6vw!important;height:16px!important;background-size:320px 16px!important;opacity:.5}}
+
+/* ===== v34 · the card of the album (black lacquer, etched gilt, its own arcanum, wax seal) ===== */
+.alb-card{--ac-w:300px;--gilt:rgba(205,168,104,.62);position:relative;width:var(--ac-w);max-width:100%;margin:0 auto;perspective:1400px;font-family:"Garamond",Georgia,serif;text-align:center}
+.alb-card.ac-drawer{--ac-w:236px}
+.alb-card.ac-mirror{--ac-w:290px}
+.ac-turn{position:relative;transform-style:preserve-3d;transition:transform 1.25s cubic-bezier(.2,.7,.2,1)}
+.alb-card.ac-wait:not(.is-turned) .ac-turn,.mr-card .alb-card:not(.is-turned) .ac-turn{transform:rotateY(180deg)}
+.ac-face{backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:12px}
+.ac-back{position:absolute;inset:0;transform:rotateY(180deg);background:#0b0506 url(../images/tarot/back.webp) center/cover;box-shadow:0 0 0 1px var(--gilt) inset,0 0 0 7px rgba(8,4,5,.85) inset,0 0 0 8px rgba(205,168,104,.35) inset,0 18px 44px rgba(0,0,0,.65)}
+.ac-front{position:relative;padding:1.55rem 1.35rem 1.7rem;color:#efe4d2;
+  background:radial-gradient(ellipse 85% 55% at 50% 26%,rgba(150,18,28,.30),transparent 70%),radial-gradient(ellipse 120% 70% at 50% 120%,rgba(110,10,20,.32),transparent 60%),linear-gradient(165deg,#1a0c0e 0%,#0a0506 46%,#140809 100%);
+  box-shadow:0 0 0 1px var(--gilt) inset,0 0 0 7px #0b0506 inset,0 0 0 8px rgba(205,168,104,.36) inset,0 22px 46px rgba(0,0,0,.62),0 0 46px rgba(170,22,34,.26)}
+.ac-front::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:.22;mix-blend-mode:screen;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 1px,transparent 1px 5px),radial-gradient(ellipse 60% 30% at 30% 8%,rgba(255,240,220,.18),transparent 70%)}
+.ac-front::after{content:"";position:absolute;inset:-2px;border-radius:14px;pointer-events:none;box-shadow:0 0 38px 4px rgba(190,26,40,.30);filter:hue-rotate(var(--ac-hue,0deg));animation:acGlow 7s ease-in-out infinite alternate;z-index:-1}
+@keyframes acGlow{from{opacity:.55}to{opacity:1}}
+.ac-c{position:absolute;width:30px;height:30px;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='none' stroke='%23cda868' stroke-width='1'%3E%3Cpath d='M2 28V8Q2 2 8 2h20'/%3E%3Cpath d='M6 28V11Q6 6 11 6h17' opacity='.55'/%3E%3Cpath d='M12 12l2.2 1.1 2.4-.4-1.1 2.2.4 2.4-2.2-1.1-2.4.4 1.1-2.2z' fill='%23cda868' stroke='none'/%3E%3Cpath d='M2 18l-1.6 1.2M2 22l1.6 1.2M18 2l1.2-1.6M22 2l1.2 1.6' /%3E%3C/svg%3E") center/contain no-repeat;opacity:.9}
+.ac-tl{top:12px;left:12px}.ac-tr{top:12px;right:12px;transform:scaleX(-1)}.ac-bl{bottom:12px;left:12px;transform:scaleY(-1)}.ac-br{bottom:12px;right:12px;transform:scale(-1,-1)}
+.ac-k{margin:0 0 .75rem!important;font-family:"Garamond",Georgia,serif;font-variant:small-caps;letter-spacing:.2em;font-size:.82rem!important;color:#d9b97e!important}
+.ac-art{position:relative;width:52%;margin:0 auto .8rem;border-radius:4px;padding:3px;background:linear-gradient(160deg,#cda868,#5b3d1c 50%,#cda868);box-shadow:0 0 0 1px #000,0 10px 24px rgba(0,0,0,.6),0 0 22px rgba(170,22,34,.35)}
+.ac-art img{display:block;width:100%;height:auto;aspect-ratio:480/854;object-fit:cover;border-radius:2px;filter:sepia(.18) saturate(1.05) contrast(1.04);-webkit-user-drag:none;user-select:none}
+.ac-num{position:absolute;right:-14px;bottom:-12px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:"Grenze Gotisch",serif;font-size:1.25rem;color:#f4e6cc;background:radial-gradient(circle at 40% 35%,#7a1018,#3a060b 70%);box-shadow:0 0 0 1px #cda868,0 0 0 3px #0b0506,0 0 0 4px rgba(205,168,104,.5),0 4px 10px rgba(0,0,0,.6)}
+.ac-name{margin:.25rem 0 .1rem!important;font-family:"Grenze Gotisch",serif;font-size:1.32rem!important;line-height:1.15;color:#f1e5cf!important}
+.ac-rn{color:#e04b55;margin-right:.2em}
+.ac-en{display:block;font-family:"Garamond",Georgia,serif;font-style:italic;font-size:.88rem;color:#cdbb9c;letter-spacing:.04em}
+.ac-title{margin:.55rem 0 .5rem!important;padding:.45rem 0 0;font-family:"Grenze Gotisch",serif!important;font-size:1.12rem!important;font-weight:500;line-height:1.2;color:#e8d4b0!important;border-top:1px solid rgba(205,168,104,.35);text-shadow:none!important}
+.ac-title::before,.ac-title::after{content:"\2726";font-size:.62em;color:#c33a45;margin:0 .45em;vertical-align:.18em}
+.ac-line{margin:0!important;padding:0!important;border:0!important;background:none!important}
+.ac-line p{margin:0!important;font-family:"Garamond",Georgia,serif;font-style:italic;font-size:1.06rem!important;line-height:1.45;color:#f0e6d6!important}
+.ac-src{margin:.4rem 0 0!important;font-size:.82rem!important;color:#cbb896!important;letter-spacing:.03em}
+.ac-src a{color:#e9c98f!important}
+.ac-seal{position:absolute;right:-16px;bottom:-20px;width:70px;height:80px;background:url(../images/letter/seal-ma-sm.webp) center/contain no-repeat;filter:drop-shadow(0 6px 8px rgba(0,0,0,.6)) drop-shadow(0 0 10px rgba(170,20,30,.35));transform:rotate(-9deg)}
+/* the ink bleeds in as the card comes face up */
+.alb-card.ac-wait .ac-front>*:not(.ac-c):not(.ac-seal),.mr-card .alb-card .ac-front>*:not(.ac-c):not(.ac-seal){transition:opacity 1s ease .55s,filter 1.2s ease .55s}
+.alb-card.ac-wait:not(.is-turned) .ac-front>*:not(.ac-c):not(.ac-seal),.mr-card .alb-card:not(.is-turned) .ac-front>*:not(.ac-c):not(.ac-seal){opacity:0;filter:blur(5px)}
+.ac-drawer .ac-front{padding:1.2rem 1.05rem 1.35rem}.ac-drawer .ac-name{font-size:1.15rem!important}.ac-drawer .ac-line p{font-size:.98rem!important}.ac-drawer .ac-seal{width:56px;height:64px;right:-10px;bottom:-14px}
+/* album page */
+.album-card-sec{padding:2.2rem 0 3rem;position:relative}
+.acs-grid{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:3.2rem;align-items:center;max-width:860px;margin:0 auto}
+.acs-text .section-title{margin:.2rem 0 .7rem}
+.acs-text p{max-width:42ch}
+/* drawer */
+.dr-card{margin:1.4rem auto .6rem;padding-bottom:.8rem}
+/* mirror */
+.mr-cards{margin:1.4rem auto 2.4rem;display:flex;justify-content:center}
+.mr-card[hidden]{display:none}
+[data-mirror].has-card .mr-greeting .mr-line,[data-mirror].has-card .mr-greeting .mr-src{display:none}
+@media (max-width:699px){
+  .acs-grid{grid-template-columns:1fr;gap:1.6rem;text-align:center}
+  .acs-text p{margin-left:auto;margin-right:auto}
+  .alb-card{--ac-w:270px}.alb-card.ac-drawer{--ac-w:224px}.alb-card.ac-mirror{--ac-w:264px}
+  .ac-seal{width:58px;height:66px;right:-8px;bottom:-14px}
+}
+@media (prefers-reduced-motion:reduce){
+  .ac-turn{transition:none!important;transform:none!important}
+  .ac-front::after{animation:none}
+  .alb-card .ac-front>*{opacity:1!important;filter:none!important;transition:none!important}
+}
+.ac-front{padding-bottom:2.3rem}
+.ac-src{padding:0 1.9rem}
+.ac-seal{right:-20px;bottom:-26px;width:64px;height:73px}
+.ac-drawer .ac-seal{right:-14px;bottom:-20px;width:52px;height:59px}
+@media (max-width:699px){.ac-seal{width:54px;height:62px;right:-10px;bottom:-20px}}
+.ac-drawer .ac-k,.ac-mirror .ac-k{letter-spacing:.13em}
+[data-mirror].has-card.is-spoken .mr-greeting .mr-open::after{content:"\A Your card is drawn below.";white-space:pre;display:block;margin-top:.5rem;font-style:italic;text-transform:none;letter-spacing:.02em;opacity:.9}
+
+/* ===== v34 · frames: seals sit whole on their frames ===== */
+.reliquary .rq-frame.spirit-plate{overflow:visible}
+.reliquary .rq-num{top:-15px;z-index:3;box-shadow:0 0 0 1px rgba(205,168,104,.45),0 3px 8px rgba(0,0,0,.75)}
+.ms-letter.lyr-sheet .ms-seal{top:.55rem!important}
+.ms-letter.lyr-sheet{padding-top:8.2rem!important}@media (max-width:699px){.ms-letter.lyr-sheet{padding-top:7.4rem!important}}
+
+/* ===== v34 · the etchings viewer: the same Back as every page; Esc and the browser's Back close it ===== */
+.rq-lightbox .lb-back{position:absolute!important;top:1.1rem;left:1.2rem;right:auto;z-index:3;background:none;border:0;padding:.5rem 1.35rem .5rem .55rem;cursor:pointer;font:inherit}
+.rq-lightbox .lb-back .bb-t{font:600 .86rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.16em;text-transform:uppercase;color:#f3e2bd}
+@media (max-width:699px){.rq-lightbox .lb-back{top:.7rem;left:.7rem}.rq-lightbox{padding-top:4.6rem!important}}
+@media (max-width:699px){.greeting-room{padding-top:8.4rem!important}}
+
+/* ===== v34 · Spotify status in place of the button until the album is out there ===== */
+.sp-gate{display:inline-flex;vertical-align:middle}
+.sp-gate [hidden]{display:none!important}
+.sp-wait{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.15rem .6rem;min-height:44px;padding:.55rem 1.1rem;border:1px solid rgba(201,164,92,.55);border-radius:2px;background:rgba(10,6,7,.72);font:600 .78rem/1.25 var(--f-sc,"Fell SC",serif);letter-spacing:.14em;text-transform:uppercase;color:#f1e3c4}
+.sp-count{font-family:"Garamond",Georgia,serif;font-variant-numeric:tabular-nums;letter-spacing:.06em;color:#e9c98f}
+.sp-gate-sm .sp-wait{min-height:0;padding:.4rem .8rem;font-size:.72rem}
