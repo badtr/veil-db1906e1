@@ -127,12 +127,12 @@ function caseFile(root) {
   if (!host || host.querySelector('.case-file')) return;
   const w = (n) => `<span class="redact" style="width:${n}em"></span>`;
   const el = document.createElement('p'); el.className = 'case-file'; el.setAttribute('aria-hidden', 'true');
-  el.innerHTML = `<span>Case file PB-0666</span><span>Folio ${FOLIO[page] || '—'}</span>${w(4.5)}<span>Recovered ${w(2.6)}</span><span class="stamp">Restricted</span>`;
+  el.innerHTML = `<span>Case file PB-0777</span><span>Folio ${FOLIO[page] || '—'}</span>${w(4.5)}<span>Recovered ${w(2.6)}</span><span class="stamp">Restricted</span>`;
   host.insertBefore(el, host.firstChild);
 }
 ['l'].forEach((side) => {   // v42d: the right-hand scratch is gone; it ran down into the right corners' skulls
   const sc = document.createElement('div'); sc.className = 'scratch scratch-' + side; sc.setAttribute('aria-hidden', 'true');
-  sc.innerHTML = side === 'l' ? 'Not meant for the living &middot; <b>do not copy</b> &middot; close this page' : 'Sealed record PB-0666 &middot; <b>if found, burn</b> &middot; it is watching';
+  sc.innerHTML = side === 'l' ? 'Not meant for the living &middot; <b>do not copy</b> &middot; close this page' : 'Sealed record PB-0777 &middot; <b>if found, burn</b> &middot; it is watching';
   document.body.appendChild(sc);
 });
 if (!reduceMotion) {
