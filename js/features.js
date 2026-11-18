@@ -450,7 +450,7 @@ function spotifyGate(root) {
   tick(); const id = setInterval(tick, 1000); try { timers.push(id); } catch (_) {}
 }
 
-// ---------- v40: project archive · sealed letters. The first lies open; each later one opens with the key hidden in the letter before it.
+// ---------- v40/v48: project archive · sealed letters. Every letter is under wax and opens with the threshold's number.
 // Keys live only as salted SHA-256 hashes; the ink is XOR-sealed with a keystream from the key. Opened keys are remembered in this browser.
 var SHA_K, SHA_H;
 function sha256(bytes) {
@@ -497,12 +497,15 @@ function paLetters(root) {
       if (anim && !RM()) { l.classList.add('is-breaking'); setTimeout(() => { show(); l.classList.add('is-unfolding'); setTimeout(() => l.classList.remove('is-unfolding'), 1500); }, 1100); } else show();
     };
     if (fits(keys[n])) { open(keys[n], false); return; }
+    if (l.dataset.bound) return; l.dataset.bound = '1';
     form.hidden = false;
     form.addEventListener('submit', (e) => {
       e.preventDefault(); if (l.classList.contains('is-breaking')) return;
       const k = letterNorm(inp.value);
-      if (fits(k)) { keys[n] = k; save(); inp.blur(); open(k, true); return; }
+      if (fits(k)) { keys[n] = k; save(); inp.blur(); const m = l.querySelector('.pl-msg'); if (m) m.textContent = 'The seal gives.'; open(k, true); return; }
       l.classList.remove('is-wrong'); void l.offsetWidth; l.classList.add('is-wrong'); inp.setAttribute('aria-invalid', 'true'); inp.select();
+      const msg = l.querySelector('.pl-msg'); l._tries = (l._tries || 0) + 1;
+      if (msg) msg.textContent = l._tries > 1 ? 'Only the number that opened the house will break it.' : 'The wax holds. That is not its number.';
       setTimeout(() => { l.classList.remove('is-wrong'); inp.removeAttribute('aria-invalid'); }, 600);
     });
   });

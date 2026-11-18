@@ -46,15 +46,15 @@ export function playWelcome({ sound }) {
       <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="welBleed" x="-5%" y="-20%" width="110%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.09" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4"/></filter></svg>
       <div class="wel-crypt" aria-hidden="true"><div class="wc-floor"></div><div class="wc-smoke"><i></i><i></i><i></i></div><div class="wc-scratch"></div><div class="wc-blood">${Array.from({ length: 14 }, (_, i) => `<i style="--x:${(i * 7.3 + (i % 3) * 2.1) % 100}%;--h:${40 + ((i * 53) % 160)}px;--w:${3 + (i % 4) * 2}px;--d:${(i % 5) * 0.9}s"></i>`).join('')}</div><div class="wc-skull wc-skull-l"></div><div class="wc-skull wc-skull-r"></div><div class="wc-flicker"></div></div>
       <div class="wel-grain" aria-hidden="true"></div>
-      <button type="button" class="wel-touch"><span class="wel-warn" aria-hidden="true"><span class="wel-warn-t">You should not be here</span></span><span class="wel-touch-dot" aria-hidden="true"></span><span class="wel-touch-t">Touch the dark to begin</span><small>Sound stays off unless you turn it on</small></button>
+      <button type="button" class="wel-touch"><span class="wel-warn" aria-hidden="true"><span class="wel-warn-t">You should not be here</span></span><span class="wel-touch-dot" aria-hidden="true"></span><span class="wel-touch-t">Touch the dark. It has been waiting.</span><small>Sound stays off unless you turn it on</small></button>
       <div class="wel-lines" aria-live="polite"></div>
       <section class="wel-warnstep" hidden aria-live="polite"><p class="ws-kicker">Ultima monitio &middot; the last warning</p><div class="ws-lines"></div><button type="button" class="ws-go" hidden>I have been warned &middot; go to the seal</button></section>
-      <button type="button" class="wel-wick" aria-label="Light the candle" hidden><span class="wel-wick-hint">Touch the wick to light the candle</span></button>
+      <button type="button" class="wel-wick" aria-label="Light the candle" hidden><span class="wel-wick-hint">Touch the wick. Give the dark a light to find you by.</span></button>
       <div class="wel-dread" aria-hidden="true">${dreadMarkup()}</div>
       <form class="wel-letter" autocomplete="off" hidden>
         <div class="wel-seal" aria-hidden="true"><div class="wel-seal-whole"></div><span class="wel-seal-sheen"></span><svg class="wel-cracks" viewBox="0 0 100 100" preserveAspectRatio="none"></svg></div>
         <p class="wel-kicker">Sigillum &middot; the sealed word</p>
-        <p class="wel-riddle">This place is sealed with the number of perfection.<br><em>Seven days, seven seals, seven candles: three sevens, side by side, open what was sealed.</em></p>
+        <p class="wel-riddle">What sleeps behind this seal was shut with the number of perfection.<br><em>Seven days of making, seven seals unbroken, seven candles that never went out. Three sevens, side by side, and it wakes.</em></p>
         <p class="wel-margin" aria-hidden="true">Seven seals &middot; VII</p>
         <p class="wel-forbid" aria-hidden="true">Do not write it. It hears the numbers.</p>
         <label class="wel-label" for="wel-d0">Write the number</label>
@@ -152,7 +152,7 @@ export function playWelcome({ sound }) {
       if (done) return;
       await wait(500);
       await say('Turn back.', { hold: 2600, cls: 'is-red' });
-      await say('Or light the candle.', { hold: 2800 });
+      await say('Or light the candle, and let the dark see your face.', { hold: 3400 });
       if (done) return;
       phase = 'wick'; wick.hidden = false; el.classList.add('show-wick'); wick.focus({ preventScroll: true });
     });
@@ -162,7 +162,7 @@ export function playWelcome({ sound }) {
       if (phase !== 'wick') return; phase = 'lit';
       sound.ignite(); el.classList.add('is-lit'); wick.hidden = true;
       await wait(1800);
-      await say('Then you have chosen.', { hold: 2600 });
+      await say('Then you have chosen. The house will remember you.', { hold: 3200 });
       if (done) return;
       phase = 'lock'; el.classList.add('show-crypt'); startDread(); sound.deny && sound.whisper(0.8); letter.hidden = false;
       requestAnimationFrame(() => el.classList.add('show-letter'));
@@ -229,14 +229,14 @@ export function playWelcome({ sound }) {
       if (v === CODE) { phase = 'open'; await open(); return; }
       tries++; phase = 'deny'; shudder(true);
       sound.deny(); letter.classList.remove('is-denied'); void letter.offsetWidth; letter.classList.add('is-denied');
-      msg.textContent = tries >= 2 ? 'The wax refuses you. Count the sevens.' : 'The wax refuses you. Try again.';
+      msg.textContent = tries >= 2 ? 'The wax refuses you. Count the sevens.' : 'The wax refuses you. That number means nothing here.';
       await wait(1100);
       digits.forEach((d) => (d.value = '')); digits[0].focus(); phase = 'lock';
     }
 
     // 4. the seal cracks and splits along real fracture lines
     async function open() {
-      digits.forEach((d) => (d.disabled = true)); el.classList.add('dread-off'); letter.classList.add('is-accepted'); msg.textContent = 'So be it.';
+      digits.forEach((d) => (d.disabled = true)); el.classList.add('dread-off'); letter.classList.add('is-accepted'); msg.textContent = 'So be it. Your name is in the record now.';
       const shards = buildShards(seal);
       sound.crack(); seal.classList.add('is-cracking');
       await wait(900);

@@ -4128,3 +4128,31 @@ body:not([data-page="about"]):not([data-page="home"]) .page-head .case-file + .k
 .wel-forbid{font-size:1.55rem!important;color:#800c0c!important;text-shadow:0 0 6px rgba(140,10,10,.25)}
 .wd-w{text-shadow:0 0 7px rgba(170,12,8,.7),0 0 2px #000!important}
 @media (max-width:760px){.wel-forbid{font-size:1.18rem!important}}
+
+/* ---- v48: sealed letters - a top-secret stamp, a warning under the wax, words when the wax holds ---- */
+.pa-letter.is-locked .pl-env{padding-top:2.6rem;min-height:250px}
+.pl-stamp{position:absolute;top:.7rem;left:50%;translate:-50% 0;rotate:-4deg;max-width:92%;padding:.28rem .6rem .24rem;border:2px solid rgba(138,15,12,.78);outline:1px solid rgba(138,15,12,.45);outline-offset:2px;color:#8a0f0c;font:700 .66rem/1.25 var(--f-sc,"Fell SC",serif);letter-spacing:.16em;text-transform:uppercase;text-align:center;white-space:normal;mix-blend-mode:multiply;opacity:.9;
+  -webkit-mask:radial-gradient(circle at 30% 40%,#000 60%,rgba(0,0,0,.7) 75%,#000 90%);mask:radial-gradient(circle at 30% 40%,#000 60%,rgba(0,0,0,.7) 75%,#000 90%)}
+.pl-warn{position:relative;margin:.1rem .4rem 0!important;font:italic .98rem/1.35 "Garamond",serif;color:#4a160f!important;text-align:center}
+.pl-msg{position:relative;min-height:1.2em;margin:.1rem 0 0!important;font:italic .95rem/1.3 "Garamond",serif;color:#8a0f0c!important;text-align:center}
+.pa-letter.is-breaking .pl-stamp,.pa-letter.is-breaking .pl-warn{opacity:0;transition:opacity .4s}
+.pa-letter .pl-when{display:none!important}
+@media (max-width:900px){.pl-stamp{font-size:.6rem;letter-spacing:.12em}}
+
+/* ---- v48: the home intro reads as a sealed dossier ---- */
+.hero-copy{position:relative}
+.hero-file{display:flex;flex-wrap:wrap;gap:.35rem .5rem;margin:0 0 1.1rem!important;font:600 .7rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.24em;text-transform:uppercase;color:#d8b77a}
+.hero-file span{padding:.38rem .6rem .34rem;border:1px solid rgba(216,183,122,.45);background:rgba(10,4,4,.55)}
+.hero-file span:nth-child(2){color:#ff8a7e;border-color:rgba(255,120,110,.5)}
+.hero-stamp{display:inline-block;margin:.2rem 0 .9rem;padding:.42rem .9rem .36rem;border:2px solid rgba(220,40,32,.85);outline:1px solid rgba(220,40,32,.5);outline-offset:3px;rotate:-3deg;color:#ff5a4c;font:700 .8rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.28em;text-transform:uppercase;text-shadow:0 0 8px rgba(200,20,20,.5);background:rgba(20,0,0,.35)}
+.hero-terms{max-width:34rem;margin:.6rem 0 1.4rem!important;font:italic 1.05rem/1.5 "Garamond",serif;color:#d9c7a4!important;border-left:2px solid rgba(179,25,31,.7);padding-left:.8rem}
+@media (max-width:760px){.hero-file{font-size:.6rem;letter-spacing:.16em}.hero-stamp{font-size:.68rem;letter-spacing:.2em}.hero-terms{font-size:.98rem}}
+
+/* ---- v48: register of symbols - where each mark lives, and its verse ---- */
+.sy-item{align-items:start}
+.sy-where{font:600 .68rem/1.3 var(--f-sc,"Fell SC",serif)!important;letter-spacing:.14em;text-transform:uppercase;color:#c9a45c!important;margin:0 0 .35rem!important}
+.sy-poem{font:italic 1rem/1.5 "Garamond",serif!important;color:#e6d8bf!important}
+.sy-img img[src$=".svg"],.sy-img img[src*="seal-"],.sy-img img[src*="ouroboros"],.sy-img img[src*="emblem"],.sy-img img[src*="footer-sigil"],.sy-img img[src*="moon-"]{object-fit:contain;padding:6px}
+/* v48b: the stamp sits in the flow above the letter's number, never over it */
+.pa-letter.is-locked .pl-env{padding-top:1rem;min-height:250px}
+.pl-stamp{position:relative;top:auto;left:auto;translate:none;display:block;max-width:94%;margin:0 auto .1rem;font-size:.6rem!important;letter-spacing:.12em;line-height:1.3}
