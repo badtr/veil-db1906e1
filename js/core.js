@@ -130,7 +130,7 @@ function caseFile(root) {
   el.innerHTML = `<span>Case file PB-0666</span><span>Folio ${FOLIO[page] || '—'}</span>${w(4.5)}<span>Recovered ${w(2.6)}</span><span class="stamp">Restricted</span>`;
   host.insertBefore(el, host.firstChild);
 }
-['l', 'r'].forEach((side) => {
+['l'].forEach((side) => {   // v42d: the right-hand scratch is gone; it ran down into the right corners' skulls
   const sc = document.createElement('div'); sc.className = 'scratch scratch-' + side; sc.setAttribute('aria-hidden', 'true');
   sc.innerHTML = side === 'l' ? 'Not meant for the living &middot; <b>do not copy</b> &middot; close this page' : 'Sealed record PB-0666 &middot; <b>if found, burn</b> &middot; it is watching';
   document.body.appendChild(sc);

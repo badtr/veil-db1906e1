@@ -233,7 +233,9 @@ function moon(root) {
   el.innerHTML = `${moonSVG(m.f)}<span class="mp-t"><span class="mp-n">${nm}</span><span class="mp-i">${lit}</span></span>`;
   el.title = `${nm}, ${lit}`;
   const bar = $('.backbar .wrap', root), hero = $('.hero', root);
-  if (bar) bar.appendChild(el); else if (hero) { el.classList.add('mp-hero'); hero.appendChild(el); } else return;
+  // v42d: the mark sits inline (home: under the hero buttons; subpages: centred in the back bar), never in the right-hand corner
+  const heroRow = hero && $('.hero-copy .btn-row', root);
+  if (bar) bar.appendChild(el); else if (heroRow) { el.classList.add('mp-inline'); heroRow.insertAdjacentElement('afterend', el); } else return;
   document.documentElement.classList.toggle('pb-full-moon', m.illum >= 0.97);
   fullMoonNote(root, m);
 }
