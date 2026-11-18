@@ -4293,3 +4293,27 @@ body:not([data-page="about"]):not([data-page="home"]) .page-head .case-file + .k
 @keyframes wgSh{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(5px);opacity:1}}
 .wg-sheet:has(.wg-check:checked) .wg-signhere{opacity:0}
 @media (prefers-reduced-motion:reduce){.wg-sh-a{animation:none}}
+
+/* ---- v50b: phone light mode. Mobile Safari kills the tab when too many large composited layers
+   (fixed full-screen overlays, blend modes, blurs, will-change, infinite transforms) stack up at once.
+   On phones: drop the heaviest layers, stop the big infinite loops, and do not paint the house while
+   the warning gate or the threshold covers it. Desktop is untouched. ---- */
+@media (max-width:900px),(hover:none) and (pointer:coarse){
+  *,*::before,*::after{will-change:auto!important}
+  /* full-screen effect layers that cost the most memory */
+  .fx-grain,.seance-fx,.fx-smoke,.fx-ecto,.fx-symbol,.fx-burn,.hm-cloud,.hero-fog,.hero-flash,.fs-flare,.fs-glow,.hero-dread .hd-pass{display:none!important}
+  #fx-embers{mix-blend-mode:normal!important;opacity:.8}
+  /* big infinite loops stand still */
+  .hero-fallback,.hero-belfry,.hm-glow,.hero-moon,.fig-sigil,.fig-sigil i,.fx-corner,.dz-ring,.ritual-path,.ritual-path *,.fig-back,.fig-rim,.fig-mist,.fig-glow,.fig-hover,.fx-candle,.fx-vignette{animation:none!important}
+  html body .nav::before,html body .section-title::before,html body .dz-ring,html body .door-sym .dz-base,html body .door-sym .dz-glow,html body .door-sym img,html body .hero-dread,html body .fig-sigil,html body .fig-sigil::before,html body .fig-sigil i,html body .fig-hover,html body .fx-symbol,html body .foot-sigil{animation:none!important}
+  .gy-fog{display:none!important}
+  .wc-smoke,.wel-shadows{display:none!important}
+  html body .wd-ring,html body .wd-vignette,html body .wc-floor{animation:none!important}
+  /* heavy blurs off */
+  .fig-back,.dz-halo,.fs-carve{filter:none!important}
+  .fig-mist{display:none!important}
+  /* nothing behind an opaque cover is painted */
+  html.pb-gate-open body > :not(.pb-wg){visibility:hidden!important}
+  html.pb-gate-open body > :not(.pb-wg) *,body:has(> .wel:not(.is-leaving)) > #swap *{animation-play-state:paused!important}
+  body:has(> .wel:not(.is-leaving)) > :not(.wel):not(.pb-wg):not(script){visibility:hidden!important}
+}
