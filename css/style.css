@@ -3921,10 +3921,15 @@ body.ms-reading .fx-frieze{opacity:0!important}
 .door-sym-skull .dz-glow.dz-emblem{width:min(70%,290px)!important;opacity:.16}
 @media (max-width:900px){.door-sym-skull .dz-emblem{width:min(66%,270px)!important}}
 /* v37: page corners and relics carry emblem v4 where the skull was; the corner emblem is its own layer, turned back so its words always read the right way */
-.fx-corner{background-image:url(../images/death/corner-rich-v37.webp)!important;--cw:min(36vw,540px)}
-@media(max-width:900px){.fx-corner{--cw:52vw}}
-.fx-corner::after{content:"";position:absolute;left:calc(var(--cw) * 12 / 900);top:calc(var(--cw) * -26 / 900);width:calc(var(--cw) * 172 / 900);aspect-ratio:1;background:url(../images/archive/emblem-v4-240.png) center/contain no-repeat;filter:sepia(.55) saturate(1.1) brightness(.9) drop-shadow(0 2px 4px rgba(0,0,0,.8))}
-.fx-corner-tr::after{transform:scaleX(-1)}.fx-corner-bl::after{transform:scaleY(-1)}.fx-corner-br::after{transform:scale(-1,-1)}
-.relic-corner{background-image:url(../images/death/corner-v37.webp)!important}
+/* v39: the emblem lives inside each corner's nest (four drawn corners, so the emblem's words read the right way; no flipping) */
+.fx-corner{transform:none!important}
+.fx-corner-tl{background-image:url(../images/death/corner-rich-v39-tl.webp)!important;background-position:0 0!important}
+.fx-corner-tr{background-image:url(../images/death/corner-rich-v39-tr.webp)!important;background-position:100% 0!important}
+.fx-corner-bl{background-image:url(../images/death/corner-rich-v39-bl.webp)!important;background-position:0 100%!important}
+.fx-corner-br{background-image:url(../images/death/corner-rich-v39-br.webp)!important;background-position:100% 100%!important}
+.fx-corner::after{content:none!important}
+.relic-corner{background-image:url(../images/death/corner-v39.webp)!important}
+.relic-skull-daggers{background-image:url(../images/death/emblem-relic-v39.webp)!important;filter:none!important}
+
 .mr-frame{background-image:url(../images/mirror/frame-v37.webp)!important}
 .wc-skull-r{transform:rotate(12deg)!important}
