@@ -3699,3 +3699,18 @@ body.ms-reading .fx-edge{opacity:0!important}
 @media (max-width:699px){.gr-epi{font-size:.62rem;letter-spacing:.01em}.gr-obel .gr-epi{font-size:.55rem}}
 .gr-epi{margin-bottom:.15rem}.gr-obel .gr-epi .ge-born{font-size:.56rem}
 @media (max-width:699px){.pb-wait{padding-right:0}.pa-birth{padding-bottom:4.4rem}}
+
+/* ===== v35 · A Warning to the Listener (archive sheet) + the line under every album ===== */
+.pa-warning{position:relative;max-width:760px;margin:1.6rem auto 2.6rem;padding:clamp(2.2rem,4vw,3.2rem) clamp(1.4rem,4.5vw,3.4rem) clamp(2.8rem,5vw,3.6rem);color:#22130a;background:#e2cfa6 url(../images/letter/paper-tile.jpg) center/340px;box-shadow:inset 0 0 60px rgba(70,35,10,.6),inset 0 0 10px rgba(40,15,5,.7),0 18px 44px rgba(0,0,0,.7);clip-path:polygon(1% 2%,9% 0,22% 2%,37% 0,52% 2%,68% 0,83% 2%,99% 0,100% 14%,98% 31%,100% 49%,98% 67%,100% 86%,98% 99%,84% 100%,66% 98%,48% 100%,31% 98%,15% 100%,1% 98%,0 81%,2% 62%,0 44%,2% 25%);transform:rotate(-.4deg);scroll-margin-top:130px}
+.pw-burn{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 22% 16% at 100% 0,rgba(25,8,2,.9),rgba(80,30,5,.4) 55%,transparent 75%),radial-gradient(ellipse 20% 14% at 0 100%,rgba(25,8,2,.85),rgba(80,30,5,.35) 55%,transparent 75%),radial-gradient(ellipse 14% 10% at 0 0,rgba(40,15,4,.6),transparent 70%),radial-gradient(ellipse 12% 9% at 100% 100%,rgba(40,15,4,.55),transparent 70%)}
+.pw-title{position:relative;margin:0 0 1.3rem!important;text-align:center;font-family:"Grenze Gotisch",serif!important;font-size:clamp(1.7rem,3.6vw,2.4rem)!important;line-height:1.1;color:#5a0f0c!important;text-shadow:none!important}
+.pw-text{position:relative}
+.pw-text p{margin:0 0 1rem!important;font:1.12rem/1.65 "Garamond",Georgia,serif;color:#22130a!important}
+.pw-text p:first-child{font-weight:600;font-size:1.2rem}
+.pw-text p:nth-child(4),.pw-text p:last-child{font-style:italic}
+.pw-sig{position:relative;margin:.6rem 0 0!important;text-align:right;padding-right:5rem;font:italic 1.1rem "Garamond",serif;color:#5a0f0c!important}
+.pw-seal{position:absolute;right:clamp(.8rem,3vw,2rem);bottom:clamp(.6rem,2vw,1.2rem);width:80px;height:91px;background:image-set(url(../images/letter/seal-ma-sm.webp) 1x,url(../images/letter/seal-ma.webp) 2x) center/contain no-repeat;filter:drop-shadow(0 5px 7px rgba(0,0,0,.5));transform:rotate(-8deg)}
+.warn-line{margin:1.2rem auto 2.2rem!important;text-align:center;font:italic .95rem/1.4 "Garamond",Georgia,serif}
+.warn-line a{color:#cdb88f!important;text-decoration:underline;text-decoration-color:rgba(160,30,30,.6);text-underline-offset:3px}
+.warn-line a:hover,.warn-line a:focus-visible{color:#f0dcae!important}
+@media (max-width:699px){.pw-text p{font-size:1.04rem}.pw-seal{width:62px;height:71px}.pw-sig{padding-right:4rem}}
