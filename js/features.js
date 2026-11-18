@@ -5,10 +5,10 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const pad = (n) => String(n).padStart(2, '0');
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const NOW = () => new Date();
+const NOW = () => new Date(); // the clock every countdown reads; tests can move it by overriding Date
 let timers = [];
 
-// ---------- upcoming releases: countdown, LIVE NOW on the day, gone from Upcoming 14 days later ----------
+// ---------- upcoming releases: countdown, 'Out now on Spotify' from the release moment, gone from the countdowns 7 days later (data-expire) ----------
 function release(root) {
   // One shared clock keeps all cards in sync, and promotes the next home card as one expires.
   const cards = $$('[data-release]', root);
@@ -53,7 +53,7 @@ function release(root) {
       // The compact platform panel carries its own linked Spotify mark for these records.
       const on = !r.querySelector('.al-rel') && now >= Date.parse(r.dataset.liveFrom) && now < Date.parse(r.dataset.liveUntil);
       let b = $('.al-live', r);
-      if (on && !b) { b = document.createElement('span'); b.className = 'al-live'; b.textContent = 'Live now'; $('.al-body', r)?.prepend(b); }
+      if (on && !b) { b = document.createElement('span'); b.className = 'al-live'; b.textContent = 'Out now on Spotify'; $('.al-body', r)?.prepend(b); }
       if (!on && b) b.remove();
     });
   };

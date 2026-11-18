@@ -3968,3 +3968,7 @@ body.ms-reading .fx-frieze{opacity:0!important}
 @media (prefers-reduced-motion:reduce){.pa-letter.is-wrong .pl-env,.pa-letter.is-unfolding .pl-page,.pa-letter.is-breaking .pl-half{animation:none}}
 .pa-letter,.pl-env{min-width:0}
 @media (max-width:600px){.pa-letters{grid-template-columns:1fr!important}.pa-letter.is-locked .pl-env{min-height:200px}.pl-lock{max-width:260px}}
+/* v41: the Back button steps out of the top-left corner's nest so the emblem stays uncovered */
+.backbar .wrap{padding-left:calc(min(36vw,540px) * .24 + 14px)!important}
+@media (max-width:900px){.backbar .wrap{padding-left:calc(52vw * .23 + 6px)!important}}
+.pl-hint .pl-ink{display:block;margin-top:.2rem;font-style:italic;font-weight:700;color:#8a0f0c}
