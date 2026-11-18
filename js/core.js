@@ -85,14 +85,14 @@ function bleedTitles(root) {
     h.appendChild(span);
     handwrite(span);
     // a few loose specks of ink flicked from the nib
-    const nS = h.matches('h1, .lib-h') ? 6 : 3;
+    const nS = h.matches('h1, .lib-h') ? 6 : 0;
     for (let k = 0; k < nS; k++) {
       const sp = document.createElement('b'); sp.className = 'speck'; sp.setAttribute('aria-hidden', 'true');
       sp.style.cssText = `left:${(Math.random() * 100).toFixed(1)}%;top:${(Math.random() < 0.5 ? -8 - Math.random() * 14 : 92 + Math.random() * 18).toFixed(1)}%;--sz:${(2 + Math.random() * 4.5).toFixed(1)}px;--o:${(0.35 + Math.random() * 0.4).toFixed(2)}`;
       span.appendChild(sp);
     }
-    if (reduceMotion) return;
-    const big = h.matches('h1, .lib-h'); const count = big ? 7 : 4;
+    if (reduceMotion || !h.matches('h1, .lib-h')) return;   // v44: blood drips on page titles only
+    const big = true; const count = big ? 7 : 4;
     for (let k = 0; k < count; k++) {
       const d = document.createElement('b'); d.className = 'drip'; d.setAttribute('aria-hidden', 'true');
       const wd = (big ? 2.5 : 1.8) + Math.random() * (big ? 3.5 : 2);
@@ -102,7 +102,8 @@ function bleedTitles(root) {
   });
 }
 // ---- the forbidden layer: scratched warnings, case-file headers, flicker, glitch ----
-const FOLIO = { home: 'I', upcoming: 'I·a', albums: 'II', album: 'III', song: 'III·a', gallery: 'IV', images: 'IV·a', tarot: 'V', about: 'VI' };
+// v44: the case-file line belongs to the archive rooms only, one folio numbering (the nav's room numbers)
+const FOLIO = { gallery: 'III', wards: 'III' };
 // ---- prose: illuminated initials, thorn rules and tiny skull/dagger ornaments between paragraphs ----
 const ORN = ['<i class="orn-emb"></i>',
   '<svg viewBox="0 0 24 24"><path d="M12 1l1.3 4.5v9.5h-2.6V5.5zM7.5 15.2h9v1.6h-9zM11 17h2v3.2l1 1.1-2 1.7-2-1.7 1-1.1z"/></svg>'];
@@ -113,7 +114,7 @@ function prose(root) {
     const ps = b.matches('p') ? [b] : [...b.querySelectorAll(':scope > p')].filter((p) => p.textContent.trim().length > 60 && !p.matches('.diary-date, .example-flag, .kicker, .case-file'));
     if (!ps.length) return;
     // an illuminated initial only where the text opens on a letter (never split '16' into '1' + '6')
-    if ((!b.matches('.lead') || n === 0) && /^[A-Za-z]/.test(ps[0].textContent.trim())) ps[0].classList.add('illum');
+    if (!b.matches('.lead') && /^[A-Za-z]/.test(ps[0].textContent.trim())) ps[0].classList.add('illum');
     ps.slice(1).forEach((p, k) => {
       const o = document.createElement('div'); o.className = 'orn'; o.setAttribute('aria-hidden', 'true');
       o.innerHTML = `<i class="thorn"></i>${ORN[k % 2]}<i class="thorn thorn-r"></i>`;
@@ -123,6 +124,7 @@ function prose(root) {
 }
 function caseFile(root) {
   const page = document.body.dataset.page;
+  if (!FOLIO[page]) return;
   const host = ['.song-head-grid > div', '.album-hero-grid > div:nth-child(2)', '.circle-head', '.hero-copy', '.page-head .wrap'].map((q) => root.querySelector(q)).find(Boolean);
   if (!host || host.querySelector('.case-file')) return;
   const w = (n) => `<span class="redact" style="width:${n}em"></span>`;
@@ -450,7 +452,7 @@ function askCode(env) {
     const id = (env.querySelector('.ms-open')?.id || 'letter') + '-lock';
     lock = document.createElement('form'); lock.className = 'seal-lock'; lock.autocomplete = 'off'; lock.setAttribute('aria-label', 'The letter is sealed');
     lock.innerHTML = `<p class="sl-kicker">Sigillum &middot; the sealed word</p>
-      <p class="sl-riddle">This place is sealed with the number of the beast.</p>
+      <p class="sl-riddle">This place is sealed with the number of perfection: three sevens, side by side.</p>
       <label class="sl-label" for="${id}-0">Write the number</label>
       <div class="sl-digits"><input id="${id}-0" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="First digit"><input inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Second digit"><input inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Third digit"></div>
       <div class="sl-btns"><button type="submit" class="btn btn-solid sl-go">Open the letter</button><button type="button" class="sl-leave">Leave it sealed</button></div>
@@ -514,3 +516,18 @@ const seatBack = () => {
 addEventListener('resize', seatBack, { passive: true });
 new MutationObserver(() => { seatBack(); noteTrail(); }).observe(document.getElementById('swap') || document.body, { childList: true });
 seatBack(); noteTrail(); setTimeout(seatBack, 400);
+
+// v44: on phones the rite pill and the M.A mark appear only when the visitor scrolls back up (never over the first screen or the end)
+(() => {
+  const mq = matchMedia('(max-width:700px)'); let lastY = scrollY, tick = false;
+  const upd = () => {
+    tick = false; const y = scrollY, dy = y - lastY; lastY = y;
+    const nearEnd = innerHeight + y >= document.documentElement.scrollHeight - 4;
+    if (!mq.matches) { doc.classList.remove('rp-away'); return; }
+    if (nearEnd || y < 200) { doc.classList.add('rp-away'); return; }   // never over the first screen or the last lines
+    if (dy > 6) doc.classList.add('rp-away'); else if (dy < -6) doc.classList.remove('rp-away');
+  };
+  if (mq.matches) doc.classList.add('rp-away');   // it comes back when the visitor scrolls up
+  mq.addEventListener('change', upd);
+  addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
+})();

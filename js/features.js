@@ -342,7 +342,7 @@ function mirror(root) {
     const box = $('[data-mr-cards]', root);
     if (box) { const cards = $$('.mr-card', box); cards.forEach((c) => { c.hidden = true; c.querySelector('.alb-card')?.classList.remove('is-turned'); });
       const c = cards.find((x) => x.dataset.acAlbum === o.album);
-      if (c) { st.classList.add('has-card'); const ln = $('.ac-line p', c); if (ln) ln.textContent = '\u201c' + o.en + '\u201d'; let sr = $('.ac-src', c); if (!sr) { sr = document.createElement('p'); sr.className = 'ac-src'; $('.ac-line', c).after(sr); } sr.innerHTML = ''; sr.append('from '); const i = document.createElement('a'); i.href = new URL(o.url, ROOT).href; i.textContent = o.song; sr.appendChild(i);
+      if (c) { st.classList.add('has-card'); const ln = $('.ac-line p', c); if (ln) ln.textContent = '\u201c' + o.en + '\u201d'; let sr = $('.ac-src', c); if (!sr) { sr = document.createElement('p'); sr.className = 'ac-src'; ($('.ac-line', c) || $('.ac-title', c)).after(sr); } sr.innerHTML = ''; sr.append('from '); const i = document.createElement('a'); i.href = new URL(o.url, ROOT).href; i.textContent = o.song; sr.appendChild(i);
         timers.push(setTimeout(() => { c.hidden = false; requestAnimationFrame(() => requestAnimationFrame(() => c.querySelector('.alb-card')?.classList.add('is-turned'))); }, RM() ? 0 : (again ? 1600 : 3000))); }
       else st.classList.remove('has-card'); }
     const t1 = RM() ? 0 : (again ? 1400 : 2600), t2 = RM() ? 0 : (again ? 2600 : 4400);

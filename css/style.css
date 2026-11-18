@@ -3988,3 +3988,63 @@ body.ms-reading .fx-frieze{opacity:0!important}
 @media (min-width:1101px){.ritual-path{left:calc(var(--fw) * 64 / 900)!important}}
 @media (min-width:901px){body[data-page="home"] .hero .scroll-cue{bottom:calc(var(--fw) * 192 / 900)!important}}
 @media (min-width:901px) and (max-height:820px){body[data-page="home"] .hero .scroll-cue{display:none!important}}
+
+/* ===== v44: calmer rooms, one spacing scale, one card, one image frame ===== */
+:root{--title-gap:clamp(1.4rem,3.2vh,2.6rem)}
+/* 1 · the full dress (corners, ghost relics, the great wheel) belongs to the threshold and the library; every other room is quieter */
+body:not([data-page="home"]):not([data-page="about"]) .fx-corner{opacity:.42!important}
+body:not([data-page="home"]):not([data-page="about"]) .relic{display:none!important}
+body:not([data-page="home"]):not([data-page="about"]) .fx-symbol{opacity:.2!important}
+body:not([data-page="home"]):not([data-page="about"]) .fx-ecto{display:none!important}
+/* 4 · blood runs from page titles only; no ghost double behind any title */
+.bt .h-ghost{display:none!important}
+.section-title .bt .drip,h2 .bt .drip,.section-title .speck,h2 .speck{display:none!important}
+/* 5 + 6 · the back bar is a real row under the header (Back left, moon right), and every room's title starts the same distance below it */
+body:has(.backbar):not([data-page="about"]) #main{padding-top:0!important}
+body:not([data-page="about"]) .backbar{position:relative!important;top:auto!important;left:auto!important;right:auto!important;padding:calc(var(--bb-top,82px) + 10px) 0 0!important;pointer-events:auto}
+.backbar .wrap{display:flex!important;align-items:center;gap:1rem}
+.backbar .moon-phase{margin:0 0 0 auto!important}
+.backbar .wrap{padding-right:calc(min(36vw,540px) * .24 + 14px)!important}
+@media (max-width:900px){.backbar .wrap{padding-right:calc(52vw * .23 + 6px)!important}}
+@media (min-width:901px){.backbar .wrap{padding-right:calc(var(--emb) + 10px)!important}}
+body:not([data-page="about"]):not([data-page="home"]) .page-head,
+body:not([data-page="about"]):not([data-page="home"]) .album-hero,
+body:not([data-page="about"]):not([data-page="home"]) .song-head,
+body:not([data-page="about"]):not([data-page="home"]) .albums-head{padding-top:var(--title-gap)!important}
+body:not([data-page="about"]):not([data-page="home"]) .page-head .kicker:first-child,
+body:not([data-page="about"]):not([data-page="home"]) .page-head .case-file + .kicker{margin-top:0}
+/* 2 · the case-file line: archive rooms only, one tidy line */
+.case-file{justify-content:center}
+/* 3 · one parchment card: the numbers room uses the same paper as the journal and the countdowns */
+.num-form,.num-method{color:#1a0c05;border:0!important;
+  background:radial-gradient(ellipse at 50% 40%,rgba(255,246,222,.35),transparent 65%),linear-gradient(180deg,rgba(90,50,14,.06),rgba(90,50,14,.22)),url(../images/letter/paper-real.jpg) 0 0/520px!important;
+  box-shadow:inset 0 0 0 1px rgba(60,30,8,.35),inset 0 0 50px rgba(80,40,10,.45),0 18px 40px rgba(0,0,0,.7)!important}
+.num-field label{color:#5a1208!important}
+.num-field input{border-color:#8a6a3a;background:#fbf3e1}
+.num-private{color:#3a2414!important}
+.num-err{color:#8e0a12!important}
+.num-method summary{color:#5a1208!important}
+.num-method p{color:#1a0c05}
+.num-method b{color:#4a0a06}
+.num-form .btn:not(.btn-solid){color:#3a1a08!important;-webkit-text-fill-color:#3a1a08!important;text-shadow:none!important;border-color:rgba(90,40,10,.6)!important;background:rgba(255,245,220,.55)!important}
+/* 7 · one image frame: a thin gold line, a dark mat, a soft shadow */
+.rq-frame img,.rl-cover,.al-cover img,.song-cover img,.press-covers img{box-shadow:0 0 0 1px rgba(201,160,85,.7),0 0 0 4px rgba(10,6,6,.85),0 0 0 5px rgba(201,160,85,.28),0 14px 30px rgba(0,0,0,.7)!important;border:0!important}
+/* about: the ghost writing is drawn by CSS (not text, not copied, not indexed) */
+.gl::before{content:attr(data-g)}
+/* lyrics: phonetic sheets say so */
+.ly-ph{font-style:italic;text-transform:none;letter-spacing:.02em;opacity:.8}
+.ly-phnote{margin:.2rem auto 1.1rem;max-width:40rem;text-align:center;font:italic 450 1rem/1.5 var(--f-read);color:#4a2a14}
+/* mobile: the rite pill and the M.A mark step aside while you scroll down, and never sit on the last lines */
+@media (max-width:700px){
+  .ritual-path,.ma-mark{transition:opacity .35s ease,transform .35s ease}
+  html.rp-away .ritual-path{opacity:0;pointer-events:none;transform:translateY(14px)!important}
+  html.rp-away .ma-mark{opacity:0;pointer-events:none}
+  .site-footer{padding-bottom:5.5rem!important}
+  body[data-page="about"] .lib-hint{bottom:calc(12vh + 64px)!important}
+}
+@media (max-width:900px){
+  .fx-corner-tl{background-image:url(../images/death/corner-rich-v43-tl-sm.webp)!important}
+  .fx-corner-tr{background-image:url(../images/death/corner-rich-v43-tr-sm.webp)!important}
+  .fx-corner-bl{background-image:url(../images/death/corner-rich-v43-bl-sm.webp)!important}
+  .fx-corner-br{background-image:url(../images/death/corner-rich-v43-br-sm.webp)!important}
+}

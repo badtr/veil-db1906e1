@@ -1,5 +1,5 @@
 // First-ever visit only: a forbidden threshold. Darkness, a whisper, a candle,
-// a sealed letter with a code lock (666). Correct code breaks the seal and the door opens.
+// a sealed letter with a code lock (777). Correct code breaks the seal and the door opens.
 // No skip: the riddle itself gives the number, so no one is locked out.
 import { reduceMotion, ROOT } from './env.js';
 import { sigilMarkup } from './sigil.js';
@@ -17,7 +17,7 @@ export function playWelcome({ sound }) {
     el.className = 'wel'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', 'A sealed threshold');
     el.innerHTML = `
       <div class="wel-room" aria-hidden="true"></div>
-      <svg class="wel-circle" viewBox="-50 -50 100 100" aria-hidden="true"><g>${sigilMarkup('threshold-666')}</g></svg>
+      <svg class="wel-circle" viewBox="-50 -50 100 100" aria-hidden="true"><g>${sigilMarkup('threshold-777')}</g></svg>
       <div class="wel-dust" aria-hidden="true">${Array.from({ length: 26 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--y:${(i * 61) % 100}%;--d:${(i % 7) * 1.3}s;--s:${0.6 + (i % 4) * 0.35}"></i>`).join('')}</div>
       <div class="wel-candle" aria-hidden="true"><img src="${new URL('images/ritual/candles.jpg', ROOT).href}" alt=""><span class="wel-flame"></span><span class="wel-ember"></span></div>
       <div class="wel-shadows" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -34,7 +34,7 @@ export function playWelcome({ sound }) {
       <form class="wel-letter" autocomplete="off" hidden>
         <div class="wel-seal" aria-hidden="true"><div class="wel-seal-whole"></div><span class="wel-seal-sheen"></span><svg class="wel-cracks" viewBox="0 0 100 100" preserveAspectRatio="none"></svg></div>
         <p class="wel-kicker">Sigillum &middot; the sealed word</p>
-        <p class="wel-riddle">This place is sealed with the number of the beast.<br><em>Three sixes, side by side, open what was sealed.</em></p>
+        <p class="wel-riddle">This place is sealed with the number of perfection.<br><em>Seven days, seven seals, seven candles: three sevens, side by side, open what was sealed.</em></p>
         <p class="wel-margin" aria-hidden="true">Rev. XIII &middot; 18</p>
         <label class="wel-label" for="wel-d0">Write the number</label>
         <div class="wel-digits">
