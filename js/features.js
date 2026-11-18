@@ -276,7 +276,7 @@ function mirrorLink(root) {
 }
 
 // ---------- no image downloads: covers, etchings and seals cannot be dragged out or right-click saved ----------
-const PROTECT = '.alb-card img, .pa-cabinet img, img[src*="images/archive/"], img[src*="images/hall/"], img[src*="images/albums/"], img[src*="images/etchings/"], img[src*="images/room/"], img[src*="images/gallery/"], img[src*="images/share/"], img[src*="seal-logo"], .lightbox img, .sp-ghost, .mirror-stage img';
+const PROTECT = '.dr-thumb img, .cv-card img, .alb-card img, .pa-cabinet img, img[src*="images/archive/"], img[src*="images/hall/"], img[src*="images/albums/"], img[src*="images/etchings/"], img[src*="images/room/"], img[src*="images/gallery/"], img[src*="images/share/"], img[src*="seal-logo"], .lightbox img, .sp-ghost, .mirror-stage img';
 function protect(root) { $$(PROTECT, root).forEach((im) => { im.draggable = false; im.setAttribute('draggable', 'false'); }); }
 ['contextmenu', 'dragstart'].forEach((ev) => document.addEventListener(ev, (e) => { if (e.target instanceof Element && e.target.matches(PROTECT)) e.preventDefault(); }, true));
 
@@ -397,7 +397,7 @@ function whisperArm() { clearTimeout(WH.t); WH.t = setTimeout(whisperShow, WH.id
 whisperArm();
 // the medium's sound (opt-in, off by default)
 import(new URL('medium.js?v=' + (document.querySelector('link[href*="style.css"]')?.getAttribute('href').split('?v=')[1] || ''), import.meta.url).href).catch(() => {});
-function mount() { greetingInit(document.getElementById('swap') || document); timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); mirrorLink(r); protect(r); mirror(r); albumCards(r); spotifyGate(r); paLetters(r); graveRest(r); riteLine(false); inkLyrics(r); parlour(); channel(r); spiritPhoto(r); }
+function mount() { greetingInit(document.getElementById('swap') || document); timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); mirrorLink(r); protect(r); mirror(r); albumCards(r); spotifyGate(r); paLetters(r); graveRest(r); coverWall(r); riteLine(false); inkLyrics(r); parlour(); channel(r); spiritPhoto(r); }
 document.addEventListener('pb:page', mount);
 mount();
 
@@ -437,3 +437,11 @@ function paLetters(root) {
 
 // ---------- v35: a grave that 'rests until' its Spotify day reads 'Risen …' once the day has come ----------
 function graveRest(root) { const now = +NOW(); (root || document).querySelectorAll('[data-rest-until]').forEach((e) => { const t = Date.parse(e.dataset.restUntil); if (!isNaN(t) && now >= t) e.textContent = e.dataset.risen; }); }
+
+// ---------- v35: the cover wall · on touch screens the veil lifts from the cover nearest the middle of the screen ----------
+function coverWall(root) {
+  const cs = [...(root || document).querySelectorAll('.cv-card')]; if (!cs.length || !('IntersectionObserver' in window)) return;
+  if (!matchMedia('(hover: none)').matches) return;
+  const io = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle('is-lit', e.isIntersecting)), { rootMargin: '-38% 0px -38% 0px' });
+  cs.forEach((c) => io.observe(c));
+}

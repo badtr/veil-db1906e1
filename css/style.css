@@ -3714,3 +3714,48 @@ body.ms-reading .fx-edge{opacity:0!important}
 .warn-line a{color:#cdb88f!important;text-decoration:underline;text-decoration-color:rgba(160,30,30,.6);text-underline-offset:3px}
 .warn-line a:hover,.warn-line a:focus-visible{color:#f0dcae!important}
 @media (max-width:699px){.pw-text p{font-size:1.04rem}.pw-seal{width:62px;height:71px}.pw-sig{padding-right:4rem}}
+
+/* ===== v35 · the cover wall (albums overview): veiled covers, red glow, cracking seal, engraved frame ===== */
+.cover-wall{position:relative;padding:.6rem 0 2.6rem}
+.cv-h{margin:0 0 .3rem!important;text-align:center;font-family:"Grenze Gotisch",serif!important;font-size:clamp(1.6rem,3vw,2.2rem)!important;color:#e8d4b0!important}
+.cv-lead{margin:0 auto 1.6rem!important;text-align:center;font:italic 1.05rem/1.5 "Garamond",serif;color:#e6d8bf!important;max-width:52ch}
+.cv-grid{list-style:none;margin:0 auto!important;padding:0!important;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(1.2rem,2.4vw,2.2rem) clamp(1rem,2vw,1.8rem);max-width:1180px}
+@media (max-width:1099px){.cv-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:699px){.cv-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.3rem .9rem}}
+.cv-card{display:grid;gap:.15rem;text-decoration:none!important;color:inherit;-webkit-tap-highlight-color:transparent;outline:none}
+.cv-frame{position:relative;display:block;aspect-ratio:1;padding:9px;background:linear-gradient(145deg,#2a1c12,#0b0606 45%,#21150d);border:1px solid rgba(200,160,90,.6);box-shadow:inset 0 0 0 3px #0a0505,inset 0 0 0 4px rgba(200,160,90,.35),0 16px 30px rgba(0,0,0,.7);transition:transform .6s cubic-bezier(.2,.7,.2,1),box-shadow .6s}
+.cv-glow{position:absolute;inset:-14%;z-index:-1;background:radial-gradient(circle,rgba(190,24,36,.55),rgba(120,10,20,.18) 45%,transparent 68%);opacity:.35;filter:blur(8px);transition:opacity .8s}
+.cv-frame img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(.55) sepia(.25) brightness(.55) contrast(1.1);transition:filter .9s ease,transform 1.2s ease;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.cv-shield{position:absolute;inset:0;z-index:1}
+.cv-veil{position:absolute;inset:9px;z-index:2;overflow:hidden;pointer-events:none;background:linear-gradient(180deg,rgba(6,3,4,.82),rgba(10,4,6,.55) 45%,rgba(6,3,4,.88));transition:opacity 1s ease,transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.cv-veil i{position:absolute;inset:-30%;background:url(../images/fx/smoke-a.webp) center/cover no-repeat;opacity:.55;mix-blend-mode:screen;transition:transform 1.6s ease,opacity 1.2s ease}
+.cv-seal{position:absolute;z-index:3;left:50%;top:50%;width:30%;aspect-ratio:360/409;transform:translate(-50%,-50%);pointer-events:none}
+.cv-seal i{position:absolute;inset:0;background:center/contain no-repeat;transition:transform .9s cubic-bezier(.3,.7,.2,1),opacity .7s ease}
+.cv-seal .cs-whole{background-image:url(../images/letter/seal-ma-sm.webp);filter:drop-shadow(0 6px 8px rgba(0,0,0,.7))}
+.cv-seal .cs-l{background-image:url(../images/letter/seal-half-l-sm.webp);opacity:0}
+.cv-seal .cs-r{background-image:url(../images/letter/seal-half-r-sm.webp);opacity:0}
+.cv-c{position:absolute;z-index:4;width:28px;height:28px;border:2px solid #b8935a;pointer-events:none;opacity:.85}
+.cv-tl{top:3px;left:3px;border-right:0;border-bottom:0}.cv-br{bottom:3px;right:3px;border-left:0;border-top:0}
+.cv-title{margin-top:.75rem;text-align:center;font:600 .92rem/1.25 var(--f-sc,"Fell SC",serif);letter-spacing:.12em;text-transform:uppercase;color:rgba(232,214,182,.78);text-shadow:0 -1px 0 #000,0 1px 0 rgba(255,255,255,.08);transition:color .6s,text-shadow .6s}
+.cv-meta{text-align:center;font:italic .88rem "Garamond",serif;color:#bfae93}
+/* lifted: hover, keyboard focus, or (touch) the cover in the middle of the screen */
+.cv-card:is(:hover,:focus-visible,.is-lit) .cv-frame{transform:translateY(-4px);box-shadow:inset 0 0 0 3px #0a0505,inset 0 0 0 4px rgba(232,195,126,.7),0 22px 40px rgba(0,0,0,.75),0 0 30px rgba(170,20,30,.35)}
+.cv-card:is(:hover,:focus-visible,.is-lit) .cv-glow{opacity:1}
+.cv-card:is(:hover,:focus-visible,.is-lit) img{filter:none;transform:scale(1.04)}
+.cv-card:is(:hover,:focus-visible,.is-lit) .cv-veil{opacity:0;transform:translateY(-18%)}
+.cv-card:is(:hover,:focus-visible,.is-lit) .cv-veil i{transform:translate(-12%,-22%) scale(1.25);opacity:0}
+.cv-card:is(:hover,:focus-visible,.is-lit) .cv-seal .cs-whole{opacity:0}
+.cv-card:is(:hover,:focus-visible,.is-lit) .cv-seal .cs-l{opacity:1;transform:translate(-62%,58%) rotate(-24deg)}
+.cv-card:is(:hover,:focus-visible,.is-lit) .cv-seal .cs-r{opacity:1;transform:translate(62%,64%) rotate(20deg)}
+.cv-card:is(:hover,:focus-visible,.is-lit) .cv-title{color:#f3dfb2;text-shadow:0 0 12px rgba(255,150,80,.45),0 1px 0 #000}
+.cv-card:focus-visible .cv-frame{outline:2px solid #d9b56a;outline-offset:4px}
+@media (max-width:699px){.cv-title{font-size:.78rem;letter-spacing:.08em}.cv-meta{font-size:.8rem}.cv-c{width:20px;height:20px}}
+@media (prefers-reduced-motion:reduce){.cv-frame,.cv-frame img,.cv-veil,.cv-veil i,.cv-seal i,.cv-glow{transition:none!important}.cv-card:is(:hover,:focus-visible,.is-lit) img{transform:none}}
+
+/* ===== v35 · a framed cover thumbnail on every drawer front ===== */
+.dr-front{grid-template-columns:auto auto minmax(0,1fr) auto!important}
+.dr-thumb{position:relative;display:block;width:76px;height:76px;padding:4px;background:linear-gradient(145deg,#c9a45a,#5e3d14 50%,#b8935a);box-shadow:0 0 0 1px #1a0f08,0 4px 10px rgba(0,0,0,.6),0 0 14px rgba(160,20,30,.25);transform:rotate(-1.5deg)}
+.dr-thumb::after{content:"";position:absolute;inset:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.8),inset 0 0 12px rgba(0,0,0,.55);pointer-events:none}
+.dr-thumb img{display:block;width:100%;height:100%;object-fit:cover;filter:sepia(.15) contrast(1.05);pointer-events:none;user-select:none;-webkit-user-drag:none}
+@media (max-width:699px){.dr-front{grid-template-columns:auto minmax(0,1fr) auto!important}.dr-thumb{width:58px;height:58px;padding:3px}}
+.cv-card:is(:hover,:focus-visible,.is-lit) .cv-seal .cs-l{transform:translate(-118%,100%) rotate(-28deg) scale(.82)}.cv-card:is(:hover,:focus-visible,.is-lit) .cv-seal .cs-r{transform:translate(118%,106%) rotate(24deg) scale(.82)}
