@@ -5,8 +5,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const pad = (n) => String(n).padStart(2, '0');
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-// preview hook for local screenshots only: ?pbnow=2026-12-05T00:00:01%2B01:00
-const NOW = (() => { const q = new URLSearchParams(location.search).get('pbnow'); const t = q ? Date.parse(q) : NaN; const off = isNaN(t) ? 0 : t - Date.now(); return () => new Date(Date.now() + off); })();
+const NOW = () => new Date();
 let timers = [];
 
 // ---------- upcoming releases: countdown, LIVE NOW on the day, gone from Upcoming 14 days later ----------
@@ -236,6 +235,39 @@ function moon(root) {
   const bar = $('.backbar .wrap', root), hero = $('.hero', root);
   if (bar) bar.appendChild(el); else if (hero) { el.classList.add('mp-hero'); hero.appendChild(el); } else return;
   document.documentElement.classList.toggle('pb-full-moon', m.illum >= 0.97);
+  fullMoonNote(root, m);
+}
+// ---------- v36: on full-moon nights (about +-1 day) Ballerina leaves a line; otherwise a sealed hint ----------
+const FM_LINES = [
+  'The moon is full. Tonight I can dance without the music.',
+  'Leave the window open a little. I like to watch it with you.',
+  'Every full moon I count the cracks. There is one more.',
+  'Tonight the glass is thin. Do not tap on it.',
+  'I put on the white slippers. The moon likes them.',
+  'Under this light I remember every step.',
+  'Hold still. When the moon is this bright, I can see you too.',
+  'The music box wound itself again. It only does that tonight.',
+  'Light one candle for me. Just one. Then go to sleep.',
+  'Listen. The floorboards still know my feet.',
+  'I am closest to the glass when the moon is full. Do not be afraid.',
+  'Tomorrow the light thins again. Tonight, stay up with me.',
+];
+function fullMoonNote(root, m) {
+  document.querySelectorAll('.fm-note').forEach((x) => x.remove());
+  const hero = $('.hero', root); if (!hero) return;
+  const full = Math.abs(m.age - SYN / 2) <= 1;
+  const n = Math.floor((NOW().getTime() - NEW0) / 86400000 / SYN);
+  const el = document.createElement('p'); el.className = 'fm-note' + (full ? ' is-full' : '');
+  if (full) {
+    const line = FM_LINES[((n % FM_LINES.length) + FM_LINES.length) % FM_LINES.length];
+    el.innerHTML = `<span class="fm-k">Full moon</span><span class="fm-line">&ldquo;${esc(line)}&rdquo;</span><span class="fm-sig">&mdash; Ballerina</span>`;
+  } else {
+    const next = new Date(NEW0 + (n + (m.age > SYN / 2 ? 1 : 0)) * SYN * 86400000 + SYN / 2 * 86400000);
+    const day = next.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'Europe/Oslo' });
+    el.innerHTML = `<span class="fm-seal" aria-hidden="true"></span><span class="fm-hint">Return when the moon is full.</span><span class="fm-when">Sealed until ${esc(day)}</span>`;
+  }
+  const copy = $('.hero-copy .btn-row', root);
+  if (matchMedia('(max-width: 1100px)').matches && copy) copy.insertAdjacentElement('afterend', el); else hero.appendChild(el);
 }
 
 // ---------- the ritual path: tarot + numbers + oracle (kept in this browser only) ----------
@@ -276,7 +308,7 @@ function mirrorLink(root) {
 }
 
 // ---------- no image downloads: covers, etchings and seals cannot be dragged out or right-click saved ----------
-const PROTECT = '.dr-thumb img, .cv-card img, .alb-card img, .pa-cabinet img, img[src*="images/archive/"], img[src*="images/hall/"], img[src*="images/albums/"], img[src*="images/etchings/"], img[src*="images/room/"], img[src*="images/gallery/"], img[src*="images/share/"], img[src*="seal-logo"], .lightbox img, .sp-ghost, .mirror-stage img';
+const PROTECT = '.hero-figure img, .dr-thumb img, .cv-card img, .alb-card img, .pa-cabinet img, img[src*="images/archive/"], img[src*="images/hall/"], img[src*="images/albums/"], img[src*="images/etchings/"], img[src*="images/room/"], img[src*="images/gallery/"], img[src*="images/share/"], img[src*="seal-logo"], .lightbox img, .sp-ghost, .mirror-stage img';
 function protect(root) { $$(PROTECT, root).forEach((im) => { im.draggable = false; im.setAttribute('draggable', 'false'); }); }
 ['contextmenu', 'dragstart'].forEach((ev) => document.addEventListener(ev, (e) => { if (e.target instanceof Element && e.target.matches(PROTECT)) e.preventDefault(); }, true));
 

@@ -9,7 +9,8 @@
   if (fresh || !POEM || !GATE) { root.classList.remove('pb-gate'); return; }
   const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const BEAT = new Set(['Keep it so.', 'Wait.', 'Only those.', 'Stop.']);
-  const line = l => `<span class="pw-l${BEAT.has(l) ? ' pw-beat' : ''}${/^Cross\b/.test(l) ? ' pw-last' : ''}">${esc(l)}</span>`;
+  const wardsHref = new URL('../wards.html', SELF).href;
+  const line = l => `<span class="pw-l${BEAT.has(l) ? ' pw-beat' : ''}${/^Cross\b/.test(l) ? ' pw-last' : ''}">${l === 'wards, and how they are made.' ? `<a class="pw-wards" href="${wardsHref}">${esc(l)}</a>` : esc(l)}</span>`;
   const full = POEM.map(lines => '<p class="pw-st">' + lines.filter(l => l !== '\u2014 M.A.').map(line).join('<br>') + '</p>')
     .join('<span class="pw-orn" aria-hidden="true">&#10022;</span>');
   const short = '<p class="pw-st wg-short">' + GATE.filter(l => l !== '\u2014 M.A.').map(line).join('<br>') + '</p>';
@@ -18,7 +19,7 @@
   d.className = 'pb-wg';
   d.setAttribute('role', 'dialog'); d.setAttribute('aria-modal', 'true');
   d.setAttribute('aria-labelledby', 'pbwg-title'); d.setAttribute('aria-describedby', 'pbwg-poem');
-  d.innerHTML = `<div class="wg-scroll"><div class="wg-inner">
+  const tpl = `<div class="wg-scroll"><div class="wg-inner">
     <p class="wg-kicker">Before you enter</p>
     <article class="pa-warning pw-poem wg-sheet">
       <span class="pw-burn" aria-hidden="true"></span>
@@ -35,7 +36,9 @@
       <div class="wg-actions"><button type="button" class="btn btn-solid wg-enter" disabled aria-describedby="pbwg-hint">Enter</button><p class="wg-hint" id="pbwg-hint">Seal your mark above to unlock the door.</p></div>
     </article>
   </div></div>`;
+  let keyWired = false;
   const mount = () => {
+    d.innerHTML = tpl; d.classList.remove('is-signed', 'is-leaving');
     document.body.appendChild(d);
     root.classList.add('pb-gate-open');
     root.classList.remove('pb-gate');
@@ -58,6 +61,9 @@
       document.dispatchEvent(new CustomEvent('pb:warned'));
     };
     btn.addEventListener('click', enter);
+    // leaving for the wards page lowers the gate without signing it; any other page raises it again
+    unmount = () => { kids.forEach(e => e.removeAttribute('inert')); root.classList.remove('pb-gate-open'); d.remove(); };
+    d.querySelectorAll('.pw-wards').forEach(a => a.addEventListener('click', () => unmount()));
     const fl = d.querySelector('.wg-full-link'), fp = d.querySelector('#pbwg-full');
     fl.addEventListener('click', e => {
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
@@ -68,7 +74,7 @@
       fl.textContent = open ? 'Hide the full warning' : 'Read the full warning';
       if (open) fp.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     });
-    d.addEventListener('keydown', e => {
+    if (!keyWired) keyWired = true, d.addEventListener('keydown', e => {
       if (e.key !== 'Tab') return;
       const f = [...d.querySelectorAll('a[href],input,button:not([disabled])')];
       const first = f[0], last = f[f.length - 1];
@@ -77,5 +83,16 @@
     });
     d.querySelector('#pbwg-title').focus({ preventScroll: true });
   };
+  // The wards page is protective only and is linked from the gate itself, so it opens without the gate;
+  // leaving it for any other page (in-site navigation) still raises the gate until it is accepted.
+  const exempt = () => /\/wards\.html$/.test(location.pathname);
+  const accepted = () => { try { return Date.now() - (+localStorage.getItem(KEY) || 0) < TTL; } catch (e) { return false; } };
+  let unmount = () => {};
+  const maybe = () => {
+    if (exempt()) { if (d.isConnected) unmount(); return; }
+    if (!accepted() && !d.isConnected) mount();
+  };
+  document.addEventListener('pb:page', maybe);
+  if (exempt()) { root.classList.remove('pb-gate'); return; }
   if (document.body) mount(); else document.addEventListener('DOMContentLoaded', mount, { once: true });
 })();

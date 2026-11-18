@@ -1,4 +1,4 @@
-// Tarot room (first draft): a reader lays the cards in a circle, gathers, shuffles,
+// Tarot room: a reader lays the cards in a circle, gathers, shuffles,
 // spreads them, and turns three: what has been, where you stand, what may come.
 import { DECK } from './tarot-data.js';
 import { composeReading } from './tarot-reading.js';
