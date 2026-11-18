@@ -35,7 +35,7 @@ export function playWelcome({ sound }) {
         <div class="wel-seal" aria-hidden="true"><div class="wel-seal-whole"></div><span class="wel-seal-sheen"></span><svg class="wel-cracks" viewBox="0 0 100 100" preserveAspectRatio="none"></svg></div>
         <p class="wel-kicker">Sigillum &middot; the sealed word</p>
         <p class="wel-riddle">This place is sealed with the number of perfection.<br><em>Seven days, seven seals, seven candles: three sevens, side by side, open what was sealed.</em></p>
-        <p class="wel-margin" aria-hidden="true">Rev. XIII &middot; 18</p>
+        <p class="wel-margin" aria-hidden="true">Seven seals &middot; VII</p>
         <label class="wel-label" for="wel-d0">Write the number</label>
         <div class="wel-digits">
           <input id="wel-d0" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="First digit">
@@ -182,7 +182,7 @@ export function playWelcome({ sound }) {
       if (v === CODE) { phase = 'open'; await open(); return; }
       tries++; phase = 'deny';
       sound.deny(); letter.classList.remove('is-denied'); void letter.offsetWidth; letter.classList.add('is-denied');
-      msg.textContent = tries >= 2 ? 'The wax refuses you. Six. Six. Six.' : 'The wax refuses you. Try again.';
+      msg.textContent = tries >= 2 ? 'The wax refuses you. Count the sevens.' : 'The wax refuses you. Try again.';
       await wait(1100);
       digits.forEach((d) => (d.value = '')); digits[0].focus(); phase = 'lock';
     }
