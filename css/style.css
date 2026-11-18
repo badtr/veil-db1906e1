@@ -3557,3 +3557,145 @@ body.ms-reading .fx-edge{opacity:0!important}
 .sp-wait{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.15rem .6rem;min-height:44px;padding:.55rem 1.1rem;border:1px solid rgba(201,164,92,.55);border-radius:2px;background:rgba(10,6,7,.72);font:600 .78rem/1.25 var(--f-sc,"Fell SC",serif);letter-spacing:.14em;text-transform:uppercase;color:#f1e3c4}
 .sp-count{font-family:"Garamond",Georgia,serif;font-variant-numeric:tabular-nums;letter-spacing:.06em;color:#e9c98f}
 .sp-gate-sm .sp-wait{min-height:0;padding:.4rem .8rem;font-size:.72rem}
+
+/* ===== v35 · the project archive: six drawers ===== */
+.pa-cabinet{display:grid;gap:1.6rem;max-width:1180px;margin:1.4rem auto 4rem}
+.pa-drawer{position:relative;border:1px solid rgba(201,164,92,.35);background:linear-gradient(180deg,#2a1a12,#170e0a 55%,#0f0907);box-shadow:inset 0 1px 0 rgba(255,220,160,.08),inset 0 0 40px rgba(0,0,0,.55),0 14px 34px rgba(0,0,0,.6)}
+.pa-drawer::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;background:repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 2px,transparent 2px 9px),repeating-linear-gradient(90deg,rgba(255,200,140,.03) 0 1px,transparent 1px 23px)}
+.pa-front{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:1.1rem;padding:1rem 1.2rem 1rem 1rem;cursor:pointer;list-style:none}
+.pa-front::-webkit-details-marker{display:none}
+.pa-front:focus-visible{outline:2px solid #d9b56a;outline-offset:3px}
+.pa-num{display:grid;place-items:center;width:48px;height:48px;font-family:"Grenze Gotisch",serif;font-size:1.35rem;color:#e04b55;border:1px solid rgba(201,164,92,.5);background:radial-gradient(circle,#1d0d0c,#0a0505);box-shadow:inset 0 0 10px rgba(0,0,0,.8)}
+.pa-plate{display:grid;gap:.15rem;padding:.6rem 1.1rem .55rem;background:#e9dcbf url(../images/letter/paper-tile.jpg) center/320px;color:#24160c;box-shadow:inset 0 0 0 1px rgba(60,35,15,.45),inset 0 0 18px rgba(90,55,20,.35),0 0 0 3px #6e5326,0 0 0 4px #2a1a0b,0 2px 6px rgba(0,0,0,.6);transform:rotate(-.3deg);max-width:34rem}
+.pa-t{font-family:"Grenze Gotisch",serif;font-size:clamp(1.25rem,2.2vw,1.6rem);line-height:1.1;color:#2a0f0c}
+.pa-s{font:italic .95rem/1.3 "Garamond",Georgia,serif;color:#4a3320}
+.pa-count{font:600 .74rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.16em;text-transform:uppercase;color:#d9bd86}
+.pa-seal{width:62px;height:70px;background:image-set(url(../images/letter/seal-ma-sm.webp) 1x,url(../images/letter/seal-ma.webp) 2x) center/contain no-repeat;filter:drop-shadow(0 4px 6px rgba(0,0,0,.6));transition:transform .5s ease}
+.pa-drawer[open] .pa-seal{background-image:image-set(url(../images/letter/seal-ma-cracked-sm.webp) 1x,url(../images/letter/seal-ma-cracked.webp) 2x);transform:rotate(-10deg)}
+.pa-pull{position:absolute;left:50%;bottom:-1px;width:70px;height:10px;transform:translateX(-50%);border-radius:0 0 10px 10px;background:linear-gradient(180deg,#c9a45c,#6e5326);box-shadow:0 2px 4px rgba(0,0,0,.6)}
+.pa-in{position:relative;padding:1.4rem clamp(1rem,2.6vw,2.2rem) 2.2rem;border-top:1px solid rgba(201,164,92,.25);background:radial-gradient(ellipse 80% 60% at 50% 0,rgba(120,14,20,.16),transparent 70%),#0c0706}
+@media (prefers-reduced-motion:no-preference){.pa-drawer[open] .pa-in{animation:paSlide .6s cubic-bezier(.2,.7,.2,1)}}
+@keyframes paSlide{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.pa-lead{max-width:62ch;margin:0 auto 1.6rem!important;text-align:center;font:italic 1.08rem/1.55 "Garamond",Georgia,serif;color:#e6d8bf!important}
+.pa-h{margin:2rem 0 1rem!important;text-align:center;font-family:"Grenze Gotisch",serif;font-size:1.45rem;color:#e8d4b0}
+.pa-more{text-align:center;margin-top:1.6rem!important}.pa-more a{color:#e9c98f}
+
+/* I · letters */
+.pa-letters{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.3rem}
+.pa-letter{position:relative;min-height:190px}
+.pl-env{position:relative;display:grid;justify-items:center;align-content:center;gap:.45rem;min-height:190px;padding:1rem;color:#2a170c;background:#d9c6a0 url(../images/letter/paper-tile.jpg) center/300px;box-shadow:inset 0 0 0 1px rgba(60,35,15,.4),inset 0 0 30px rgba(90,55,20,.45),0 8px 18px rgba(0,0,0,.55);clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.pl-env::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom right,transparent 49.6%,rgba(80,50,20,.35) 50%,transparent 50.6%),linear-gradient(to bottom left,transparent 49.6%,rgba(80,50,20,.35) 50%,transparent 50.6%);background-size:100% 62%;background-repeat:no-repeat;pointer-events:none}
+.pl-no{position:relative;font-family:"Grenze Gotisch",serif;font-size:1.2rem;color:#5a1a14}
+.pl-seal{position:relative;width:64px;height:72px;background:url(../images/letter/seal-ma-sm.webp) center/contain no-repeat;filter:drop-shadow(0 4px 5px rgba(0,0,0,.5))}
+.pl-when{position:relative;font:600 .74rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.14em;text-transform:uppercase;color:#4a2a14}
+.pa-letter.is-due .pl-when{display:none}
+.pa-letter.is-locked .pl-env{filter:saturate(.7) brightness(.82)}
+.pa-letter.is-locked .pl-seal{filter:drop-shadow(0 4px 5px rgba(0,0,0,.5)) grayscale(.2)}
+.pl-break{position:relative;margin-top:.2rem;padding:.5rem .9rem;border:1px solid #6e1f17;background:#5a0f0c;color:#f6e6c6;font:600 .74rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.pl-break:hover,.pl-break:focus-visible{background:#7a1510;outline:2px solid #d9b56a;outline-offset:2px}
+.pa-letter.is-read .pl-env{display:none}
+.pl-page{min-height:190px;padding:1.3rem 1.3rem 1.1rem;background:#ece0c4 url(../images/letter/paper-tile.jpg) center/300px;color:#22140b;box-shadow:inset 0 0 0 1px rgba(60,35,15,.35),inset 0 0 26px rgba(90,55,20,.35),0 8px 18px rgba(0,0,0,.55);transform:rotate(-.5deg)}
+.pl-text{font-family:"PB Hand","Fondamento",cursive;font-size:1.12rem!important;line-height:1.55;color:#22140b!important;margin:0 0 .7rem!important}
+.pl-sig{text-align:right;font:italic .95rem "Garamond",serif;color:#5a1a14!important;margin:0!important}
+.pa-letter.is-breaking .pl-page{animation:plInk 1.4s ease both}
+@keyframes plInk{from{opacity:0;filter:blur(4px)}to{opacity:1;filter:none}}
+
+/* II · burnt scraps */
+.pa-scraps{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.6rem 1.3rem}
+.pa-scrap{position:relative;margin:0;padding:1.3rem 1.3rem 1rem;color:#24140a;background:#e3d2ac url(../images/letter/paper-tile.jpg) center/280px;box-shadow:inset 0 0 34px rgba(70,35,10,.55),inset 0 0 6px rgba(40,15,5,.6),0 10px 20px rgba(0,0,0,.6);clip-path:polygon(2% 4%,14% 0,31% 3%,47% 0,63% 4%,80% 1%,98% 5%,100% 22%,97% 41%,100% 63%,97% 84%,99% 97%,82% 100%,63% 96%,44% 100%,26% 97%,9% 100%,0 92%,3% 71%,0 50%,2% 28%)}
+.pa-scrap.ps-1{transform:rotate(1.1deg)}.pa-scrap.ps-2{transform:rotate(-.9deg)}.pa-scrap.ps-3{transform:rotate(.5deg)}.pa-scrap.ps-0{transform:rotate(-.4deg)}
+.ps-burn{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 30% 22% at 100% 0,rgba(30,10,2,.85),rgba(80,30,5,.4) 55%,transparent 75%),radial-gradient(ellipse 26% 18% at 0 100%,rgba(30,10,2,.8),rgba(80,30,5,.35) 55%,transparent 75%),radial-gradient(ellipse 18% 14% at 0 0,rgba(40,15,4,.55),transparent 70%)}
+.ps-lines{list-style:none;margin:0 0 .8rem!important;padding:0!important}
+.ps-lines li{font-family:"PB Hand","Fondamento",cursive;font-size:1.04rem;line-height:1.5;color:#24140a;margin:.15rem 0}
+.ps-lines li.ps-x{text-decoration:line-through;text-decoration-color:rgba(110,20,14,.85);text-decoration-thickness:2px;color:#4c3524}
+.pa-scrap figcaption{position:relative;display:flex;flex-wrap:wrap;gap:.1rem .6rem;align-items:baseline;border-top:1px dashed rgba(70,40,15,.45);padding-top:.5rem;font-size:.88rem}
+.pa-scrap figcaption a{font-family:"Grenze Gotisch",serif;font-size:1.05rem;color:#6a1410!important}
+.ps-note{font:italic .82rem "Garamond",serif;color:#6a4a2c}
+.ps-alb{width:100%;font:600 .7rem/1.2 var(--f-sc,"Fell SC",serif);letter-spacing:.14em;text-transform:uppercase;color:#5e4128}
+
+/* III · sealed diary pages */
+.pa-births{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.3rem}
+.pa-birth{position:relative;min-height:250px;padding:1.2rem 1.2rem 2.6rem;color:#24140a;background:#e6d7b6 url(../images/letter/paper-tile.jpg) center/300px;box-shadow:inset 0 0 0 1px rgba(60,35,15,.35),inset 0 0 30px rgba(90,55,20,.4),0 10px 20px rgba(0,0,0,.55);border-left:6px double rgba(70,40,15,.45)}
+.pb-folio{margin:0!important;font:600 .7rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.18em;text-transform:uppercase;color:#6a4a2c!important}
+.pb-title{margin:.4rem 0 .8rem!important;font-family:"Grenze Gotisch",serif!important;font-size:1.3rem!important;line-height:1.15;text-shadow:none!important}
+.pb-title a{color:#5a1410!important;text-decoration:none}
+.pb-sealed{margin:0 0 .6rem!important;font:600 .76rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.16em;text-transform:uppercase;color:#7a1a12!important}
+.pb-ghost{display:grid;gap:.55rem;margin:.4rem 0 .9rem;filter:blur(1.6px)}
+.pb-ghost i{display:block;height:.55rem;border-radius:3px;background:repeating-linear-gradient(90deg,rgba(40,22,10,.55) 0 18px,transparent 18px 22px,rgba(40,22,10,.45) 22px 52px,transparent 52px 57px,rgba(40,22,10,.5) 57px 70px,transparent 70px 75px)}
+.pb-ghost i:nth-child(2){width:88%}.pb-ghost i:nth-child(3){width:94%}.pb-ghost i:nth-child(4){width:70%}.pb-ghost i:nth-child(5){width:52%}
+.pb-wait{margin:0!important;font:italic .98rem/1.4 "Garamond",serif;color:#3e2a18!important}
+.pb-seal{position:absolute;right:.7rem;bottom:.5rem;width:56px;height:64px;background:url(../images/letter/seal-ma-sm.webp) center/contain no-repeat;filter:drop-shadow(0 4px 5px rgba(0,0,0,.45));transform:rotate(8deg)}
+.pa-birth.is-open .pb-seal{background-image:url(../images/letter/seal-ma-cracked-sm.webp)}
+.pb-text p{font:1rem/1.55 "Garamond",serif;color:#24140a!important}
+.pb-sig{text-align:right;font:italic .95rem "Garamond",serif;color:#5a1a14!important}
+
+/* IV · rejected covers */
+.pa-rejects{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.6rem 1.3rem}
+.pa-reject{margin:0}
+.pr-frame{position:relative;padding:10px;background:linear-gradient(145deg,#1d1310,#0a0606 45%,#160d0a);border:1px solid rgba(168,135,79,.55);box-shadow:inset 0 0 0 4px #0b0707,inset 0 0 0 5px rgba(168,135,79,.35),0 14px 30px rgba(0,0,0,.7);overflow:hidden}
+.pr-frame img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;filter:sepia(.35) saturate(.7) brightness(.82) contrast(1.05);user-select:none;-webkit-user-drag:none;pointer-events:none}
+.pr-shield{position:absolute;inset:0;z-index:1}
+.pr-stamp{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-14deg);padding:.35rem 1rem .3rem;border:3px double currentColor;font:700 clamp(1.3rem,2.6vw,1.8rem)/1 var(--f-sc,"Fell SC",serif);letter-spacing:.22em;text-transform:uppercase;background:rgba(15,5,5,.35);-webkit-mask:url(../images/letter/edge-mask.png) center/120% 120%;mask:url(../images/letter/edge-mask.png) center/120% 120%;text-shadow:0 0 1px currentColor}
+.pr-rejected{color:#e0444f}
+.pr-sealed{color:#e9c98f;transform:translate(-50%,-50%) rotate(9deg)}
+.pa-reject figcaption{margin-top:.6rem;text-align:center;font:italic 1rem/1.35 "Garamond",serif;color:#e6d8bf}
+.pr-alb{display:block;font:600 .72rem/1.3 var(--f-sc,"Fell SC",serif);font-style:normal;letter-spacing:.16em;text-transform:uppercase;color:#d9bd86}
+
+/* V · register of symbols */
+.sy-sigils{list-style:none;padding:0!important;margin:0!important;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem 1.4rem}
+.sy-item{display:grid;grid-template-columns:86px minmax(0,1fr);gap:1rem;align-items:center;padding:.8rem;border:1px solid rgba(201,164,92,.22);background:rgba(20,10,9,.6)}
+.sy-img{display:block;width:86px;height:86px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1px rgba(201,164,92,.5),0 0 16px rgba(160,20,30,.3);background:#050303}
+.sy-img img{width:100%;height:100%;object-fit:cover;-webkit-user-drag:none;user-select:none}
+.sy-item h4,.sy-card h4,.sy-num h4{margin:0 0 .25rem!important;font-family:"Grenze Gotisch",serif;font-size:1.15rem;color:#f0dcae}
+.sy-item p,.sy-card p,.sy-num p{margin:0!important;font:1rem/1.45 "Garamond",serif;color:#e6d8bf!important}
+.sy-en{font-style:italic;color:#cbb896!important;font-size:.9rem!important;margin-bottom:.3rem!important}
+.sy-cards{list-style:none;padding:0!important;margin:0!important;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1.2rem}
+.sy-card{text-align:center}
+.sy-card img{display:block;width:72%;margin:0 auto .6rem;height:auto;border:2px solid #a8874f;box-shadow:0 8px 18px rgba(0,0,0,.6);-webkit-user-drag:none;user-select:none}
+.sy-nums{list-style:none;padding:0!important;margin:0!important;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem 1.2rem}
+.sy-num{position:relative;padding:.9rem 1rem .9rem 4.4rem;border:1px solid rgba(201,164,92,.22);background:rgba(20,10,9,.6)}
+.sn-n{position:absolute;left:.8rem;top:.8rem;display:grid;place-items:center;width:2.8rem;height:2.8rem;border-radius:50%;font-family:"Grenze Gotisch",serif;font-size:1.4rem;color:#f4e6cc;background:radial-gradient(circle at 40% 35%,#7a1018,#3a060b 70%);box-shadow:0 0 0 1px #cda868}
+
+/* VI · found objects */
+.pa-objects{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.6rem 1.3rem}
+.pa-object{margin:0;display:grid;grid-template-rows:auto 1fr}
+.ob-case{position:relative;aspect-ratio:4/5;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,#1c1110,#050303 70%);border:1px solid rgba(168,135,79,.5);box-shadow:inset 0 0 0 5px #0b0707,inset 0 0 0 6px rgba(168,135,79,.3),0 14px 26px rgba(0,0,0,.7)}
+.ob-case img{width:100%;height:100%;object-fit:cover;filter:sepia(.15) contrast(1.05);user-select:none;-webkit-user-drag:none;pointer-events:none}
+.ob-case img.ob-contain{object-fit:contain;padding:18%}
+.ob-glass{position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.09),transparent 30%,transparent 70%,rgba(255,255,255,.04));box-shadow:inset 0 0 40px rgba(0,0,0,.7)}
+.ob-empty{position:absolute;inset:18% 22%;display:grid;place-items:center;border:1px dashed rgba(201,164,92,.5);font:italic 1rem "Garamond",serif;color:#cbb896}
+.pa-object figcaption{position:relative;margin:-.6rem .7rem 0;padding:.75rem .9rem .8rem;background:#e9dcbf url(../images/letter/paper-tile.jpg) center/300px;color:#24160c;box-shadow:inset 0 0 0 1px rgba(60,35,15,.45),0 4px 10px rgba(0,0,0,.55)}
+.ob-cat{font:600 .68rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.16em;text-transform:uppercase;color:#7a1a12}
+.pa-object h4{margin:.3rem 0 .4rem!important;font-family:"Grenze Gotisch",serif;font-size:1.25rem;color:#2a0f0c}
+.pa-object dl{display:grid;grid-template-columns:auto 1fr;gap:.1rem .6rem;margin:0;font-size:.92rem}
+.pa-object dt{font:italic .86rem "Garamond",serif;color:#5e4128}
+.pa-object dd{margin:0;font:.94rem "Garamond",serif;color:#24160c}
+.ob-go{display:inline-block;margin-top:.45rem;font:600 .72rem/1 var(--f-sc,"Fell SC",serif);letter-spacing:.14em;text-transform:uppercase;color:#6a1410!important}
+@media (max-width:699px){
+  .pa-front{grid-template-columns:auto minmax(0,1fr) auto;gap:.7rem;padding:.8rem .7rem}
+  .pa-count{grid-column:2;grid-row:2;font-size:.66rem}
+  .pa-num{width:38px;height:38px;font-size:1.1rem}
+  .pa-seal{width:44px;height:50px;grid-column:3;grid-row:1/3}
+  .pa-plate{padding:.5rem .75rem}
+  .pa-in{padding:1.1rem .8rem 1.8rem}
+  .sy-sigils{grid-template-columns:1fr}
+  .sy-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pa-letters,.pa-births{grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}
+  .pl-env{min-height:170px}.pl-seal{width:48px;height:54px}
+  .pa-birth{min-height:220px;padding:1rem .9rem 2.4rem}.pb-title{font-size:1.1rem!important}
+}
+@media (max-width:380px){.pa-letters,.pa-births{grid-template-columns:1fr}}
+.pb-wait{padding-right:3.4rem}
+.pb-ghost{filter:blur(2.2px);opacity:.75}
+.pb-ghost i{height:.62rem}
+
+/* ===== v35 · carved epitaphs on the graves (real dates: Suno birth, Spotify rest) ===== */
+.gr-epi{display:grid;gap:.05rem;margin-top:.2rem;max-width:100%;font:italic 500 .7rem/1.25 "Garamond",Georgia,serif;letter-spacing:.04em;color:rgba(226,212,184,.62);text-shadow:0 -1px 0 rgba(0,0,0,.95),0 1px 0 rgba(255,255,255,.1),0 0 1px rgba(0,0,0,.6);transition:color .8s}
+.gr-epi span{display:block;overflow-wrap:anywhere}
+.ge-rest{font-style:normal;font-variant:small-caps;letter-spacing:.1em;color:rgba(214,150,130,.66)}
+.grave:hover .gr-epi,.grave:focus-visible .gr-epi{color:rgba(243,223,178,.92)}
+.grave:hover .ge-rest,.grave:focus-visible .ge-rest{color:rgba(240,170,140,.92)}
+.gr-obel .gr-epi{font-size:.6rem;letter-spacing:0}
+@media (max-width:699px){.gr-epi{font-size:.62rem;letter-spacing:.01em}.gr-obel .gr-epi{font-size:.55rem}}
+.gr-epi{margin-bottom:.15rem}.gr-obel .gr-epi .ge-born{font-size:.56rem}
+@media (max-width:699px){.pb-wait{padding-right:0}.pa-birth{padding-bottom:4.4rem}}

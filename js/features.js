@@ -276,7 +276,7 @@ function mirrorLink(root) {
 }
 
 // ---------- no image downloads: covers, etchings and seals cannot be dragged out or right-click saved ----------
-const PROTECT = '.alb-card img, img[src*="images/hall/"], img[src*="images/albums/"], img[src*="images/etchings/"], img[src*="images/room/"], img[src*="images/gallery/"], img[src*="images/share/"], img[src*="seal-logo"], .lightbox img, .sp-ghost, .mirror-stage img';
+const PROTECT = '.alb-card img, .pa-cabinet img, img[src*="images/archive/"], img[src*="images/hall/"], img[src*="images/albums/"], img[src*="images/etchings/"], img[src*="images/room/"], img[src*="images/gallery/"], img[src*="images/share/"], img[src*="seal-logo"], .lightbox img, .sp-ghost, .mirror-stage img';
 function protect(root) { $$(PROTECT, root).forEach((im) => { im.draggable = false; im.setAttribute('draggable', 'false'); }); }
 ['contextmenu', 'dragstart'].forEach((ev) => document.addEventListener(ev, (e) => { if (e.target instanceof Element && e.target.matches(PROTECT)) e.preventDefault(); }, true));
 
@@ -397,7 +397,7 @@ function whisperArm() { clearTimeout(WH.t); WH.t = setTimeout(whisperShow, WH.id
 whisperArm();
 // the medium's sound (opt-in, off by default)
 import(new URL('medium.js?v=' + (document.querySelector('link[href*="style.css"]')?.getAttribute('href').split('?v=')[1] || ''), import.meta.url).href).catch(() => {});
-function mount() { greetingInit(document.getElementById('swap') || document); timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); mirrorLink(r); protect(r); mirror(r); albumCards(r); spotifyGate(r); riteLine(false); inkLyrics(r); parlour(); channel(r); spiritPhoto(r); }
+function mount() { greetingInit(document.getElementById('swap') || document); timers.forEach((t) => { clearInterval(t); clearTimeout(t); }); timers = []; const r = document.getElementById('swap') || document; release(r); oracle(r); musicbox(r); numbers(r); albumSearch(r); moon(r); mirrorLink(r); protect(r); mirror(r); albumCards(r); spotifyGate(r); paLetters(r); graveRest(r); riteLine(false); inkLyrics(r); parlour(); channel(r); spiritPhoto(r); }
 document.addEventListener('pb:page', mount);
 mount();
 
@@ -417,3 +417,23 @@ function spotifyGate(root) {
   };
   tick(); const id = setInterval(tick, 1000); try { timers.push(id); } catch (_) {}
 }
+
+// ---------- v35: project archive · letters that unseal one a day (opened ones are remembered in this browser) ----------
+function paLetters(root) {
+  const ls = [...(root || document).querySelectorAll('.pa-letter')]; if (!ls.length) return;
+  let read = []; try { read = JSON.parse(localStorage.getItem('pb-letters-read') || '[]'); } catch (_) {}
+  const save = () => { try { localStorage.setItem('pb-letters-read', JSON.stringify(read)); } catch (_) {} };
+  const now = +NOW();
+  ls.forEach((l) => {
+    const n = l.dataset.letter, at = Date.parse(l.dataset.openAt), page = l.querySelector('.pl-page'), btn = l.querySelector('.pl-break');
+    if (isNaN(at) || now < at) { l.classList.add('is-locked'); return; }
+    l.classList.add('is-due');
+    const open = (anim) => { l.classList.add('is-read'); if (anim && !RM()) l.classList.add('is-breaking'); page.hidden = false; btn.hidden = true; };
+    if (read.includes(n)) { open(false); return; }
+    btn.hidden = false;
+    btn.addEventListener('click', () => { if (!read.includes(n)) { read.push(n); save(); } open(true); });
+  });
+}
+
+// ---------- v35: a grave that 'rests until' its Spotify day reads 'Risen …' once the day has come ----------
+function graveRest(root) { const now = +NOW(); (root || document).querySelectorAll('[data-rest-until]').forEach((e) => { const t = Date.parse(e.dataset.restUntil); if (!isNaN(t) && now >= t) e.textContent = e.dataset.risen; }); }
