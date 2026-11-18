@@ -4048,3 +4048,83 @@ body:not([data-page="about"]):not([data-page="home"]) .page-head .case-file + .k
   .fx-corner-bl{background-image:url(../images/death/corner-rich-v43-bl-sm.webp)!important}
   .fx-corner-br{background-image:url(../images/death/corner-rich-v43-br-sm.webp)!important}
 }
+
+/* ---- v47: the code lock turns against you · heptagram ring, sigils, vignette, guttering candles, whispers, tremor ---- */
+.wel-dread{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity 2.6s ease}
+.wel.dread-on .wel-dread{opacity:1}
+.wel.dread-off .wel-dread{opacity:0;transition:opacity .9s ease}
+.wel.dread-on .wel-letter{z-index:5}
+.wd-vignette{position:absolute;inset:0;background:radial-gradient(ellipse 70% 62% at 50% 50%,transparent 28%,rgba(0,0,0,.5) 60%,rgba(0,0,0,.94) 100%);animation:wdBreathe 7s ease-in-out infinite}
+.wd-vignette::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 35%,rgba(120,0,0,.42) 100%);opacity:0}
+.wel.is-heard .wd-vignette::after{animation:wdHeard 1.2s ease-out}
+.wd-ring{position:absolute;left:50%;top:50%;width:min(130vmin,1000px);aspect-ratio:1;translate:-50% -50%;fill:none;stroke:rgba(150,22,18,.4);stroke-width:.2;filter:drop-shadow(0 0 5px rgba(160,10,10,.5));animation:wdSpin 160s linear infinite}
+.wd-ring .wd-h{stroke:rgba(185,26,22,.55);stroke-width:.32}
+.wd-ring .wd-h2{stroke:rgba(168,135,79,.28)}
+.wd-ring .s-red{stroke:rgba(196,32,26,.6)}
+.wd-ring .s-dot{fill:rgba(196,32,26,.7);stroke:none}
+.wd-ring line{stroke:rgba(168,135,79,.35)}
+.wd-candle{position:absolute;bottom:9%;width:12px;height:64px}
+.wd-c1{left:calc(50% - min(46vw,330px))}.wd-c2{right:calc(50% - min(46vw,330px))}
+.wd-wax{position:absolute;bottom:0;left:0;width:12px;height:46px;border-radius:3px 3px 2px 2px;background:linear-gradient(90deg,#4a3a30,#9d8f78 45%,#3a2c24);box-shadow:0 0 18px rgba(224,102,43,.25)}
+.wd-flame{position:absolute;bottom:45px;left:2px;width:8px;height:17px;border-radius:50% 50% 45% 45%/62% 62% 38% 38%;background:radial-gradient(ellipse at 50% 74%,#fff3cf 0%,#ffc56a 32%,#d9481c 66%,transparent 82%);transform-origin:50% 100%;filter:drop-shadow(0 0 7px rgba(255,140,60,.8));animation:wdFlame 1.9s ease-in-out infinite}
+.wd-c2 .wd-flame{animation-duration:2.3s;animation-delay:-.7s}
+.wel.is-shudder .wd-flame,.wel.is-shudder-hard .wd-flame{animation:wdGutter .7s ease-in-out}
+.wd-whispers{position:absolute;inset:0}
+.wd-w{position:absolute;white-space:nowrap;font:italic clamp(.95rem,.8rem + .6vw,1.35rem)/1 "Fell",serif;letter-spacing:.06em;color:#c0281e;text-shadow:0 0 10px rgba(160,10,10,.8);rotate:var(--r,0deg);opacity:0;animation:wdWhisper 5s ease-in-out forwards}
+.wel-forbid{margin:1.1rem 0 -.4rem;font:italic 1rem/1.4 "Fell",serif;letter-spacing:.03em;color:#6e0c0c;opacity:.8;animation:wdForbid 6s ease-in-out infinite}
+.wel-forbid::before,.wel-forbid::after{content:"\2726";margin:0 .55em;font-style:normal;font-size:.75em;color:#8a1a14;opacity:.7}
+.wel-glyphs{position:absolute;inset:-1.4rem 0;pointer-events:none;z-index:0}
+.wg{position:absolute;width:1.45rem;height:1.45rem;fill:none;stroke:rgba(100,22,10,.5);stroke-width:1.1;opacity:.85}
+.wg .wg-wax{fill:rgba(125,16,20,.55);stroke:none}
+.wg1{left:calc(50% - 9.6rem);top:6%}.wg2{left:calc(50% - 10.2rem);top:44%;width:1.8rem;height:1.8rem}.wg3{left:calc(50% - 8.4rem);bottom:0;rotate:-14deg}
+.wg4{right:calc(50% - 9.6rem);bottom:4%}.wg5{right:calc(50% - 10.2rem);top:10%;width:1.6rem;height:1.6rem;rotate:40deg}.wg6{right:calc(50% - 8.3rem);top:52%;rotate:12deg}
+.wel.is-shudder .wel-letter{animation:wdTremor .6s linear}
+.wel.is-shudder-hard .wel-letter{animation:wdTremor .9s linear}
+.wel.is-shudder-hard .wd-ring{filter:drop-shadow(0 0 12px rgba(210,20,20,.9))}
+@keyframes wdSpin{to{rotate:360deg}}
+@keyframes wdBreathe{0%,100%{opacity:1}46%{opacity:.86}50%{opacity:1}53%{opacity:.9}}
+@keyframes wdHeard{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+@keyframes wdFlame{0%,100%{transform:scale(1,1) rotate(-2deg)}25%{transform:scale(.9,1.08) rotate(2deg)}55%{transform:scale(1.06,.9) rotate(-3deg)}80%{transform:scale(.96,1.04) rotate(1deg)}}
+@keyframes wdGutter{0%,100%{transform:scale(1)}30%{transform:scale(.55,.4) rotate(8deg);opacity:.5}60%{transform:scale(1.1,1.2) rotate(-6deg)}}
+@keyframes wdWhisper{0%{opacity:0;filter:blur(4px);translate:0 6px}22%{opacity:.82;filter:blur(0)}70%{opacity:.6}100%{opacity:0;filter:blur(3px);translate:0 -10px}}
+@keyframes wdForbid{0%,100%{opacity:.8}48%{opacity:.8}50%{opacity:.45}52%{opacity:.85}}
+@keyframes wdTremor{0%,100%{translate:0 0}12%{translate:-1.5px .5px}25%{translate:1.5px -1px}37%{translate:-1px 1px}50%{translate:1px .5px}62%{translate:-1.5px -.5px}75%{translate:1px 1px}87%{translate:-.5px -1px}}
+@media (max-width:760px){
+  .wd-ring{width:150vmin;opacity:.8}
+  .wd-candle{bottom:2.2%;transform:scale(.8)}.wd-c1{left:30%}.wd-c2{right:30%}
+  .wel-forbid{font-size:.92rem;margin-top:.9rem}
+  .wel-forbid::before,.wel-forbid::after{margin:0 .35em}
+}
+@media (prefers-reduced-motion:reduce){
+  .wd-ring,.wd-vignette,.wd-flame,.wel-forbid{animation:none!important}
+  .wd-w{animation:none;opacity:.7}
+  .wel.is-shudder .wel-letter,.wel.is-shudder-hard .wel-letter{animation:none}
+}
+/* v47: the hoard behind the card - candles, keys, bones, chains, a blade, a cracked mirror, old papers, wax, heptagrams */
+.wd-bg{position:absolute;inset:-3%;background:#060405 url(../images/ritual/seal-hoard-d.webp) center/cover no-repeat;translate:calc((50% - var(--mx,50%)) * .04) calc((50% - var(--my,50%)) * .04);transition:translate .6s ease-out;opacity:.92}
+@media (max-width:760px),(max-aspect-ratio:4/5){.wd-bg{background-image:url(../images/ritual/seal-hoard-m.webp);translate:none}}
+/* v47: the v32 'hold perfectly still' rule froze every animation while the number is asked; the dread layer is allowed to move */
+.wel.dread-on.show-letter:not(:has(.wel-letter.is-accepted)) .wel-dread .wd-ring{animation:wdSpin 160s linear infinite!important}
+.wel.dread-on.show-letter:not(:has(.wel-letter.is-accepted)) .wel-dread .wd-vignette{animation:wdBreathe 7s ease-in-out infinite!important}
+.wel.dread-on.show-letter:not(:has(.wel-letter.is-accepted)) .wel-dread .wd-flame{animation:wdFlame 1.9s ease-in-out infinite!important}
+.wel.dread-on.show-letter:not(:has(.wel-letter.is-accepted)) .wel-dread .wd-c2 .wd-flame{animation:wdFlame 2.3s -.7s ease-in-out infinite!important}
+.wel.dread-on.show-letter:not(:has(.wel-letter.is-accepted)) .wel-dread .wd-w{animation:wdWhisper 5s ease-in-out forwards!important}
+.wel.dread-on.show-letter:not(:has(.wel-letter.is-accepted)) .wel-forbid{animation:wdForbid 6s ease-in-out infinite!important}
+.wel.dread-on.is-heard.show-letter:not(:has(.wel-letter.is-accepted)) .wel-dread .wd-vignette::after{animation:wdHeard 1.2s ease-out!important}
+.wel.dread-on.is-shudder.show-letter:not(:has(.wel-letter.is-accepted)) .wel-letter{animation:wdTremor .6s linear!important}
+.wel.dread-on.is-shudder-hard.show-letter:not(:has(.wel-letter.is-accepted)) .wel-letter{animation:wdTremor .9s linear!important}
+.wel.dread-on.is-shudder.show-letter:not(:has(.wel-letter.is-accepted)) .wel-dread .wd-flame,.wel.dread-on.is-shudder-hard.show-letter:not(:has(.wel-letter.is-accepted)) .wel-dread .wd-flame{animation:wdGutter .7s ease-in-out!important}
+.wel-forbid{font-size:1.08rem!important;color:#7a0c0c!important}
+.wd-ring *{vector-effect:non-scaling-stroke}
+.wd-ring{stroke-width:1px}.wd-ring .wd-h{stroke-width:1.4px}.wd-ring circle{stroke-width:1px}
+@media (prefers-reduced-motion:reduce){
+  .wel.dread-on.show-letter:not(:has(.wel-letter.is-accepted)) .wel-dread *,.wel.dread-on.show-letter:not(:has(.wel-letter.is-accepted)) .wel-forbid,.wel.dread-on.show-letter:not(:has(.wel-letter.is-accepted)) .wel-letter{animation:none!important}
+  .wel.dread-on .wd-w{opacity:.7}
+  .wd-bg{translate:none;transition:none}
+}
+.wel-forbid{font-size:1.28rem!important;letter-spacing:.02em}
+.wd-w{font-size:clamp(1.15rem,.9rem + .8vw,1.7rem)!important;text-shadow:0 0 12px rgba(200,20,10,.9),0 0 2px #000}
+@media (max-width:760px){.wel-forbid{font-size:1.05rem!important}}
+.wel-forbid{font-size:1.55rem!important;color:#800c0c!important;text-shadow:0 0 6px rgba(140,10,10,.25)}
+.wd-w{text-shadow:0 0 7px rgba(170,12,8,.7),0 0 2px #000!important}
+@media (max-width:760px){.wel-forbid{font-size:1.18rem!important}}

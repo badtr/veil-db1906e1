@@ -9,6 +9,25 @@ export const seenWelcome = () => { try { return localStorage.getItem(WELCOME_KEY
 const markSeen = () => { try { localStorage.setItem(WELCOME_KEY, '1'); } catch (e) {} };
 import { SEAL_CODE as CODE } from './seal-code.js';
 
+
+// ---- the dread around the code lock: a ring of heptagrams and sigils, two guttering candles, faint marks ----
+function hepta(r, step) { const pts = []; for (let k = 0; k < 7; k++) { const a = -Math.PI / 2 + (k * step * 2 * Math.PI) / 7; pts.push(`${(Math.cos(a) * r).toFixed(2)},${(Math.sin(a) * r).toFixed(2)}`); } return 'M' + pts.join('L') + 'Z'; }
+function dreadMarkup() {
+  const ticks = Array.from({ length: 49 }, (_, i) => { const a = (i / 49) * 2 * Math.PI, r1 = 46, r2 = i % 7 ? 44.6 : 42.8; return `<line x1="${(Math.cos(a) * r1).toFixed(2)}" y1="${(Math.sin(a) * r1).toFixed(2)}" x2="${(Math.cos(a) * r2).toFixed(2)}" y2="${(Math.sin(a) * r2).toFixed(2)}"/>`; }).join('');
+  const sig = Array.from({ length: 7 }, (_, k) => { const a = -Math.PI / 2 + (k * 2 * Math.PI) / 7; return `<g transform="translate(${(Math.cos(a) * 38).toFixed(2)} ${(Math.sin(a) * 38).toFixed(2)}) scale(.075)">${sigilMarkup('dread-' + k)}</g>`; }).join('');
+  return `<div class="wd-bg"></div><div class="wd-vignette"></div>
+    <svg class="wd-ring" viewBox="-50 -50 100 100"><g class="wd-spin"><circle r="47.5"/><circle r="46"/>${ticks}<circle r="31"/><path class="wd-h" d="${hepta(31, 3)}"/><path class="wd-h2" d="${hepta(20, 2)}"/><circle r="12"/>${sig}</g></svg>
+    <div class="wd-candle wd-c1"><i class="wd-flame"></i><i class="wd-wax"></i></div><div class="wd-candle wd-c2"><i class="wd-flame"></i><i class="wd-wax"></i></div>
+    <div class="wd-whispers"></div>`;
+}
+function glyphMarkup() {
+  // small marks pressed into the paper around the boxes: heptagrams, a cracked seal, crossed strokes
+  const h = (cls) => `<svg class="wg ${cls}" viewBox="-12 -12 24 24"><circle r="10.5"/><path d="${hepta(9, 3)}"/></svg>`;
+  const crack = (cls) => `<svg class="wg ${cls}" viewBox="-12 -12 24 24"><circle r="9" class="wg-wax"/><path d="M-6 -7 L-1 -1 L-4 3 L1 8 M-1 -1 L5 -4 M-4 3 L-8 4"/></svg>`;
+  const cross = (cls) => `<svg class="wg ${cls}" viewBox="-12 -12 24 24"><path d="M0 -10 V10 M-6 -4 H6 M-8 6 L8 -8"/><circle r="2.2" cy="-10"/></svg>`;
+  return h('wg1') + crack('wg2') + cross('wg3') + h('wg4') + crack('wg5') + cross('wg6');
+}
+
 export function playWelcome({ sound }) {
   return new Promise((resolve) => {
     const wait = (ms) => new Promise((r) => setTimeout(r, reduceMotion ? Math.min(ms, 250) : ms));
@@ -31,17 +50,20 @@ export function playWelcome({ sound }) {
       <div class="wel-lines" aria-live="polite"></div>
       <section class="wel-warnstep" hidden aria-live="polite"><p class="ws-kicker">Ultima monitio &middot; the last warning</p><div class="ws-lines"></div><button type="button" class="ws-go" hidden>I have been warned &middot; go to the seal</button></section>
       <button type="button" class="wel-wick" aria-label="Light the candle" hidden><span class="wel-wick-hint">Touch the wick to light the candle</span></button>
+      <div class="wel-dread" aria-hidden="true">${dreadMarkup()}</div>
       <form class="wel-letter" autocomplete="off" hidden>
         <div class="wel-seal" aria-hidden="true"><div class="wel-seal-whole"></div><span class="wel-seal-sheen"></span><svg class="wel-cracks" viewBox="0 0 100 100" preserveAspectRatio="none"></svg></div>
         <p class="wel-kicker">Sigillum &middot; the sealed word</p>
         <p class="wel-riddle">This place is sealed with the number of perfection.<br><em>Seven days, seven seals, seven candles: three sevens, side by side, open what was sealed.</em></p>
         <p class="wel-margin" aria-hidden="true">Seven seals &middot; VII</p>
+        <p class="wel-forbid" aria-hidden="true">Do not write it. It hears the numbers.</p>
         <label class="wel-label" for="wel-d0">Write the number</label>
         <div class="wel-digits">
           <input id="wel-d0" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="First digit">
           <input inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Second digit">
           <input inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Third digit">
           <span class="wel-blot" aria-hidden="true"></span>
+          <span class="wel-glyphs" aria-hidden="true">${glyphMarkup()}</span>
         </div>
         <p class="wel-msg" aria-live="assertive"></p>
       </form>`;
@@ -142,7 +164,7 @@ export function playWelcome({ sound }) {
       await wait(1800);
       await say('Then you have chosen.', { hold: 2600 });
       if (done) return;
-      phase = 'lock'; el.classList.add('show-crypt'); sound.deny && sound.whisper(0.8); letter.hidden = false;
+      phase = 'lock'; el.classList.add('show-crypt'); startDread(); sound.deny && sound.whisper(0.8); letter.hidden = false;
       requestAnimationFrame(() => el.classList.add('show-letter'));
       setTimeout(() => !done && digits[0].focus({ preventScroll: true }), reduceMotion ? 50 : 1400);
     });
@@ -168,6 +190,31 @@ export function playWelcome({ sound }) {
       el.classList.add('hide-warnstep'); await wait(1400); ws.hidden = true; el.classList.remove('show-warnstep');
     }
 
+    // 2c. while the number is asked, the room turns against you: whispers at the edges, a tremor, a guttering flame
+    const WHISPER = ['Turn back.', 'It hears the numbers.', 'Do not write it.', 'Leave it sealed.', 'It is listening.', 'Not this door.', 'You were warned.', 'Close the letter.'];
+    const dread = $('.wel-dread'), wbox = dread.querySelector('.wd-whispers'); let wi = 0;
+    function whisperAt() {
+      const p = document.createElement('span'); p.className = 'wd-w';
+      const narrow = innerWidth < 760;
+      const x = narrow ? 8 + Math.random() * 60 : (Math.random() < 0.5 ? 3 + Math.random() * 17 : 74 + Math.random() * 14);
+      const y = narrow ? (Math.random() < 0.5 ? 1.5 + Math.random() * 5 : 87 + Math.random() * 6) : 10 + Math.random() * 76;
+      p.style.cssText = `left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;--r:${(Math.random() * 8 - 4).toFixed(1)}deg`;
+      p.textContent = WHISPER[wi++ % WHISPER.length];
+      wbox.appendChild(p); setTimeout(() => p.remove(), 5200);
+    }
+    function shudder(hard) {
+      if (reduceMotion) return;
+      el.classList.remove('is-shudder', 'is-shudder-hard'); void el.offsetWidth; el.classList.add(hard ? 'is-shudder-hard' : 'is-shudder');
+      setTimeout(() => el.classList.remove('is-shudder', 'is-shudder-hard'), hard ? 900 : 600);
+    }
+    function startDread() {
+      el.classList.add('dread-on');
+      if (reduceMotion) { whisperAt(); return; }
+      const loop = () => { if (done || phase === 'open') return; whisperAt(); if (Math.random() < 0.4) shudder(false); creep.push(setTimeout(loop, 2600 + Math.random() * 2400)); };
+      creep.push(setTimeout(loop, 1800));
+      digits.forEach((d) => d.addEventListener('input', () => { if (d.value && phase === 'lock') { el.classList.remove('is-heard'); void el.offsetWidth; el.classList.add('is-heard'); } }));
+    }
+
     // 3. the code lock
     let tries = 0;
     digits.forEach((d, i) => {
@@ -180,7 +227,7 @@ export function playWelcome({ sound }) {
       const v = digits.map((d) => d.value).join(''); if (v.length < 3) { if (force) digits[v.length].focus(); return; }
       if (phase !== 'lock') return;
       if (v === CODE) { phase = 'open'; await open(); return; }
-      tries++; phase = 'deny';
+      tries++; phase = 'deny'; shudder(true);
       sound.deny(); letter.classList.remove('is-denied'); void letter.offsetWidth; letter.classList.add('is-denied');
       msg.textContent = tries >= 2 ? 'The wax refuses you. Count the sevens.' : 'The wax refuses you. Try again.';
       await wait(1100);
@@ -189,7 +236,7 @@ export function playWelcome({ sound }) {
 
     // 4. the seal cracks and splits along real fracture lines
     async function open() {
-      digits.forEach((d) => (d.disabled = true)); letter.classList.add('is-accepted'); msg.textContent = 'So be it.';
+      digits.forEach((d) => (d.disabled = true)); el.classList.add('dread-off'); letter.classList.add('is-accepted'); msg.textContent = 'So be it.';
       const shards = buildShards(seal);
       sound.crack(); seal.classList.add('is-cracking');
       await wait(900);
