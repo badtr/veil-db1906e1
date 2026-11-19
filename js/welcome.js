@@ -212,7 +212,7 @@ export function playWelcome({ sound }) {
     function startDread() {
       el.classList.add('dread-on');
       if (reduceMotion) { whisperAt(); return; }
-      const loop = () => { if (done || phase === 'open') return; whisperAt(); if (Math.random() < 0.4) shudder(false); creep.push(setTimeout(loop, 2600 + Math.random() * 2400)); };
+      const loop = () => { if (done || phase === 'open') return; whisperAt(); /* v53: no idle tremor - shaking the letter every few seconds read as constant flicker on phones */ creep.push(setTimeout(loop, 2600 + Math.random() * 2400)); };
       creep.push(setTimeout(loop, 1800));
       digits.forEach((d) => d.addEventListener('input', () => { if (d.value && phase === 'lock') { el.classList.remove('is-heard'); void el.offsetWidth; el.classList.add('is-heard'); } }));
     }
