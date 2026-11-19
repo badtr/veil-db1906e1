@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://badtr.github.io/porcelainballerina-site/sitemap.xml
+Sitemap: https://porcelainballerina.github.io/porcelainballerina-site/sitemap.xml
