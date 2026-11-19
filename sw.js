@@ -1,7 +1,7 @@
-// Porcelain Ballerina service worker. Build 1795092001.
+// Porcelain Ballerina service worker. Build 1795097599.
 // Pages and data: network first (always the newest build when online), cache only as an offline fallback.
-// Versioned files (?v=1795092001): cache first. Every new build gets a new cache; old caches are deleted.
-const BUILD = '1795092001';
+// Versioned files (?v=1795097599): cache first. Every new build gets a new cache; old caches are deleted.
+const BUILD = '1795097599';
 const CACHE = 'pb-' + BUILD;
 self.addEventListener('install', (e) => { self.skipWaiting(); });
 self.addEventListener('activate', (e) => {
@@ -17,5 +17,5 @@ self.addEventListener('fetch', (e) => {
     return;
   }
   e.respondWith(fetch(req, { cache: 'no-store' }).then((res) => { if (res.ok && (req.mode === 'navigate' || /\.(html|json)$/.test(url.pathname))) { const cp = res.clone(); caches.open(CACHE).then((c) => c.put(req, cp)); } return res; })
-    .catch(() => caches.match(req).then((hit) => hit || caches.match(new URL('index.html', self.registration.scope).href))));
+    .catch(() => caches.match(req).then((hit) => hit || caches.match(new URL('./', self.registration.scope).href).then((h) => h || caches.match(new URL('index.html', self.registration.scope).href)))));
 });
