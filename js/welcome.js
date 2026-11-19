@@ -8,6 +8,8 @@ export const WELCOME_KEY = 'pb-initiated';
 export const seenWelcome = () => { try { return localStorage.getItem(WELCOME_KEY) === '1'; } catch (e) { return true; } };
 const markSeen = () => { try { localStorage.setItem(WELCOME_KEY, '1'); } catch (e) {} };
 import { SEAL_CODE as CODE } from './seal-code.js';
+// phones get the lighter copies of the big images (made by the build, see PHONE_IMAGES)
+const PHONE = matchMedia('(max-width:900px),(hover:none) and (pointer:coarse)').matches;
 
 
 // ---- the dread around the code lock: a ring of heptagrams and sigils, two guttering candles, faint marks ----
@@ -38,11 +40,11 @@ export function playWelcome({ sound }) {
       <div class="wel-room" aria-hidden="true"></div>
       <svg class="wel-circle" viewBox="-50 -50 100 100" aria-hidden="true"><g>${sigilMarkup('threshold-777')}</g></svg>
       <div class="wel-dust" aria-hidden="true">${Array.from({ length: 26 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--y:${(i * 61) % 100}%;--d:${(i % 7) * 1.3}s;--s:${0.6 + (i % 4) * 0.35}"></i>`).join('')}</div>
-      <div class="wel-candle" aria-hidden="true"><img src="${new URL('images/ritual/candles.jpg', ROOT).href}" alt=""><span class="wel-flame"></span><span class="wel-ember"></span></div>
+      <div class="wel-candle" aria-hidden="true"><img src="${new URL(PHONE ? 'images/ritual/candles-m.jpg' : 'images/ritual/candles.jpg', ROOT).href}" alt=""><span class="wel-flame"></span><span class="wel-ember"></span></div>
       <div class="wel-shadows" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="wel-glow" aria-hidden="true"></div>
       <div class="wel-ghost" aria-hidden="true"><i></i><i></i></div>
-      <div class="wel-figure" aria-hidden="true"><span class="fig-sigil" aria-hidden="true"><i class="fs-carve"></i><i class="fs-glow"></i><i class="fs-core"></i><i class="fs-flare"></i></span><video muted loop playsinline preload="auto" poster="${new URL('images/figurine/figurine-poster.jpg', ROOT).href}"><source src="${new URL('video/figurine-turn.webm', ROOT).href}" type="video/webm"><source src="${new URL('video/figurine-turn.mp4', ROOT).href}" type="video/mp4"></video></div>
+      <div class="wel-figure" aria-hidden="true"><span class="fig-sigil" aria-hidden="true"><i class="fs-carve"></i><i class="fs-glow"></i><i class="fs-core"></i><i class="fs-flare"></i></span><video muted loop playsinline preload="auto" poster="${new URL(PHONE ? 'images/figurine/figurine-poster-m.jpg' : 'images/figurine/figurine-poster.jpg', ROOT).href}"><source src="${new URL('video/figurine-turn.webm', ROOT).href}" type="video/webm"><source src="${new URL('video/figurine-turn.mp4', ROOT).href}" type="video/mp4"></video></div>
       <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="welBleed" x="-5%" y="-20%" width="110%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.09" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4"/></filter></svg>
       <div class="wel-crypt" aria-hidden="true"><div class="wc-floor"></div><div class="wc-smoke"><i></i><i></i><i></i></div><div class="wc-scratch"></div><div class="wc-blood">${Array.from({ length: 14 }, (_, i) => `<i style="--x:${(i * 7.3 + (i % 3) * 2.1) % 100}%;--h:${40 + ((i * 53) % 160)}px;--w:${3 + (i % 4) * 2}px;--d:${(i % 5) * 0.9}s"></i>`).join('')}</div><div class="wc-skull wc-skull-l"></div><div class="wc-skull wc-skull-r"></div><div class="wc-flicker"></div></div>
       <div class="wel-grain" aria-hidden="true"></div>

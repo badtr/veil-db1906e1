@@ -386,6 +386,8 @@ async function go(url, { push = true, x = innerWidth / 2, y = innerHeight / 2 } 
     if (current && current.destroy) { try { current.destroy(); } catch (e) {} }
     current = null;
     if (push) history.pushState({}, '', url.href);
+    // v51: in-page moves count as a visit to that page when the (optional, cookieless) GoatCounter is present
+    try { window.goatcounter && window.goatcounter.count && window.goatcounter.count({ path: location.pathname + location.search }); } catch (_) {}
     { const ni = ndoc.querySelector('link[rel="icon"]'), oi = document.querySelector('link[rel="icon"]'); if (ni && oi) oi.href = new URL(ni.getAttribute('href'), url).href; }
     document.title = ndoc.title;
     document.body.dataset.page = ndoc.body.dataset.page || '';

@@ -392,8 +392,8 @@ function channel(root) {
 }
 function spiritPhoto(root) {
   $$('.album-hero img, .rq-frame img', root).forEach((img) => {
-    const box = img.parentElement; if (!box || box.querySelector('.sp-ghost')) return;
-    const g = img.cloneNode(); g.removeAttribute('loading'); g.className = 'sp-ghost'; g.alt = ''; g.setAttribute('aria-hidden', 'true'); box.classList.add('spirit-plate'); box.appendChild(g);
+    const box = img.closest('picture.phone-picture')?.parentElement || img.parentElement; if (!box || box.querySelector('.sp-ghost')) return;
+    const g = img.cloneNode(); g.removeAttribute('loading'); g.removeAttribute('srcset'); const ps = img.closest('picture.phone-picture')?.querySelector('source'); if (ps && matchMedia(ps.media).matches) g.src = new URL(ps.getAttribute('srcset'), location.href).href; g.className = 'sp-ghost'; g.alt = ''; g.setAttribute('aria-hidden', 'true'); box.classList.add('spirit-plate'); box.appendChild(g);
   });
 }
 // ---------- whisper in the dark: after a long stillness, one real line drifts in at the edge, then leaves ----------

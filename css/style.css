@@ -4317,3 +4317,27 @@ body:not([data-page="about"]):not([data-page="home"]) .page-head .case-file + .k
   html.pb-gate-open body > :not(.pb-wg) *,body:has(> .wel:not(.is-leaving)) > #swap *{animation-play-state:paused!important}
   body:has(> .wel:not(.is-leaving)) > :not(.wel):not(.pb-wg):not(script){visibility:hidden!important}
 }
+
+/* ---- v51: the phone menu. A blurred (backdrop-filter) header becomes the containing block of its
+   position:fixed children, so once the page was scrolled the full-screen menu was trapped inside the
+   header strip and its links wrapped sideways. While the menu is open the header drops the blur, and
+   the menu is its own one-finger scroller that never moves the page behind it. ---- */
+body.nav-open .site-header,body.nav-open .site-header.is-scrolled{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important;transform:none!important}
+@media (max-width:900px),(hover:none) and (pointer:coarse){
+  .site-header.is-scrolled{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  body.nav-open .nav{position:fixed!important;inset:0!important;height:100vh;height:100dvh!important;max-height:100dvh;flex-wrap:nowrap!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;padding-bottom:calc(3rem + env(safe-area-inset-bottom))!important}
+  body.nav-open .nav a{flex:0 0 auto;min-height:44px}
+  body.nav-open{overscroll-behavior:none}
+}
+/* Picture is a source-selection wrapper, not a new layout box. The img keeps its sizes and no-download rules. */
+.phone-picture{display:contents}
+@media (max-width:900px),(hover:none) and (pointer:coarse){
+  .dr-seal .s1{background-image:url(../images/letter/seal-half-l-sm.webp)!important}
+  .dr-seal .s2{background-image:url(../images/letter/seal-half-r-sm.webp)!important}
+  .grimoire.lit{background-image:radial-gradient(circle at var(--lx,50%) var(--ly,30%),rgba(255,200,130,.22),transparent 45%),url(../images/ritual/parchment-m.jpg)}
+}
+@media (max-width:900px),(hover:none) and (pointer:coarse){
+  .wel-ghost i{background-image:url(../images/figurine/figurine-m.webp)!important}
+  .wel-seal-whole,.wel-shard{background-image:url(../images/ritual/seal-blood-sm.webp)!important}
+  .wel-seal-sheen{-webkit-mask-image:url(../images/ritual/seal-blood-sm.webp)!important;mask-image:url(../images/ritual/seal-blood-sm.webp)!important}
+}
